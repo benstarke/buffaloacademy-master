@@ -1,0 +1,65 @@
+<!-- Best Instructors Starts Here -->
+<div *ngIf="loading" class="spinner-container">
+    <div class="spinner"></div>
+    <span class="loading-text">Loading...</span>
+</div>  
+<section class="section best-instructor-featured overflow-hidden main-instructor-featured">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 position-relative">
+                <h2 class="text-center mb-40 font-title--md">Meet Our Best Instructor</h2>
+                <div class="row ourinstructor__wrapper mb-2 mt-lg-5 mt-0">
+                    <!-- starts here -->
+                    <div *ngFor="let team of teamInfo" class="col-md-3 col-sm-6 mb-4">
+                        <div class="mentor">
+                            <div class="mentor__img">
+                                <img [src]="team.image" alt="Mentor image" />
+                                <ul class="list-inline">
+                                    <li class="list-inline-item">
+                                        <a [href]="getInstagramUrl(team)" target="_blank" tabindex="0">
+                                            <i class="fab fa-instagram"></i>
+                                        </a>
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <a [href]="getLinkedInUrl(team)" target="_blank" tabindex="0">
+                                            <i class="fab fa-linkedin-in"></i>
+                                        </a>
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <a [href]="getTwitterUrl(team)" target="_blank" tabindex="0">
+                                            <i class="fab fa-twitter"></i>
+                                        </a>
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <a [href]="getYoutubeUrl(team)" target="_blank" tabindex="0">
+                                            <i class="fab fa-youtube"></i>
+                                        </a>
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <a [href]="getFacebookUrl(team)" target="_blank" tabindex="0">
+                                            <i class="fab fa-facebook-f"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="mentor__title">
+                                <h6>
+                                    <a routerLink="/" tabindex="0">{{ team.name_en }}</a>
+                                </h6>
+                                <p>{{ team.designation }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ends here -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="main-instructor-featured-shape">
+        <img src="../../../../assets/frontend/dist/images/shape/dots/dots-img-14.png" alt="shape"
+            class="img-fluid shape01" />
+        <img src="../../../../assets/frontend/dist/images/shape/triangel2.png" alt="shape" class="img-fluid shape02" />
+    </div>
+</section>
+<!-- About Intro Starts Here -->

@@ -1,0 +1,335 @@
+<div class="wrapper">   
+
+    <!-- Add Button -->
+    <dx-button text="Add New Blog Post" type="default" icon="fa fa-plus"
+      [elementAttr]="{ id: 'addBlogBtn', class: 'pull-right' }" (onClick)="onAddBlogClick()">
+    </dx-button>
+  
+    <!-- Add Blog Post Popup --> 
+    <!-- Add Blog Post Popup -->
+    <ng-container *ngIf="addBlogForm.value && addPopupVisible">
+        <dx-popup [(visible)]="addPopupVisible" [width]="900" [height]="800" [showTitle]="true"
+            [title]="'Add New Blog Post'" (onHidden)="onPopupHidden()"
+            [elementAttr]="{ id: 'addBlogPopup' }" [dragEnabled]="true">
+            <form (ngSubmit)="onAddBlogSubmit()" [formGroup]="addBlogForm">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <label for="name">Blog Title:</label>
+                        <dx-text-box formControlName="name" placeholder="Blog Title"></dx-text-box>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <label for="tags_id">Tags:</label>
+                        <dx-select-box formControlName="tags_id" [dataSource]="tagsDataSource" displayExpr="name"
+                          valueExpr="id" [searchEnabled]="true" placeholder="Select Tags">
+                        </dx-select-box>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <label for="blog_categories_id">Category:</label>
+                        <dx-select-box formControlName="blog_categories_id" [dataSource]="categoriesDataSource"
+                          displayExpr="name" valueExpr="id" [searchEnabled]="true" placeholder="Select Category">
+                        </dx-select-box>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <label for="blog_image_path">Blog Post Image:</label>
+                        <input type="file" (change)="onFileChange($event)" formControlName="blog_image_path" placeholder="Blog Post Image"/>
+                    </div>
+                      
+                    <div class="col-lg-12">
+                        <label for="description">Content:</label>
+                        <dx-html-editor formControlName="description" height="350px">
+                          <dxo-toolbar [multiline]="true">
+                            <dxi-item name="undo"></dxi-item>
+                            <dxi-item name="redo"></dxi-item>
+                            <dxi-item name="separator"></dxi-item>
+                            <dxi-item
+                              name="size"
+                              [acceptedValues]="['8pt', '10pt', '12pt', '14pt', '18pt', '24pt', '36pt']"
+                            ></dxi-item>
+                            <dxi-item
+                              name="font"
+                              [acceptedValues]="[
+                                'Arial',
+                                'Courier New',
+                                'Georgia',
+                                'Impact',
+                                'Lucida Console',
+                                'Tahoma',
+                                'Times New Roman',
+                                'Verdana'
+                              ]"
+                            ></dxi-item>
+                            <dxi-item name="separator"></dxi-item>
+                            <dxi-item name="bold"></dxi-item>
+                            <dxi-item name="italic"></dxi-item>
+                            <dxi-item name="strike"></dxi-item>
+                            <dxi-item name="underline"></dxi-item>
+                            <dxi-item name="separator"></dxi-item>
+                            <dxi-item name="alignLeft"></dxi-item>
+                            <dxi-item name="alignCenter"></dxi-item>
+                            <dxi-item name="alignRight"></dxi-item>
+                            <dxi-item name="alignJustify"></dxi-item>
+                            <dxi-item name="separator"></dxi-item>
+                            <dxi-item name="orderedList"></dxi-item>
+                            <dxi-item name="bulletList"></dxi-item>
+                            <dxi-item name="separator"></dxi-item>
+                            <dxi-item
+                              name="header"
+                              [acceptedValues]="[false, 1, 2, 3, 4, 5]"
+                            ></dxi-item>
+                            <dxi-item name="separator"></dxi-item>
+                            <dxi-item name="color"></dxi-item>
+                            <dxi-item name="background"></dxi-item>
+                            <dxi-item name="separator"></dxi-item>
+                            <dxi-item name="link"></dxi-item>
+                            <dxi-item name="image"></dxi-item>
+                            <dxi-item name="separator"></dxi-item>
+                            <dxi-item name="clear"></dxi-item>
+                            <dxi-item name="codeBlock"></dxi-item>
+                            <dxi-item name="blockquote"></dxi-item>
+                            <dxi-item name="separator"></dxi-item>
+                            <dxi-item name="insertTable"></dxi-item>
+                            <dxi-item name="deleteTable"></dxi-item>
+                            <dxi-item name="insertRowAbove"></dxi-item>
+                            <dxi-item name="insertRowBelow"></dxi-item>
+                            <dxi-item name="deleteRow"></dxi-item>
+                            <dxi-item name="insertColumnLeft"></dxi-item>
+                            <dxi-item name="insertColumnRight"></dxi-item>
+                            <dxi-item name="deleteColumn"></dxi-item>
+                          </dxo-toolbar>
+                          <dxo-media-resizing [enabled]="true"></dxo-media-resizing>
+                          <dxo-image-upload fileUploadMode="base64">
+                          </dxo-image-upload>
+                        </dx-html-editor>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <label for="blog_status_id">Status:</label>
+                        <dx-select-box formControlName="blog_status_id" [dataSource]="statusDataSource"
+                          displayExpr="name" valueExpr="id" [searchEnabled]="true" placeholder="Select Status">
+                        </dx-select-box>
+                    </div>
+                </div>
+                <div class="button-container">
+                    <dx-button text="Create" type="success" icon="fa fa-plus" [elementAttr]="{ class: 'pull-left' }"
+                        (onClick)="onAddBlogSubmit()"></dx-button>
+                    <dx-button text="Cancel" type="danger" icon="fa fa-times" [elementAttr]="{ class: 'pull-left' }"
+                        (onClick)="addPopupVisible = false"></dx-button>
+                </div>
+            </form>
+        </dx-popup>
+    </ng-container>
+    
+    <!-- Update Blog Post Popup -->
+    <ng-container *ngIf="updateBlogForm.value && updatePopupVisible">
+      <dx-popup [(visible)]="updatePopupVisible" [width]="900" [height]="800" [showTitle]="true"
+          [title]="'Update Blog Post'" (onHidden)="onPopupHidden()" [dragEnabled]="true">
+          <form (ngSubmit)="onUpdateBlogSubmit()" [formGroup]="updateBlogForm">
+  
+              <div class="row">
+                  <div class="col-lg-12">
+                      <label for="name">Blog Title:</label>
+                      <dx-text-box formControlName="name" placeholder="Blog Title"></dx-text-box>
+                  </div>
+
+                  <div class="col-lg-12">
+                    <label for="tags_id">Tags:</label>
+                    <dx-select-box formControlName="tags_id" [dataSource]="tagsDataSource" displayExpr="name"
+                      valueExpr="id" [searchEnabled]="true" placeholder="Select Tags">
+                    </dx-select-box>
+                </div>
+
+                <div class="col-lg-12">
+                    <label for="blog_categories_id">Category:</label>
+                    <dx-select-box formControlName="blog_categories_id" [dataSource]="categoriesDataSource"
+                      displayExpr="name" valueExpr="id" [searchEnabled]="true" placeholder="Select Category">
+                    </dx-select-box>
+                </div>
+
+                <div class="col-lg-12">
+                  <label for="blog_status_id">Status:</label>
+                  <dx-select-box formControlName="blog_status_id" [dataSource]="statusDataSource"
+                    displayExpr="name" valueExpr="id" [searchEnabled]="true" placeholder="Select Status">
+                  </dx-select-box>
+                </div>
+
+                <div class="col-lg-12">
+                    <label for="blog_image_path">Blog Post Image:</label>
+                    <input type="file" (change)="onFileChange($event)" formControlName="blog_image_path" placeholder="Blog Post Image"/>
+                </div>
+  
+                  <div class="col-lg-12">
+                    <label for="description">Content:</label>
+                    <dx-html-editor formControlName="description" height="350px">
+                      <dxo-toolbar [multiline]="true">
+                        <dxi-item name="undo"></dxi-item>
+                        <dxi-item name="redo"></dxi-item>
+                        <dxi-item name="separator"></dxi-item>
+                        <dxi-item
+                          name="size"
+                          [acceptedValues]="['8pt', '10pt', '12pt', '14pt', '18pt', '24pt', '36pt']"
+                        ></dxi-item>
+                        <dxi-item
+                          name="font"
+                          [acceptedValues]="[
+                            'Arial',
+                            'Courier New',
+                            'Georgia',
+                            'Impact',
+                            'Lucida Console',
+                            'Tahoma',
+                            'Times New Roman',
+                            'Verdana'
+                          ]"
+                        ></dxi-item>
+                        <dxi-item name="separator"></dxi-item>
+                        <dxi-item name="bold"></dxi-item>
+                        <dxi-item name="italic"></dxi-item>
+                        <dxi-item name="strike"></dxi-item>
+                        <dxi-item name="underline"></dxi-item>
+                        <dxi-item name="separator"></dxi-item>
+                        <dxi-item name="alignLeft"></dxi-item>
+                        <dxi-item name="alignCenter"></dxi-item>
+                        <dxi-item name="alignRight"></dxi-item>
+                        <dxi-item name="alignJustify"></dxi-item>
+                        <dxi-item name="separator"></dxi-item>
+                        <dxi-item name="orderedList"></dxi-item>
+                        <dxi-item name="bulletList"></dxi-item>
+                        <dxi-item name="separator"></dxi-item>
+                        <dxi-item
+                          name="header"
+                          [acceptedValues]="[false, 1, 2, 3, 4, 5]"
+                        ></dxi-item>
+                        <dxi-item name="separator"></dxi-item>
+                        <dxi-item name="color"></dxi-item>
+                        <dxi-item name="background"></dxi-item>
+                        <dxi-item name="separator"></dxi-item>
+                        <dxi-item name="link"></dxi-item>
+                        <dxi-item name="image"></dxi-item>
+                        <dxi-item name="separator"></dxi-item>
+                        <dxi-item name="clear"></dxi-item>
+                        <dxi-item name="codeBlock"></dxi-item>
+                        <dxi-item name="blockquote"></dxi-item>
+                        <dxi-item name="separator"></dxi-item>
+                        <dxi-item name="insertTable"></dxi-item>
+                        <dxi-item name="deleteTable"></dxi-item>
+                        <dxi-item name="insertRowAbove"></dxi-item>
+                        <dxi-item name="insertRowBelow"></dxi-item>
+                        <dxi-item name="deleteRow"></dxi-item>
+                        <dxi-item name="insertColumnLeft"></dxi-item>
+                        <dxi-item name="insertColumnRight"></dxi-item>
+                        <dxi-item name="deleteColumn"></dxi-item>
+                      </dxo-toolbar>
+                      <dxo-media-resizing [enabled]="true"></dxo-media-resizing>
+                      <dxo-image-upload fileUploadMode="base64">
+                      </dxo-image-upload>
+                    </dx-html-editor>
+                </div>
+  
+              </div>
+  
+              <div class="button-container">
+                  <dx-button text="Update" type="success" icon="fa fa-plus" [elementAttr]="{ class: 'pull-left' }"
+                      (onClick)="onUpdateBlogSubmit()"></dx-button>
+                  <dx-button text="Cancel" type="danger" icon="fa fa-times" [elementAttr]="{ class: 'pull-left' }"
+                      (onClick)="updatePopupVisible = false"></dx-button>
+              </div>
+          </form>
+      </dx-popup>
+    </ng-container>
+  
+    <!-- Delete Blog Post Popup -->
+    <ng-container *ngIf="deleteBlogForm.value && deletePopupVisible">
+      <dx-popup [(visible)]="deletePopupVisible" height="200" width="600" [showTitle]="true" title="Delete Confirmation"
+          (onHidden)="deletePopupVisible = false">
+          <form (ngSubmit)="onDeleteBlogSubmit()" [formGroup]="deleteBlogForm">
+              <div>
+                  <p *ngIf="deleteBlogForm.value && deletePopupVisible" class="confirmation-text">
+                      Are you sure you want to delete "<strong>{{deleteBlogForm.value.name}}</strong>"?
+                  </p>
+                  <div class="button-container">
+                      <dx-button text="Yes" type="danger" (onClick)="onDeleteBlogSubmit()"></dx-button>
+                      <dx-button text="No" (onClick)="deletePopupVisible = false"></dx-button>
+                  </div>
+              </div>
+          </form>
+      </dx-popup>
+    </ng-container>
+  
+    <!-- Data Grid to display Blog Posts -->
+    <dx-data-grid 
+    class="table row-border hover" 
+    [dataSource]="blogs" 
+    [remoteOperations]='true' 
+    [showBorders]="true"
+    [allowColumnResizing]="true" 
+    [columnHidingEnabled]="false" 
+    (onSelectionChanged)="selectionChanged($event)" 
+    (onSelectionChanged)="onSelectionChanged($event)" 
+    (onContentReady)="onContentReady($event)"
+    keyExpr="id">
+
+     <!-- master detail api -->
+     <dxo-master-detail [enabled]="false" template="detail"></dxo-master-detail>
+     <!-- master detail api -->
+
+      <dxo-search-panel [visible]="true"></dxo-search-panel>
+      <dxo-paging [enabled]="true"></dxo-paging>
+      <dxo-pager [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)" [showPageSizeSelector]="true"
+          [allowedPageSizes]="[5,10]"></dxo-pager>
+      <!-- <dxo-export [enabled]="true" fileName="BlogPosts" [allowExportSelectedData]="true"></dxo-export> -->
+      <dxo-selection mode="single"></dxo-selection>
+      <dxo-group-panel [visible]="true"></dxo-group-panel>
+  
+      <dxi-column dataField="id" caption="ID" [visible]="false"></dxi-column>
+      <dxi-column dataField="name" caption="Blog Title"></dxi-column>
+
+      <dxi-column dataField="tags_id" caption="Tags">
+        <dxo-lookup [dataSource]="tagsDataSource" displayExpr="name" valueExpr="id">
+        </dxo-lookup>
+      </dxi-column>
+
+      <dxi-column dataField="blog_categories_id" caption="Categories">
+        <dxo-lookup [dataSource]="categoriesDataSource" displayExpr="name" valueExpr="id">
+        </dxo-lookup>
+      </dxi-column>
+
+      <!-- <dxi-column dataField="description" caption="Description"></dxi-column> -->
+      <dxi-column dataField="author" caption="Author"></dxi-column>
+      <dxi-column dataField="duration" caption="Time Posted"></dxi-column>
+
+      <dxi-column dataField="blog_status_id" caption="Status">
+        <dxo-lookup [dataSource]="statusDataSource" displayExpr="description" valueExpr="id">
+        </dxo-lookup>
+      </dxi-column>
+
+      <dxi-column dataField="description" caption="Content">
+        <div *dxTemplate="let blogs of 'detail'">
+            <div class="employeeInfo">
+                <img class="employeePhoto"
+                [src]="'assets/uploads/blogs-posts/' + blogs.blog_image_path"
+                alt="Blog Post Image" />
+
+              <div class="scrollable-content">
+                <p class="employeeContent" [innerHTML]="blogs.data.description"></p>
+              </div>
+            </div>
+          </div>
+        </dxi-column>
+      
+      <dxi-column [width]="150" caption="Action" name="command-editing"
+        [allowFiltering]="false" [allowSorting]="false" cellTemplate="cellTemplate">
+        <div *dxTemplate="let data of 'cellTemplate'">
+            <dx-menu (onItemClick)="blogActionColClick($event, data)"
+                [items]="blogMenuItems"></dx-menu>
+        </div>
+      </dxi-column>
+  
+      <dxo-paging [pageSize]="5"></dxo-paging>
+    </dx-data-grid>
+
+  
+  </div> 
+  

@@ -1,0 +1,316 @@
+<div class="main-wrapper">
+
+	<div class="row page-titles mx-0">
+		<div class="col-sm-6 p-md-0">
+			<div class="welcome-text">
+				<h4>Course Materials Operations</h4> 
+			</div>
+		</div>
+		<div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a routerLink="/admin-buffalo/master-dashboard">Home</a></li>
+				<li class="breadcrumb-item active"><a routerLink="/admin-buffalo/course-management/dashboard-lesson-materials">Material</a></li>
+				<li class="breadcrumb-item active"><a routerLink="/admin-buffalo/course-management/dashboard-lesson-materials">All Materials</a></li>
+			</ol>
+		</div>
+    </div> 
+
+	<!-- Add Material Popup -->
+	<ng-container *ngIf="addMaterialForm.value && addPopupVisible">
+		<dx-popup [(visible)]="addPopupVisible" [width]="600" [height]="'auto'" [showTitle]="true"
+			[title]="'Add New Material'" (onHidden)="onPopupHidden()">
+			<form (ngSubmit)="onAddMaterialSubmit(false)" [formGroup]="addMaterialForm">
+
+				<div class="row">
+					<div class="col-lg-12">
+						<label for="title">Title of the Material:<span class="text-danger">*</span></label>
+						<dx-text-box [showClearButton]="true" formControlName="title" placeholder="Material title"></dx-text-box>
+						<!-- Display error message for the title field -->
+						<div *ngIf="addMaterialForm.get('title')?.invalid && (addMaterialForm.get('title')?.touched || addMaterialForm.get('title')?.dirty)"
+							class="text-danger">
+							<ng-container *ngIf="addMaterialForm.get('title')?.errors?.['required']">Material title is required</ng-container>
+							<ng-container *ngIf="addMaterialForm.get('title')?.errors?.['pattern']">Invalid Material title</ng-container>
+						</div>
+					</div>
+
+                    <div class="col-lg-12">
+						<label for="lesson_id">Lesson of Concern:<span class="text-danger">*</span></label>
+                        <!-- Course select box with required validation and error message -->
+                        <dx-select-box [dataSource]="Lesson" formControlName="lesson_id"
+                            valueExpr="id" [searchEnabled]="true" displayExpr="title">
+                        </dx-select-box>
+                        <!-- Display error message for the lesson_id field -->
+                        <div *ngIf="addMaterialForm.get('lesson_id')?.invalid && (addMaterialForm.get('lesson_id')?.touched || addMaterialForm.get('lesson_id')?.dirty)"
+                            class="text-danger">
+                            <ng-container *ngIf="addMaterialForm.get('lesson_id')?.errors?.['required']">Lesson of concern is required</ng-container>
+                        </div>
+					</div>
+	
+					<div class="col-lg-12">
+						<label for="type">Type of Material:<span class="text-danger">*</span></label>
+						<dx-select-box formControlName="type" [dataSource]="materialTypeOptions"
+                        valueExpr="value" displayExpr="text">
+                        </dx-select-box>
+					</div>
+
+                    <div class="mt-3 col-lg-12">
+                        <label for="content">Material Content:<span class="text-danger">*</span></label>
+                    
+                        <!-- File input that dynamically updates based on material type -->
+                        <input #fileInput type="file" (change)="onFileSelected($event)" [attr.accept]="getAcceptForFileType()">
+                    
+                        <!-- Progress bar for file upload -->
+                        <div *ngIf="uploadProgress >= 0" style="margin-top: 1rem;">
+                            <label>Upload Progress:</label>
+                            <div class="progress" style="height: 30px; background-color: #f3f3f3; border-radius: 5px;">
+                                <div class="progress-bar" 
+                                     role="progressbar" 
+                                     [style.width]="uploadProgress + '%'" 
+                                     aria-valuenow="uploadProgress"
+                                     aria-valuemin="0" 
+                                     aria-valuemax="100" 
+                                     style="height: 100%; line-height: 30px; background-color: #007bff; color: white; text-align: center; font-weight: bold;">
+                                    {{ uploadProgress }}%
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <!-- Display error message for the content field -->
+                        <div *ngIf="addMaterialForm.get('content')?.invalid && (addMaterialForm.get('content')?.touched || addMaterialForm.get('content')?.dirty)"
+                             class="text-danger">
+                            <ng-container *ngIf="addMaterialForm.get('content')?.errors?.['required']">Material content is required</ng-container>
+                            <ng-container *ngIf="fileError">{{ fileError }}</ng-container>
+                        </div>
+                    </div>
+                                  
+				</div>
+	
+				<div class="row">
+					<div class="button-container-popup">
+						<dx-button text="Save and Add Another" type="success" [elementAttr]="{ id: 'first-btn', class: 'pull-right' }"
+							(onClick)="onAddMaterialSubmit(true)">
+							<!-- spinner -->
+							<ng-container *ngIf="!isSubmittingSaveAndAddAnother">Save and Add Another</ng-container>
+							<ng-container *ngIf="isSubmittingSaveAndAddAnother">
+								<div class="spinnerc"></div>
+							</ng-container>
+							<!-- spinner -->
+						</dx-button>
+						<dx-button text="Save" type="success" [elementAttr]="{ class: 'pull-right' }"
+							(onClick)="onAddMaterialSubmit(false)">
+							<!-- spinner -->
+							<ng-container *ngIf="!isSubmittingSave">Save</ng-container>
+							<ng-container *ngIf="isSubmittingSave">
+								<div class="spinnerc"></div>
+							</ng-container>
+							<!-- spinner -->
+						</dx-button>
+					</div>
+				</div>
+			</form>
+		</dx-popup>
+	</ng-container>
+
+	<!-- Update Material Popup -->
+	<ng-container *ngIf="updateMaterialForm.value && updatePopupVisible">
+		<dx-popup [(visible)]="updatePopupVisible" [width]="600" [height]="'auto'" [showTitle]="true"
+		[title]="'Update Material'" (onHidden)="onPopupHidden()">
+		<form (ngSubmit)="onUpdateMaterialSubmit()" [formGroup]="updateMaterialForm">
+			<div class="row">
+			<div class="col-lg-12">
+				<label for="title">Title of the Material:<span class="text-danger">*</span></label>
+				<dx-text-box [showClearButton]="true" formControlName="title" placeholder="Material title"></dx-text-box>
+				<!-- Display error message for the title field -->
+				<div *ngIf="updateMaterialForm.get('title')?.invalid && (updateMaterialForm.get('title')?.touched || updateMaterialForm.get('title')?.dirty)"
+				class="text-danger">
+				<ng-container *ngIf="updateMaterialForm.get('title')?.errors?.['required']">Material title is required</ng-container>
+				<ng-container *ngIf="updateMaterialForm.get('title')?.errors?.['pattern']">Invalid Material title</ng-container>
+				</div>
+			</div>
+	
+			<div class="col-lg-12">
+				<label for="lesson_id">Lesson of Concern:<span class="text-danger">*</span></label>
+				<dx-select-box [dataSource]="Lesson" formControlName="lesson_id"
+				valueExpr="id" [searchEnabled]="true" displayExpr="title">
+				</dx-select-box>
+				<!-- Display error message for the lesson_id field -->
+				<div *ngIf="updateMaterialForm.get('lesson_id')?.invalid && (updateMaterialForm.get('lesson_id')?.touched || updateMaterialForm.get('lesson_id')?.dirty)"
+				class="text-danger">
+				<ng-container *ngIf="updateMaterialForm.get('lesson_id')?.errors?.['required']">Lesson of concern is required</ng-container>
+				</div>
+			</div>
+	
+			<div class="col-lg-12">
+				<label for="type">Type of Material:<span class="text-danger">*</span></label>
+				<dx-select-box formControlName="type" [dataSource]="materialTypeOptions" valueExpr="value" displayExpr="text">
+				</dx-select-box>
+			</div>
+	
+			<div class="mt-3 col-lg-12">
+				<label for="content">Material Content:<span class="text-danger">*</span></label>
+	
+				<!-- Show current content if material is not a file -->
+				<!-- <ng-container *ngIf="!isFileType()">
+				<textarea formControlName="content" rows="5" class="form-control" placeholder="Enter material content"></textarea>
+				</ng-container> -->
+	
+				<!-- File input that dynamically updates based on material type -->
+				<input #fileInput type="file" (change)="onFileSelected($event)" [attr.accept]="getAcceptForFileType()">
+	
+				<!-- Progress bar for file upload -->
+				<div *ngIf="uploadProgress >= 0" style="margin-top: 1rem;">
+				<label>Upload Progress:</label>
+				<div class="progress" style="height: 30px; background-color: #f3f3f3; border-radius: 5px;">
+					<div class="progress-bar" role="progressbar" [style.width]="uploadProgress + '%'" aria-valuenow="uploadProgress"
+					aria-valuemin="0" aria-valuemax="100" style="height: 100%; line-height: 30px; background-color: #007bff; color: white; text-align: center; font-weight: bold;">
+					{{ uploadProgress }}%
+					</div>
+				</div>
+				</div>
+	
+				<!-- Display error message for the content field -->
+				<div *ngIf="updateMaterialForm.get('content')?.invalid && (updateMaterialForm.get('content')?.touched || updateMaterialForm.get('content')?.dirty)"
+				class="text-danger">
+				<ng-container *ngIf="updateMaterialForm.get('content')?.errors?.['required']">Material content is required</ng-container>
+				<ng-container *ngIf="fileError">{{ fileError }}</ng-container>
+				</div>
+			</div>
+			</div>
+	
+			<!-- Update and Cancel Buttons -->
+			<div class="row">
+			<div class="button-container-popup">
+				<dx-button text="Cancel" type="danger" [elementAttr]="{ id: 'first-btn', class: 'pull-right' }"
+				(onClick)="updatePopupVisible = false"></dx-button>
+				<dx-button text="Update" type="success" [elementAttr]="{ class: 'pull-right' }"
+				(onClick)="onUpdateMaterialSubmit()">
+				<!-- spinner -->
+				<ng-container *ngIf="!isSubmitting">Update</ng-container>
+				<ng-container *ngIf="isSubmitting">
+					<div class="spinnerc"></div>
+				</ng-container>
+				<!-- spinner -->
+				</dx-button>
+			</div>
+			</div>
+		</form>
+		</dx-popup>
+	</ng-container>
+  
+
+	<!-- Delete Material Popup -->
+	<ng-container *ngIf="deleteMaterialForm.value && deletePopupVisible">
+		<dx-popup [(visible)]="deletePopupVisible" height="auto" width="auto" [showTitle]="true" title="Delete Confirmation"
+			(onHidden)="deletePopupVisible = false">
+			<form (ngSubmit)="onDeleteMaterialSubmit()" [formGroup]="deleteMaterialForm">
+				<div>
+					<p *ngIf="deleteMaterialForm.value && deletePopupVisible" class="confirmation-text">
+						Are you sure you want to delete "<strong>{{deleteMaterialForm.value.title}}</strong>"?
+					</p>
+					<div class="button-container-popup">
+					  <dx-button text="Cancel" (onClick)="deletePopupVisible = false" [elementAttr]="{ id: 'first-btn', class: 'pull-right' }"></dx-button>
+					  <dx-button text="Delete" type="danger" (onClick)="onDeleteMaterialSubmit()" [elementAttr]="{ class: 'pull-right' }">
+						 <!-- spinner -->
+						<ng-container *ngIf="!isSubmitting">Delete</ng-container>
+						<ng-container *ngIf="isSubmitting">
+							<div class="spinnerc"></div>
+						</ng-container>
+						<!-- spinner -->
+					  </dx-button>
+				  </div>
+				</div>
+			</form>
+		</dx-popup>
+	</ng-container>
+
+	<!-- Spinner -->
+	<div *ngIf="isLoading" class="spinner-container">
+		<div class="spinner"></div>
+	</div>
+
+	<!-- Data Grid to display Material -->
+	<div *ngIf="!isLoading">
+		<!-- Menu for Add/Delete Actions -->
+		<div class="button-container">
+			<dx-menu 
+				[style]="{ 'background-color': 'lightblue' }"
+				(onItemClick)="onMenuItemClick($event)" 
+				[items]="permitGeneralMaterialMenuItems">
+			</dx-menu>
+		</div>
+
+		<!-- Data Grid to display Materials -->
+	<dx-data-grid 
+	#multipleMaterialGrid
+	class="table row-border hover" 
+	[dataSource]="Materials" 
+	[remoteOperations]='true' 
+	[showBorders]="true"
+	[allowColumnResizing]="true" 
+	[columnHidingEnabled]="false" 
+	(onSelectionChanged)="selectionChanged($event)" 
+	keyExpr="id">
+		<dxo-search-panel [visible]="true"></dxo-search-panel>
+		<dxo-paging [enabled]="true"></dxo-paging>
+		<dxo-pager [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)" [showPageSizeSelector]="true"
+			[allowedPageSizes]="[5,10]"></dxo-pager>
+
+		<dxo-selection mode="multiple"></dxo-selection>
+		<dxo-group-panel [visible]="true"></dxo-group-panel>
+
+		<!-- menu actions -->
+		<dxi-column [width]="150" caption="Action" name="command-editing"
+		[allowFiltering]="false" 
+		[allowSorting]="false" 
+		cellTemplate="cellTemplate">
+		<div *dxTemplate="let data of 'cellTemplate'">
+		  <dx-menu 
+			(onItemClick)="permitMaterialActionColClick($event,data)"
+			[items]="permitMaterialMenuItems">
+		  </dx-menu>
+		</div>
+	    </dxi-column>
+		<!-- menu actions -->
+
+		<dxi-column dataField="id" caption="ID" [visible]="false"></dxi-column>
+        <dxi-column dataField="title" caption="Material Name"></dxi-column>
+
+        <dxi-column dataField="lesson_id" caption="Lesson">
+            <dxo-lookup [dataSource]="Lesson" displayExpr="title" valueExpr="id">
+            </dxo-lookup>
+        </dxi-column>
+
+        <dxi-column dataField="content" caption="Content"></dxi-column>
+
+        <dxi-column dataField="type" caption="Type of Content"></dxi-column>
+        <dxi-column dataField="created_by" caption="Created By"></dxi-column>
+        <dxi-column dataField="duration" caption="Time Posted"></dxi-column>
+		
+		<dxo-paging [pageSize]="10"></dxo-paging>
+	</dx-data-grid>
+	</div>
+
+	<!-- Delete Multiple Material Popup -->
+    <ng-container *ngIf="selectedMaterialForDeletion.length > 0 && deleteMultiplePopupVisible">
+		<dx-popup [(visible)]="deleteMultiplePopupVisible" height="auto" width="auto" [showTitle]="true" title="Delete Confirmation"
+			(onHidden)="deleteMultiplePopupVisible = false">
+			<div>
+				<p class="confirmation-text">
+					Are you sure you want to delete <strong>{{selectedMaterialCount}}</strong> Material(s)?
+				</p>
+				<div class="button-container-popup">
+					<dx-button text="Cancel" (onClick)="deleteMultiplePopupVisible = false" [elementAttr]="{ id: 'first-btn', class: 'pull-right' }"></dx-button>
+					<dx-button text="Delete" type="danger" (onClick)="confirmDeleteMultipleMaterial()" [elementAttr]="{ class: 'pull-right' }">
+						<!-- spinner -->
+						<ng-container *ngIf="!isSubmitting">Delete</ng-container>
+						<ng-container *ngIf="isSubmitting">
+							<div class="spinnerc"></div>
+						</ng-container>
+						<!-- spinner -->
+					</dx-button>
+				</div>
+			</div>
+		</dx-popup>
+	</ng-container>
+
+</div>

@@ -1,0 +1,68 @@
+<div class="wrapper">
+
+  <div class="row page-titles mx-0">
+    <div class="col-sm-6 p-md-0">
+        <div class="welcome-text">
+            <h4>Blog Category List</h4>
+        </div>
+    </div>
+    <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a routerLink="/admin-buffalo/master-dashboard">Home</a></li>
+            <li class="breadcrumb-item active"><a routerLink="/admin-buffalo/content-management/dashboard-blog-categories">Categories</a></li>
+            <li class="breadcrumb-item active"><a routerLink="/admin-buffalo/content-management/dashboard-blog-categories">All Categories</a></li>
+        </ol>
+    </div>
+  </div> 
+
+  <!-- Spinner -->
+	<div *ngIf="isLoading" class="spinner-container">
+		<div class="spinner"></div>
+	</div>
+
+  <!-- Data Grid to display Categories -->
+  <div *ngIf="!isLoading">
+    <dx-data-grid 
+      id="multipleCategoriesGrid"
+      class="table row-border hover" 
+      [dataSource]="categories" 
+      [remoteOperations]="true" 
+      [showBorders]="true"
+      [allowColumnResizing]="true" 
+      [columnHidingEnabled]="false" 
+      [selection]="{ mode: 'multiple' }"
+      (onExporting)="onExporting($event)"
+      (onSelectionChanged)="selectionChanged($event)"  
+      keyExpr="id">
+      
+      <dxo-search-panel [visible]="true"></dxo-search-panel>
+      <dxo-paging [enabled]="true"></dxo-paging>
+      <dxo-pager 
+        [showInfo]="true" 
+        infoText="Page #{0}. Total: {1} ({2} items)" 
+        [showPageSizeSelector]="true"
+        [allowedPageSizes]="[5,10]">
+      </dxo-pager>
+      
+      <dxo-export 
+        [enabled]="true" 
+        [formats]="['xlsx', 'csv']"
+        fileName="Categories" 
+        [allowExportSelectedData]="true">
+      </dxo-export>
+  
+      <dxo-selection mode="multiple"></dxo-selection>
+      <dxo-group-panel [visible]="true"></dxo-group-panel>
+  
+      <dxi-column [width]="'auto'" dataField="id" caption="ID" [visible]="false"></dxi-column>
+      <dxi-column [width]="'auto'" dataField="name" caption="Category Name"></dxi-column>
+      <dxi-column [width]="'auto'" dataField="description" caption="Description"></dxi-column>
+      <dxi-column [width]="'auto'" dataField="created_by" caption="Created By"></dxi-column>
+      <dxi-column [width]="'auto'" dataField="duration" caption="Time Posted"></dxi-column>
+  
+      <dxo-paging [pageSize]="10"></dxo-paging>
+    </dx-data-grid>
+  </div>
+  
+
+</div>

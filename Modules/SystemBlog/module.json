@@ -1,0 +1,11 @@
+{
+    "name": "SystemBlog",
+    "alias": "systemblog",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\SystemBlog\\Providers\\SystemBlogServiceProvider"
+    ],
+    "files": []
+}

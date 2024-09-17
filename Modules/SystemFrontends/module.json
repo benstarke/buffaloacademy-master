@@ -1,0 +1,11 @@
+{
+    "name": "SystemFrontends",
+    "alias": "systemfrontends",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\SystemFrontends\\Providers\\SystemFrontendsServiceProvider"
+    ],
+    "files": []
+}

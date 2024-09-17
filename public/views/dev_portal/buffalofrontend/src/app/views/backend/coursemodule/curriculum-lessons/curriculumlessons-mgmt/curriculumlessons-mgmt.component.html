@@ -1,0 +1,309 @@
+<div class="main-wrapper">
+
+	<div class="row page-titles mx-0">
+		<div class="col-sm-6 p-md-0">
+			<div class="welcome-text">
+				<h4>Course Lesson Lessons Operations</h4> 
+			</div>
+		</div>
+		<div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a routerLink="/admin-buffalo/master-dashboard">Home</a></li>
+				<li class="breadcrumb-item active"><a routerLink="/admin-buffalo/course-management/dashboard-Lesson-lessons">Lesson Lessons</a></li>
+				<li class="breadcrumb-item active"><a routerLink="/admin-buffalo/course-management/dashboard-Lesson-lessons">All Lesson Lessons</a></li>
+			</ol>
+		</div>
+    </div> 
+
+	<!-- Add Lesson Popup -->
+    <!-- Add Lesson Popup -->
+<ng-container *ngIf="addPopupVisible">
+    <dx-popup [(visible)]="addPopupVisible" [width]="700" [height]="'auto'" [showTitle]="true" [title]="'Add New Lesson'" (onHidden)="onPopupHidden()">
+      <dx-tab-panel [(selectedIndex)]="selectedTabIndex">
+        <!-- Step 1: Always visible -->
+        <dxi-item title="Basic Information">
+          <form [formGroup]="addLessonForm">
+            <div class="row">
+              <div class="col-lg-12">
+                <label for="title">Lesson Title:<span class="text-danger">*</span></label>
+                <dx-text-box [showClearButton]="true" formControlName="title" placeholder="Lesson Title"></dx-text-box>
+              </div>
+              <div class="col-lg-12">
+                <label for="course_curriculum_id">Course Curriculum:<span class="text-danger">*</span></label>
+                <dx-select-box [dataSource]="Curriculum" formControlName="course_curriculum_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
+              </div>
+              <div class="col-lg-6">
+                <label for="minutes">Lesson Minutes:<span class="text-danger">*</span></label>
+                <dx-number-box [min]="0" [showSpinButtons]="true" [showClearButton]="true" formControlName="minutes" placeholder="Lesson minutes"></dx-number-box>
+              </div>
+              <div class="col-lg-6">
+                <label for="seconds">Lesson Seconds:<span class="text-danger">*</span></label>
+                <dx-number-box [min]="0" [showSpinButtons]="true" [showClearButton]="true" formControlName="seconds" placeholder="Lesson seconds"></dx-number-box>
+              </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <dx-button text="Next" type="default" [disabled]="!tabSteps[0].valid" (onClick)="goToNextAddStep()"></dx-button>
+                </div>
+            </div>
+          </form>
+        </dxi-item>
+  
+        <!-- Step 2: Always visible but disabled until Step 1 is valid -->
+        <dxi-item title="Detailed Information" [disabled]="!canNavigateToTab(1)">
+          <form [formGroup]="addLessonForm">
+            <div class="row">
+              <div class="col-lg-12">
+                <label for="description">Lesson Description:<span class="text-danger">*</span></label>
+                <dx-text-box height="100" [showClearButton]="true" formControlName="description" placeholder="Description"></dx-text-box>
+              </div>
+              <div class="col-lg-12">
+                <label for="notes">Lesson Notes:<span class="text-danger">*</span></label>
+                <dx-text-box height="200" [showClearButton]="true" formControlName="notes" placeholder="Lesson Notes"></dx-text-box>
+              </div>
+            </div>
+            <div class="row">
+                <div class="button-container-popup">
+                    <dx-button text="Previous" type="default" (onClick)="goToPreviousAddStep()"></dx-button>
+                    <dx-button text="Next" type="success" [disabled]="!tabSteps[1].valid" (onClick)="goToNextAddStep()"></dx-button>
+                </div>
+            </div>
+          </form>
+        </dxi-item>
+  
+        <!-- Preview: Always visible but disabled until Step 2 is valid -->
+        <dxi-item title="Preview" [disabled]="!canNavigateToTab(2)">
+          <h4>Preview Lesson Details</h4>
+          <div class="row">
+            <div class="col-lg-12">
+              <p><strong>Lesson Title:</strong> {{ addLessonForm.get('title')?.value }}</p>
+              <p><strong>Course Curriculum:</strong> {{ addLessonForm.get('course_curriculum_id')?.value }}</p>
+              <p><strong>Description:</strong> {{ addLessonForm.get('description')?.value }}</p>
+              <p><strong>Notes:</strong> {{ addLessonForm.get('notes')?.value }}</p>
+              <p><strong>Duration:</strong> {{ addLessonForm.get('minutes')?.value }} minutes and {{ addLessonForm.get('seconds')?.value }} seconds</p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="button-container-popup">
+                <dx-button text="Save and Add Another" type="success" [elementAttr]="{ id: 'first-btn', class: 'pull-right' }"
+                    (onClick)="onAddLessonSubmit(true)">
+                    <!-- spinner -->
+                    <ng-container *ngIf="!isSubmittingSaveAndAddAnother">Save and Add Another</ng-container>
+                    <ng-container *ngIf="isSubmittingSaveAndAddAnother">
+                        <div class="spinnerc"></div>
+                    </ng-container>
+                    <!-- spinner -->
+                </dx-button>
+                <dx-button text="Save" type="success" [elementAttr]="{ class: 'pull-right' }"
+                    (onClick)="onAddLessonSubmit(false)">
+                    <!-- spinner -->
+                    <ng-container *ngIf="!isSubmittingSave">Save</ng-container>
+                    <ng-container *ngIf="isSubmittingSave">
+                        <div class="spinnerc"></div>
+                    </ng-container>
+                    <!-- spinner -->
+                </dx-button>
+            </div>
+        </div>
+  
+        </dxi-item>
+      </dx-tab-panel>
+    </dx-popup>
+  </ng-container>
+  
+  
+  
+  
+  
+
+	<!-- Update Lesson Popup -->
+    <ng-container *ngIf="updateLessonForm.value && updatePopupVisible">
+        <dx-popup [(visible)]="updatePopupVisible" [width]="700" [height]="'auto'" [showTitle]="true"
+            [title]="'Update Lesson'" (onHidden)="onPopupHidden()">
+            <form (ngSubmit)="onUpdateLessonSubmit()" [formGroup]="updateLessonForm">
+                <div class="row" *ngIf="currentStep === 1">
+                    <!-- Step 1 Fields -->
+                    <!-- Lesson Title -->
+                    <div class="col-lg-12">
+                        <label for="title">Lesson Title:</label>
+                        <dx-text-box formControlName="title" placeholder="Lesson Title"></dx-text-box>
+                    </div>
+                    <!-- Course Curriculum -->
+                    <div class="col-lg-12">
+                        <label>Course Curriculum:</label>
+                        <dx-select-box [dataSource]="Curriculum" formControlName="course_curriculum_id"
+                            valueExpr="id" [searchEnabled]="true" displayExpr="name">
+                        </dx-select-box>
+                    </div>
+                    <!-- Minutes -->
+                    <div class="col-lg-6">
+                        <label for="minutes">Lesson Minutes:</label>
+                        <dx-number-box [min]="0" [showSpinButtons]="true" [showClearButton]="true"
+                            formControlName="minutes" placeholder="Lesson Minutes">
+                        </dx-number-box>
+                    </div>
+                    <!-- Seconds -->
+                    <div class="col-lg-6">
+                        <label for="seconds">Lesson Seconds:</label>
+                        <dx-number-box [min]="0" [showSpinButtons]="true" [showClearButton]="true"
+                            formControlName="seconds" placeholder="Lesson seconds">
+                        </dx-number-box>
+                    </div>
+                    <!-- Next Button -->
+                    <div class="col-lg-12">
+                        <dx-button text="Next" type="default" (onClick)="goToNextStep()"></dx-button>
+                    </div>
+                </div>
+
+                <div class="row" *ngIf="currentStep === 2">
+                    <!-- Step 2 Fields -->
+                    <!-- Description -->
+                    <div class="col-lg-12">
+                        <label for="description">Lesson Description:</label>
+                        <dx-text-box height="100" formControlName="description" placeholder="Description"></dx-text-box>
+                    </div>
+                    <!-- Notes -->
+                    <div class="col-lg-12">
+                        <label for="notes">Lesson Notes:</label>
+                        <dx-text-area height="200" formControlName="notes" placeholder="Lesson Notes"></dx-text-area>
+                    </div>
+                    <!-- Update and Back Buttons -->
+                    <div class="button-container-popup">
+                        <dx-button text="Back" type="default" [elementAttr]="{ class: 'pull-right' }" (onClick)="goToPreviousStep()"></dx-button>
+                        <dx-button text="Update" type="success" [elementAttr]="{ class: 'pull-right' }"
+                            (onClick)="onUpdateLessonSubmit()">
+                            <ng-container *ngIf="!isSubmitting">Update</ng-container>
+                            <ng-container *ngIf="isSubmitting">
+                                <div class="spinnerc"></div>
+                            </ng-container>
+                        </dx-button>
+                    </div>
+                </div>
+            </form>
+        </dx-popup>
+    </ng-container>
+
+  
+	<!-- Delete Lesson Popup -->
+	<ng-container *ngIf="deleteLessonForm.value && deletePopupVisible">
+		<dx-popup [(visible)]="deletePopupVisible" height="auto" width="auto" [showTitle]="true" title="Delete Confirmation"
+			(onHidden)="deletePopupVisible = false">
+			<form (ngSubmit)="onDeleteLessonSubmit()" [formGroup]="deleteLessonForm">
+				<div>
+					<p *ngIf="deleteLessonForm.value && deletePopupVisible" class="confirmation-text">
+						Are you sure you want to delete "<strong>{{deleteLessonForm.value.title}}</strong>"?
+					</p>
+					<div class="button-container-popup">
+					  <dx-button text="Cancel" (onClick)="deletePopupVisible = false" [elementAttr]="{ id: 'first-btn', class: 'pull-right' }"></dx-button>
+					  <dx-button text="Delete" type="danger" (onClick)="onDeleteLessonSubmit()" [elementAttr]="{ class: 'pull-right' }">
+						 <!-- spinner -->
+						<ng-container *ngIf="!isSubmitting">Delete</ng-container>
+						<ng-container *ngIf="isSubmitting">
+							<div class="spinnerc"></div>
+						</ng-container>
+						<!-- spinner -->
+					  </dx-button>
+				  </div>
+				</div>
+			</form>
+		</dx-popup>
+	</ng-container>
+
+	<!-- Spinner -->
+	<div *ngIf="isLoading" class="spinner-container">
+		<div class="spinner"></div>
+	</div>
+
+	<!-- Data Grid to display Lesson -->
+	<div *ngIf="!isLoading">
+		<!-- Menu for Add/Delete Actions -->
+		<div class="button-container">
+			<dx-menu 
+				[style]="{ 'background-color': 'lightblue' }"
+				(onItemClick)="onMenuItemClick($event)" 
+				[items]="permitGeneralLessonMenuItems">
+			</dx-menu>
+		</div>
+
+		<!-- Data Grid to display Lessons -->
+	<dx-data-grid 
+	#multipleLessonGrid
+	class="table row-border hover" 
+	[dataSource]="Lessons" 
+	[remoteOperations]='true' 
+	[showBorders]="true"
+	[allowColumnResizing]="true" 
+	[columnHidingEnabled]="false" 
+	(onSelectionChanged)="selectionChanged($event)" 
+	keyExpr="id">
+		<dxo-search-panel [visible]="true"></dxo-search-panel>
+		<dxo-paging [enabled]="true"></dxo-paging>
+		<dxo-pager [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)" [showPageSizeSelector]="true"
+			[allowedPageSizes]="[5,10]"></dxo-pager>
+
+		<dxo-selection mode="multiple"></dxo-selection>
+		<dxo-group-panel [visible]="true"></dxo-group-panel>
+
+		<!-- menu actions -->
+		<dxi-column [width]="150" caption="Action" name="command-editing"
+		[allowFiltering]="false" 
+		[allowSorting]="false" 
+		cellTemplate="cellTemplate">
+		<div *dxTemplate="let data of 'cellTemplate'">
+		  <dx-menu 
+			(onItemClick)="permitLessonActionColClick($event,data)"
+			[items]="permitLessonMenuItems">
+		  </dx-menu>
+		</div>
+	    </dxi-column>
+		<!-- menu actions -->
+
+		<dxi-column dataField="id" caption="ID" [visible]="false"></dxi-column>
+        <dxi-column dataField="title" caption="Lesson Title"></dxi-column>
+
+        <dxi-column dataField="course_curriculum_id" caption="Course Curriculum">
+            <dxo-lookup [dataSource]="Curriculum" displayExpr="name" valueExpr="id">
+            </dxo-lookup>
+        </dxi-column>
+
+        <dxi-column dataField="description" caption="Description"></dxi-column>
+
+        <dxi-column dataField="notes" caption="Notes"></dxi-column>
+
+        <dxi-column dataField="minutes" caption="Time(Min)"></dxi-column>
+
+        <dxi-column dataField="seconds" caption="Time(Sec)"></dxi-column>
+
+        <dxi-column dataField="created_by" caption="Created By"></dxi-column>
+
+        <dxi-column dataField="duration" caption="Time Posted"></dxi-column>
+		
+		<dxo-paging [pageSize]="10"></dxo-paging>
+	</dx-data-grid>
+	</div>
+
+	<!-- Delete Multiple Lesson Popup -->
+    <ng-container *ngIf="selectedLessonForDeletion.length > 0 && deleteMultiplePopupVisible">
+		<dx-popup [(visible)]="deleteMultiplePopupVisible" height="auto" width="auto" [showTitle]="true" title="Delete Confirmation"
+			(onHidden)="deleteMultiplePopupVisible = false">
+			<div>
+				<p class="confirmation-text">
+					Are you sure you want to delete <strong>{{selectedLessonCount}}</strong> Lesson(s)?
+				</p>
+				<div class="button-container-popup">
+					<dx-button text="Cancel" (onClick)="deleteMultiplePopupVisible = false" [elementAttr]="{ id: 'first-btn', class: 'pull-right' }"></dx-button>
+					<dx-button text="Delete" type="danger" (onClick)="confirmDeleteMultipleLesson()" [elementAttr]="{ class: 'pull-right' }">
+						<!-- spinner -->
+						<ng-container *ngIf="!isSubmitting">Delete</ng-container>
+						<ng-container *ngIf="isSubmitting">
+							<div class="spinnerc"></div>
+						</ng-container>
+						<!-- spinner -->
+					</dx-button>
+				</div>
+			</div>
+		</dx-popup>
+	</ng-container>
+
+</div>

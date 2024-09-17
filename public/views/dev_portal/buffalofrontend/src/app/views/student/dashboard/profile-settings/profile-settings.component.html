@@ -1,0 +1,193 @@
+<!-- PROFILE SETTINGS -->
+<!-- MAIN DASHBOARD -->
+<div class="students-info-main">
+<div class="tab-content" id="nav-tabContent">
+<!-- {{-- Profile Info --}} -->
+<div class="tab-pane fade show active" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+<!-- <div class="tab-content__profile"> -->
+<section class="section section--bg-white calltoaction">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9 order-2 order-lg-0">
+                <!-- SAVE/UPDATE PROFILE -->
+                <!-- SAVE/UPDATE PROFILE -->
+                <div class="white-bg">
+                    <div class="students-info-form">
+                    <h6 class="font-title--card">Your Information</h6>
+                    <form (submit)="saveProfile()">
+                        <div class="row g-3">
+                            <div class="col-lg-6">
+                                <label for="name_en">Full Name</label>
+                                <input type="text" class="form-control" [(ngModel)]="studentInfo.name_en" name="name_en" placeholder="Enter Your Name" />
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="date_of_birth">Date of Birth</label>
+                                <input type="date" class="form-control" [(ngModel)]="studentInfo.date_of_birth" name="date_of_birth" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <label for="email">Email</label>
+                                <input type="email" name="email" class="form-control" [(ngModel)]="studentInfo.email" placeholder="Enter Your Email" />
+                            </div>
+                            <!-- <div class="col-lg-6">
+                                <label for="gender">Gender</label>
+                                <select class="form-control" [(ngModel)]="studentInfo.gender" name="gender">
+                                    <option [ngValue]="'male'">Male</option>
+                                    <option [ngValue]="'female'">Female</option>
+                                    <option [ngValue]="'other'">Other</option>
+                                </select>
+                            </div> -->
+                            
+                            <!-- <div class="col-lg-6">
+                                <label for="gender">Gender</label>
+                                <dx-select-box class="form-control"
+                                            [(value)]="studentInfo.gender"
+                                            displayExpr="text"
+                                            valueExpr="value"
+                                            placeholder="Select Gender"
+                                            [items]="genderOptions">
+                                </dx-select-box>
+                            </div>                                           -->
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <label for="profession">What Do You Do</label>
+                                <input type="text" name="profession" class="form-control" [(ngModel)]="studentInfo.profession" placeholder="Enter Your Profession" />
+                            </div>
+                        </div>
+                        <div class="row g-3">
+                            <div class="col-lg-6">
+                                <label for="contact_en">Phone Number</label>
+                                <input type="text" class="form-control" [(ngModel)]="studentInfo.contact_en" name="contact_en" placeholder="Enter Your Contact No" />
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="nationality">Nationality</label>
+                                <input type="text" class="form-control" [(ngModel)]="studentInfo.nationality" name="nationality" placeholder="Enter Your Nationality" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <label for="bio">About You</label>
+                                <textarea name="bio" class="form-control" [(ngModel)]="studentInfo.bio" rows="5" placeholder="About Yourself"></textarea>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-lg-end justify-content-center mt-2">
+                        <button class="button button-lg button--primary" type="submit" [disabled]="isLoadingProfile">
+                            Save Changes
+                            <div class="spinner-border spinner-border-sm" role="status" *ngIf="isLoadingProfile">
+                            <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </button>
+                        </div>
+                    </form>
+                    </div>
+                </div>
+    
+                <!-- CHANGE PASSWORD -->
+                <div class="white-bg mt-4">
+                    <div class="students-info-form">
+                    <h6 class="font-title--card">Change Password</h6>
+                    <form (submit)="changePassword()">
+                        <div class="row">
+                        <div class="col-12">
+                            <label for="current_password">Current Password</label>
+                            <div class="input-with-icon">
+                            <input type="password" id="cpass" [(ngModel)]="studentInfo.current_password" name="current_password" class="form-control" placeholder="Enter Password" (input)="validateCurrentPassword()" />
+                            <div class="input-icon" onclick="showPassword('cpass',this)">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </div>
+                            </div>
+                            <small *ngIf="errors?.current_password" class="d-block text-danger">{{errors?.current_password}}</small>
+                        </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-12">
+                            <label for="new_password">New Password</label>
+                            <div class="input-with-icon">
+                            <input type="password" id="npass" [(ngModel)]="studentInfo.new_password" name="new_password" class="form-control" placeholder="Enter New Password" (input)="validateNewPasswordStrength()" />
+                            <div class="input-icon" onclick="showPassword('npass',this)">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </div>
+                            </div>
+                            <small *ngIf="passwordStrength === 'weak' && studentInfo.new_password !== ''" class="d-block text-danger">Weak password</small>
+                            <small *ngIf="passwordStrength === 'medium'" class="d-block text-warning">Medium strength password</small>
+                            <small *ngIf="passwordStrength === 'strong'" class="d-block text-success">Strong password</small>
+                            <small *ngIf="errors?.new_password" class="d-block text-danger">{{errors?.new_password}}</small>
+                        </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-12">
+                            <label for="new_password_confirmation">Confirm Password</label>
+                            <div class="input-with-icon">
+                            <input type="password" id="cfpass" [(ngModel)]="studentInfo.new_password_confirmation" name="new_password_confirmation" class="form-control" placeholder="Confirm Password" (input)="validatePasswordConfirmation()" />
+                            <div class="input-icon" onclick="showPassword('cfpass',this)">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </div>
+                            </div>
+                            <small *ngIf="!passwordsMatch && studentInfo.new_password_confirmation !== ''" class="d-block text-danger">Passwords do not match</small>
+                            <small *ngIf="errors?.new_password_confirmation" class="d-block text-danger">{{errors?.new_password_confirmation}}</small>
+                        </div>
+                        </div>
+                        <div class="d-flex justify-content-lg-end justify-content-center mt-2">
+                        <button class="button button-lg button--primary" type="submit" [disabled]="isLoadingPassword">
+                            Change Password
+                            <div class="spinner-border spinner-border-sm" role="status" *ngIf="isLoadingPassword">
+                            <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </button>
+                        </div>
+                    </form>
+                    </div>
+                </div>
+           </div>
+                <!-- IMAGE CHANGE -->
+                <div class="col-lg-3 order-1 order-lg-0 mt-4 mt-lg-0">
+                    <div class="white-bg">
+                      <div class="change-image-wizard">
+                        <div class="image mx-auto">
+                          <img [src]="imageUrl"  alt="User Avatar" *ngIf="imageUrl && !isLoadingProfile" height="200" width="200">
+                          <div *ngIf="isLoadingProfile" class="spinner-border position-absolute" role="status" style="top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                            <span class="sr-only">Loading...</span>
+                          </div>
+                        </div>
+                        <form (ngSubmit)="changeImage()" #changeImageForm="ngForm">
+                          <div class="d-flex justify-content-center">
+                            <input type="file" name="image" (change)="onFileChange($event)" accept="image/*">
+                          </div>
+                          <div class="d-flex justify-content-center mt-2">
+                            <button type="submit" id="changeImageButton" class="button button--primary-outline" [disabled]="isUploading">CHANGE IMAGE</button>
+                          </div>
+                        </form>
+                        <p>Image size should be under 1MB image ratio 200px.</p>
+                      </div>
+                    </div>
+                    <div *ngIf="isUploading">
+                      <p>Uploading: {{uploadProgress}}%</p>
+                      <progress [value]="uploadProgress" max="100"></progress>
+                      <div class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+
+        </div>
+    </div>
+</section>
+<!-- </div> -->
+</div>
+</div>
+</div>
+
+
+

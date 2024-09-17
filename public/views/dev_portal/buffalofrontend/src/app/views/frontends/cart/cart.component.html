@@ -1,0 +1,89 @@
+<!-- Breadcrumb Starts Here -->
+<div class="py-0">
+    <div class="container">
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb align-items-center bg-transparent mb-0">
+                <li class="breadcrumb-item"><a routerLink="/" class="fs-6 text-secondary">Home</a></li>
+                <li class="breadcrumb-item active"><a routerLink="/cart" class="fs-6 text-secondary">Cart</a></li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<!-- Breadcrumb Ends Here -->
+
+<!-- Cart Section Starts Here -->
+<section class="section cart-area pb-0">
+    <div class="container">
+        <!-- @if (session('cart')) -->
+        <div class="row">
+            <div class="col-lg-8">
+                <h6 class="cart-area__label">0 Courses in Cart</h6>
+                
+                <div class="cart-wizard-area">
+                    <div class="image">
+                        <img src="public/uploads/courses" alt="course image" />
+                    </div>
+                    <div class="text">
+                        <h6><a routerLink="/">Course Title</a>
+                        </h6>
+                        <p>By <a routerLink="/">Instructor Name</a></p>
+                        <div class="bottom-wizard d-flex justify-content-between align-items-center">
+                            <!-- <p>
+                                {{$details['price'] ? '$' . $details['price'] : 'Free'}}
+                                <span><del>{{$details['old_price'] ? '$' . $details['old_price'] : ''}}</del></span>
+                            </p> -->
+                            <div class="trash-icon">
+                                <a routerLink="/" class="remove-from-cart" data-id="">
+                                    <i class="far fa-trash-alt remove-from-cart"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- @endforeach
+                @endif -->
+            </div>
+            <div class="col-lg-4">
+                <h6 class="cart-area__label">Summary</h6>
+                <div class="summery-wizard">
+                    <div class="summery-wizard-text pt-0">
+                        <h6>Subtotal</h6>
+                        <p> 2</p>
+                    </div>
+                    <div class="summery-wizard-text">
+                        <h6>Coupon Discount 2%</h6>
+                        <p>2.00</p>
+                    </div>
+                    <div class="summery-wizard-text">
+                        <h6>Taxes (15%)</h6>
+                        <p> 2</p>
+                    </div>
+                    <div class="total-wizard">
+                        <h6 class="font-title--card">Total:</h6>
+                        <p class="font-title--card">2</p>
+                    </div>
+                    <!-- <form action="{{route('coupon_check')}}" method="post">
+                        @csrf
+                        <a href="{{route('checkout')}}"
+                            class="button button-lg button--primary form-control mb-lg-3">Checkout</a>
+                        <label for="coupon">Apply Coupon</label>
+                        <div class="cart-input">
+                            <input type="text" name="coupon" class="form-control" placeholder="Coupon Code" id="coupon" />
+                            <button type="submit" class="sm-button">Apply</button>
+                        </div>
+                    </form> -->
+                </div>
+            </div>
+        </div>
+        <!-- @else -->
+        <section class="section cart-area pb-0">
+            <div class="container text-center">
+                <h1>Your Cart is Empty</h1>
+                <h5>No Courses in Your Cart Yet</h5>
+            </div>
+        </section>
+        <!-- @endif -->
+    </div>
+</section>
+<!-- Cart Section Ends Here -->
+

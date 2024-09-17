@@ -1,0 +1,57 @@
+<!--  Latest Events Featured Starts Here -->
+<div *ngIf="loading" class="spinner-container">
+    <div class="spinner"></div>
+    <span class="loading-text">Loading...</span>
+</div>  
+<section class="section section--bg-offwhite-three latest-events-featured main-events-featured">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h3 class="font-title--md">Latest Events</h3>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="row position-relative px-0 mx-0">
+                <div class="row eventsSlider">
+                    <div *ngFor="let events of latestEventsInfo" class="col-md-4 col-sm-6 mb-4">
+                        <div class="contentCard contentCard--event contentCard--space">
+                            <div class="contentCard-top">
+                                <a routerLink="/"><img [src]="events.image" alt="images" class="img-fluid" /></a>
+                            </div>
+                            <div class="contentCard-bottom">
+                                <h5>
+                                    <a routerLink="/" class="font-title--card">{{ events.title }}</a>
+                                </h5>
+                                <div class="contentCard-more">
+                                    <div class="d-flex align-items-center">
+                                        <div class="icon">
+                                            <img src="assets/frontend/dist/images/icon/location.png" alt="location" />
+                                        </div>
+                                        <span>{{ events.location }}</span>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <div class="icon">
+                                            <img src="assets/frontend/dist/images/icon/calendar.png" alt="calendar" />
+                                        </div>
+                                        <span>{{ events.event_day }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <a routerLink="/" class="button button-lg button--primary mt-lg-5 mt-5">Browse all
+                    events</a>
+            </div>
+        </div>
+    </div>
+    <div class="main-events-featured-shape">
+        <img src="assets/frontend/dist/images/shape/triangel3.png" alt="shape" class="img-fluid shape01" />
+    </div>
+</section>
+<!--  Latest Events Featured ends Here -->

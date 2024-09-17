@@ -1,0 +1,169 @@
+<!-- MAIN DASHBOARD -->
+<div class="students-info-main">
+    <div class="tab-content" id="nav-tabContent">
+        <!-- {{-- Profile Info --}} -->
+        <div class="tab-pane fade show active" id="nav-profile" role="tabpanel"
+            aria-labelledby="nav-profile-tab">
+            <!-- <div class="tab-content__profile"> -->
+                <section class="section section--bg-white calltoaction">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-9 order-2 order-lg-0">
+                                <div class="white-bg">
+                                    <div class="students-info-form">
+                                        <h6 class="font-title--card">Your Information</h6>
+                                        <form action="/student_save_profile" method="post">
+                                            <!-- @csrf -->
+                                            <div class="row g-3">
+                                                <div class="col-lg-6">
+                                                    <label for="fullName_en">Full Name</label>
+                                                    <input type="text" class="form-control" name="fullName_en"
+                                                        value="$student_info->name_en" placeholder="Enter Your Name" />
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <label for="dob">Date of Birth</label>
+                                                    <input type="date" class="form-control" name="dob" />
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <label for="emailAddress">Email</label>
+                                                    <input type="email" name="emailAddress" class="form-control"
+                                                        value="$student_info->email" placeholder="Enter Your Email" />
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <label for="profession">What Do You Do</label>
+                                                    <input type="text" name="profession" class="form-control"
+                                                        value="$student_info->profession"
+                                                        placeholder="Enter Your Profession" />
+                                                </div>
+                                            </div>
+                                            <div class="row g-3">
+                                                <div class="col-lg-6">
+                                                    <label for="contactNumber_en">Phone Number</label>
+                                                    <input type="text" class="form-control" name="contactNumber_en"
+                                                        value="$student_info->contact_en"
+                                                        placeholder="Enter Your Contact No" />
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <label for="nationality">Nationality</label>
+                                                    <input type="text" class="form-control" name="nationality"
+                                                        value="$student_info->nationality"
+                                                        placeholder="Enter Your Nationality" />
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <label for="bio">About You</label>
+                                                    <textarea name="bio" class="form-control" rows="5"
+                                                        placeholder="About Yourself">$student_info->bio</textarea>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex justify-content-lg-end justify-content-center mt-2">
+                                                <button class="button button-lg button--primary" type="submit">Save
+                                                    Changes</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="white-bg mt-4">
+                                    <div class="students-info-form">
+                                        <h6 class="font-title--card">Change Password</h6>
+                                        <form action="/change_password" method="post">
+                                            <!-- @csrf -->
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <label for="current_password">Current Password</label>
+                                                    <div class="input-with-icon">
+                                                        <input type="password" id="cpass" name="current_password"
+                                                            class="form-control" placeholder="Enter Password" />
+                                                        <div class="input-icon" onclick="showPassword('cpass',this)">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                                stroke-width="2" stroke-linecap="round"
+                                                                stroke-linejoin="round" class="feather feather-eye">
+                                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z">
+                                                                </path>
+                                                                <circle cx="12" cy="12" r="3"></circle>
+                                                            </svg>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <label for="password">New Password</label>
+                                                    <div class="input-with-icon">
+                                                        <input type="password" id="npass" name="password"
+                                                            class="form-control" placeholder="Enter Password" />
+                                                        <div class="input-icon" onclick="showPassword('npass',this)">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                                stroke-width="2" stroke-linecap="round"
+                                                                stroke-linejoin="round" class="feather feather-eye">
+                                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z">
+                                                                </path>
+                                                                <circle cx="12" cy="12" r="3"></circle>
+                                                            </svg>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <label for="password_confirmation">Confirm New Password</label>
+                                                    <div class="input-with-icon">
+                                                        <input type="password" id="cnpass" name="password_confirmation"
+                                                            class="form-control" placeholder="Enter Password" />
+                                                        <div class="input-icon" onclick="showPassword('cnpass',this)">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                                stroke-width="2" stroke-linecap="round"
+                                                                stroke-linejoin="round" class="feather feather-eye">
+                                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z">
+                                                                </path>
+                                                                <circle cx="12" cy="12" r="3"></circle>
+                                                            </svg>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex justify-content-lg-end justify-content-center mt-2">
+                                                <button class="button button-lg button--primary" type="submit">Save
+                                                    Changes</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 order-1 order-lg-0 mt-4 mt-lg-0">
+                                <div class="white-bg">
+                                    <div class="change-image-wizard">
+                                        <div class="image mx-auto">
+                                            <img src="assets/public/uploads/students/' . $student_info->image"
+                                                alt="User" height="200" width="200">
+                                        </div>
+                                        <form id="changeImageForm" action="/change_image" method="post"
+                                            enctype="multipart/form-data">
+                                            <!-- @csrf -->
+                                            <div class="d-flex justify-content-center">
+                                                <input type="file" name="image" id="newImageInput">
+                                                <button type="button" id="changeImageButton"
+                                                    class="button button--primary-outline">CHANGE IMAGE</button>
+                                            </div>
+                                        </form>
+                                        <p>Image size should be under 1MB image ratio 200px.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            <!-- </div> -->
+        </div>
+    </div>
+</div>
+
+

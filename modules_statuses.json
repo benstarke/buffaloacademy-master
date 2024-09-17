@@ -1,0 +1,9 @@
+{
+    "SystemBlog": true,
+    "SystemAuthentication": true,
+    "SystemEvents": true,
+    "SystemFrontends": true,
+    "SystemInformation": true,
+    "SystemCourses": true,
+    "SystemActivityLogs": true
+}

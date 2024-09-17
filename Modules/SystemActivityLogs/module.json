@@ -1,0 +1,11 @@
+{
+    "name": "SystemActivityLogs",
+    "alias": "systemactivitylogs",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\SystemActivityLogs\\Providers\\SystemActivityLogsServiceProvider"
+    ],
+    "files": []
+}

@@ -1,0 +1,220 @@
+<div class="main-wrapper">
+
+	<div class="row page-titles mx-0">
+		<div class="col-sm-6 p-md-0">
+			<div class="welcome-text">
+				<h4>App Currency Operations</h4>
+			</div>
+		</div>
+		<div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a routerLink="/admin-buffalo/master-dashboard">Home</a></li>
+				<li class="breadcrumb-item active"><a routerLink="/admin-buffalo/course-management/dashboard-app-currency">Currencies</a></li>
+				<li class="breadcrumb-item active"><a routerLink="/admin-buffalo/course-management/dashboard-app-currency">All Currencies</a></li>
+			</ol>
+		</div>
+    </div> 
+
+	<!-- Add Currency Popup -->
+	<ng-container *ngIf="addCurrencyForm.value && addPopupVisible">
+		<dx-popup [(visible)]="addPopupVisible" [width]="'auto'" [height]="'auto'" [showTitle]="true"
+			[title]="'Add New Currency'" (onHidden)="onPopupHidden()">
+			<form (ngSubmit)="onAddCurrencySubmit(false)" [formGroup]="addCurrencyForm">
+
+				<div class="row">
+					<div class="col-lg-12">
+						<label for="name">Currency Name:<span class="text-danger">*</span></label>
+						<dx-text-box [showClearButton]="true" formControlName="name" placeholder="Currency Name"></dx-text-box>
+						<!-- Display error message for the name field -->
+						<div *ngIf="addCurrencyForm.get('name')?.invalid && (addCurrencyForm.get('name')?.touched || addCurrencyForm.get('name')?.dirty)"
+							class="text-danger">
+							<ng-container *ngIf="addCurrencyForm.get('name')?.errors?.['required']">Currency Name is required</ng-container>
+							<ng-container *ngIf="addCurrencyForm.get('name')?.errors?.['pattern']">Invalid Currency name</ng-container>
+						</div>
+					</div>
+	
+					<div class="col-lg-12">
+						<label for="description">Currency Description:<span class="text-danger">*</span></label>
+						<dx-text-box [showClearButton]="true" formControlName="description" placeholder="Description"></dx-text-box>
+						<!-- Display error message for the description field -->
+						<div *ngIf="addCurrencyForm.get('description')?.invalid && (addCurrencyForm.get('description')?.touched || addCurrencyForm.get('description')?.dirty)"
+							class="text-danger">
+							<ng-container *ngIf="addCurrencyForm.get('description')?.errors?.['required']">Description is required</ng-container>
+						</div>
+					</div>
+				</div>
+	
+				<div class="row">
+					<div class="button-container-popup">
+						<dx-button text="Save and Add Another" type="success" [elementAttr]="{ id: 'first-btn', class: 'pull-right' }"
+							(onClick)="onAddCurrencySubmit(true)">
+							<!-- spinner -->
+							<ng-container *ngIf="!isSubmittingSaveAndAddAnother">Save and Add Another</ng-container>
+							<ng-container *ngIf="isSubmittingSaveAndAddAnother">
+								<div class="spinnerc"></div>
+							</ng-container>
+							<!-- spinner -->
+						</dx-button>
+						<dx-button text="Save" type="success" [elementAttr]="{ class: 'pull-right' }"
+							(onClick)="onAddCurrencySubmit(false)">
+							<!-- spinner -->
+							<ng-container *ngIf="!isSubmittingSave">Save</ng-container>
+							<ng-container *ngIf="isSubmittingSave">
+								<div class="spinnerc"></div>
+							</ng-container>
+							<!-- spinner -->
+						</dx-button>
+					</div>
+				</div>
+			</form>
+		</dx-popup>
+	</ng-container>
+
+	<!-- Update Currency Popup -->
+	<ng-container *ngIf="updateCurrencyForm.value && updatePopupVisible">
+		<dx-popup [(visible)]="updatePopupVisible" [width]="550" [height]="'auto'" [showTitle]="true"
+			[title]="'Update Currency'" (onHidden)="onPopupHidden()">
+			<form (ngSubmit)="onUpdateCurrencySubmit()" [formGroup]="updateCurrencyForm">
+				<div class="row">
+					<!-- Currency Name -->
+					<div class="col-lg-12">
+						<label for="name">Currency Name:</label>
+						<dx-text-box formControlName="name" placeholder="Currency Name"></dx-text-box>
+					  </div>
+					  <!-- Description -->
+					  <div class="col-lg-12">
+						<label for="description">Currency Description:</label>
+						<dx-text-area formControlName="description" placeholder="Description"></dx-text-area>
+					  </div>
+					  <!-- Update and Cancel Buttons -->
+					  <div class="button-container-popup">
+						<dx-button text="Cancel" type="danger"  [elementAttr]="{ id: 'first-btn', class: 'pull-right' }"
+						  (onClick)="updatePopupVisible = false"></dx-button>
+						<dx-button text="Update" type="success" [elementAttr]="{ class: 'pull-right' }"
+						  (onClick)="onUpdateCurrencySubmit()">
+						  <!-- spinner -->
+						  <ng-container *ngIf="!isSubmitting">Update</ng-container>
+						  <ng-container *ngIf="isSubmitting">
+							  <div class="spinnerc"></div>
+						  </ng-container>
+						  <!-- spinner -->
+						</dx-button>
+					  </div>
+				</div>
+			</form>
+			
+		</dx-popup>
+	</ng-container>
+
+	<!-- Delete Currency Popup -->
+	<ng-container *ngIf="deleteCurrencyForm.value && deletePopupVisible">
+		<dx-popup [(visible)]="deletePopupVisible" height="auto" width="auto" [showTitle]="true" title="Delete Confirmation"
+			(onHidden)="deletePopupVisible = false">
+			<form (ngSubmit)="onDeleteCurrencySubmit()" [formGroup]="deleteCurrencyForm">
+				<div>
+					<p *ngIf="deleteCurrencyForm.value && deletePopupVisible" class="confirmation-text">
+						Are you sure you want to delete "<strong>{{deleteCurrencyForm.value.name}}</strong>"?
+					</p>
+					<div class="button-container-popup">
+					  <dx-button text="Cancel" (onClick)="deletePopupVisible = false" [elementAttr]="{ id: 'first-btn', class: 'pull-right' }"></dx-button>
+					  <dx-button text="Delete" type="danger" (onClick)="onDeleteCurrencySubmit()" [elementAttr]="{ class: 'pull-right' }">
+						 <!-- spinner -->
+						<ng-container *ngIf="!isSubmitting">Delete</ng-container>
+						<ng-container *ngIf="isSubmitting">
+							<div class="spinnerc"></div>
+						</ng-container>
+						<!-- spinner -->
+					  </dx-button>
+				  </div>
+				</div>
+			</form>
+		</dx-popup>
+	</ng-container>
+
+	<!-- Spinner -->
+	<div *ngIf="isLoading" class="spinner-container">
+		<div class="spinner"></div>
+	</div>
+
+	<!-- Data Grid to display Currency -->
+	<div *ngIf="!isLoading">
+		<!-- Menu for Add/Delete Actions -->
+		<div class="button-container">
+			<dx-menu 
+				[style]="{ 'background-color': 'lightblue' }"
+				(onItemClick)="onMenuItemClick($event)" 
+				[items]="permitGeneralCurrencyMenuItems">
+			</dx-menu>
+		</div>
+
+		<!-- Data Grid to display Currencys -->
+	<dx-data-grid 
+	#multipleCurrencyGrid
+	class="table row-border hover" 
+	[dataSource]="Currencies" 
+	[remoteOperations]='true' 
+	[showBorders]="true"
+	[allowColumnResizing]="true" 
+	[columnHidingEnabled]="false" 
+	(onSelectionChanged)="selectionChanged($event)" 
+	keyExpr="id">
+		<!-- <dxo-filter-row [visible]="true"></dxo-filter-row> -->
+		<dxo-search-panel [visible]="true"></dxo-search-panel>
+		<dxo-paging [enabled]="true"></dxo-paging>
+		<dxo-pager [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)" [showPageSizeSelector]="true"
+			[allowedPageSizes]="[5,10]"></dxo-pager>
+		<!-- <dxo-export [enabled]="true" fileName="Currencys" [allowExportSelectedData]="true"></dxo-export> -->
+		<!-- <dxo-selection mode="multiple"></dxo-selection> -->
+		<!-- Selection, group panel, and other configurations -->
+		<dxo-selection mode="multiple"></dxo-selection>
+		<dxo-group-panel [visible]="true"></dxo-group-panel>
+
+		<!-- menu actions -->
+		<dxi-column [width]="150" caption="Action" name="command-editing"
+		[allowFiltering]="false" 
+		[allowSorting]="false" 
+		cellTemplate="cellTemplate">
+		<div *dxTemplate="let data of 'cellTemplate'">
+		  <dx-menu 
+			(onItemClick)="permitCurrencyActionColClick($event,data)"
+			[items]="permitCurrencyMenuItems">
+		  </dx-menu>
+		</div>
+	    </dxi-column>
+		<!-- menu actions -->
+
+		<dxo-group-panel [visible]="true"></dxo-group-panel>
+		<dxi-column dataField="id" caption="ID" [visible]="false"></dxi-column>
+		<dxi-column dataField="name" caption="Currency Name"></dxi-column>
+		<dxi-column dataField="description" caption="Currency Description"></dxi-column>
+		<dxi-column dataField="created_by" caption="Created By"></dxi-column>
+		<dxi-column dataField="duration" caption="Time Posted"></dxi-column>
+		
+		<dxo-paging [pageSize]="10"></dxo-paging>
+	</dx-data-grid>
+	</div>
+
+	<!-- Delete Multiple Currency Popup -->
+    <ng-container *ngIf="selectedCurrencyForDeletion.length > 0 && deleteMultiplePopupVisible">
+		<dx-popup [(visible)]="deleteMultiplePopupVisible" height="auto" width="auto" [showTitle]="true" title="Delete Confirmation"
+			(onHidden)="deleteMultiplePopupVisible = false">
+			<div>
+				<p class="confirmation-text">
+					Are you sure you want to delete <strong>{{selectedCurrencyCount}}</strong> Blog Currency(s)?
+				</p>
+				<div class="button-container-popup">
+					<dx-button text="Cancel" (onClick)="deleteMultiplePopupVisible = false" [elementAttr]="{ id: 'first-btn', class: 'pull-right' }"></dx-button>
+					<dx-button text="Delete" type="danger" (onClick)="confirmDeleteMultipleCurrency()" [elementAttr]="{ class: 'pull-right' }">
+						<!-- spinner -->
+						<ng-container *ngIf="!isSubmitting">Delete</ng-container>
+						<ng-container *ngIf="isSubmitting">
+							<div class="spinnerc"></div>
+						</ng-container>
+						<!-- spinner -->
+					</dx-button>
+				</div>
+			</div>
+		</dx-popup>
+	</ng-container>
+
+</div>

@@ -1,0 +1,69 @@
+<div class="wrapper">
+    <!-- Data Grid to display Events -->
+    <dx-data-grid 
+    class="table row-border hover" 
+    [dataSource]="events" 
+    [remoteOperations]='true' 
+    [showBorders]="true"
+    [allowColumnResizing]="true" 
+    [columnHidingEnabled]="false" 
+    (onSelectionChanged)="selectionChanged($event)" 
+    (onSelectionChanged)="onSelectionChanged($event)" 
+    (onContentReady)="onContentReady($event)"
+    keyExpr="id"
+    >
+
+    <!-- master detail api -->
+    <dxo-master-detail [enabled]="true" template="detail"></dxo-master-detail>
+    <!-- master detail api -->
+
+    <!-- <dxo-filter-row [visible]="true"></dxo-filter-row> -->
+    <dxo-search-panel [visible]="true"></dxo-search-panel>
+    <dxo-paging [enabled]="true"></dxo-paging>
+    <dxo-pager [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)" [showPageSizeSelector]="true"
+        [allowedPageSizes]="[5,10]"></dxo-pager>
+    <dxo-export [enabled]="true" fileName="Events" [allowExportSelectedData]="true"></dxo-export>
+    <dxo-selection mode="multiple"></dxo-selection>
+    <!-- Selection, group panel, and other configurations -->
+    <!-- <dxo-selection mode="single"></dxo-selection> -->
+    <dxo-group-panel [visible]="true"></dxo-group-panel>
+
+    <dxi-column dataField="id" caption="ID" [visible]="false"></dxi-column>
+    <dxi-column dataField="title" caption="Title"></dxi-column>
+    <!-- <dxi-column dataField="description" caption="Description"></dxi-column> -->
+    <!-- <dxi-column dataField="image" caption="Event Image"></dxi-column> -->
+    <dxi-column dataField="topic" caption="Topic"></dxi-column>
+    <dxi-column dataField="goal" caption="Goal"></dxi-column>
+    <dxi-column dataField="location" caption="Location"></dxi-column>
+    <dxi-column dataField="hosted_by" caption="Hosted By"></dxi-column>
+    <dxi-column dataField="created_by" caption="Created By"></dxi-column>
+    <dxi-column dataField="duration" caption="Time Posted"></dxi-column>
+    <dxi-column dataField="event_day" caption="Day of Event"></dxi-column>
+
+     <!-- <dxi-column dataField="description" caption="Content"> -->
+    <dxi-column dataField="description" caption="Content">
+        <div *dxTemplate="let events of 'detail'">
+          <div class="employeeInfo">
+            <a style="cursor: pointer;">
+                <img
+                class="employeePhoto"
+                [src]="events.data.image"
+                alt="Event Image"
+                (click)="openImageDialog(events.data.image)" />
+            </a>
+            <div class="scrollable-content">
+              <p class="employeeContent" [innerHTML]="events.data.description"></p>
+            </div>
+          </div>
+        </div>
+    </dxi-column>
+      
+    <!-- </dxi-column> -->
+
+
+    <dxo-paging [pageSize]="10"></dxo-paging>
+    </dx-data-grid>
+  
+  </div>
+
+    

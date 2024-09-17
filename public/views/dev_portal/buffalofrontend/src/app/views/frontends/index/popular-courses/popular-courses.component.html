@@ -1,0 +1,458 @@
+<!--  Popular Courses Starts Here -->
+<div *ngIf="loading" class="spinner-container">
+    <div class="spinner"></div>
+    <span class="loading-text">Loading...</span>
+</div>  
+<section *ngIf="!loading" class="section section--bg-offwhite-three featured-popular-courses main-popular-course">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="featured-popular-courses-heading d-flex align-content-center justify-content-between">
+                    <div class="main-heading">
+                        <h3 class="font-title--md">Our Popular Courses</h3>
+                    </div>
+                    <div class="nav-button featured-popular-courses-tabs">
+                        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active ps-0" id="pills-all-tab" data-bs-toggle="pill"
+                                    data-bs-target="#pills-all" type="button" role="tab" aria-controls="pills-all"
+                                    aria-selected="true">
+                                    All
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="pills-design-tab" data-bs-toggle="pill"
+                                    data-bs-target="#pills-design" type="button" role="tab" aria-controls="pills-design"
+                                    aria-selected="false">
+                                    Design
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="pills-dev-tab" data-bs-toggle="pill"
+                                    data-bs-target="#pills-dev" type="button" role="tab" aria-controls="pills-dev"
+                                    aria-selected="false">
+                                    Development
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="pills-bus-tab" data-bs-toggle="pill"
+                                    data-bs-target="#pills-bus" type="button" role="tab" aria-controls="pills-bus"
+                                    aria-selected="false">
+                                    Business
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link me-0" id="pills-its-tab" data-bs-toggle="pill"
+                                    data-bs-target="#pills-its" type="button" role="tab" aria-controls="pills-its"
+                                    aria-selected="false">
+                                    IT & Software
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="pills-all" role="tabpanel" aria-labelledby="pills-all-tab">
+                    <div class="row">
+                        <!-- starts here -->
+                        <ng-container *ngIf="popularCoursesInfo.length > 0; else noPopularCourses">
+                            <div *ngFor="let popular of popularCoursesInfo" class="col-xl-4 col-md-6">
+                                <div class="contentCard contentCard--course">
+                                    <div class="contentCard-top">
+                                        <a [routerLink]="['/courseDetails', popular.title_en, popular.id]"><img [src]="popular.image" alt="images"
+                                                class="img-fluid" /></a>
+                                    </div>
+                                    <div class="contentCard-bottom">
+                                        <h5>
+                                            <a [routerLink]="['/courseDetails', popular.title_en, popular.id]"
+                                                class="font-title--card">{{ popular.title_en }}</a>
+                                        </h5>
+                                        <div class="contentCard-info d-flex align-items-center justify-content-between">
+                                            <a [routerLink]="['/instructorProfile', popular.instructor_name, popular.instructor_designation, popular.instructor_id]"
+                                                class="contentCard-user d-flex align-items-center">
+                                                <img [src]="popular.instructor_image"
+                                                    alt="client-image" class="rounded-circle" height="34" width="34" />
+                                                <p class="font-para--md">{{ popular.instructor_name }}</p>
+                                            </a>
+                                            <div class="price">
+                                                <span>{{popular.price == null ? 'Free' : '$' + popular.price}}</span>
+                                                <del>{{popular.old_price ? '$' + popular.old_price : ''}}</del>
+                                            </div>
+                                        </div>
+                                        <div class="contentCard-more">
+                                            <div class="d-flex align-items-center">
+                                                <div class="icon">
+                                                    <img src="assets/frontend/dist/images/icon/star.png"
+                                                        alt="star" />
+                                                </div>
+                                                <span>4.5</span>
+                                            </div>
+                                            <div class="eye d-flex align-items-center">
+                                                <div class="icon">
+                                                    <img src="assets/frontend/dist/images/icon/eye.png"
+                                                        alt="eye" />
+                                                </div>
+                                                <span>101</span>
+                                            </div>
+                                            <div class="book d-flex align-items-center">
+                                                <div class="icon">
+                                                    <img src="assets/frontend/dist/images/icon/book.png"
+                                                        alt="location" />
+                                                </div>
+                                                <span>{{popular.lesson == null ? 'Free' : popular.lesson}} Lessons</span>
+                                            </div>
+                                            <div class="clock d-flex align-items-center">
+                                                <div class="icon">
+                                                    <img src="assets/frontend/dist/images/icon/Clock.png"
+                                                        alt="clock" />
+                                                </div>
+                                                <span>{{popular.duration == null ? '0' : popular.duration}} Hours</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <!-- ends here -->
+                        <ng-template #noPopularCourses>
+                            <div class="d-flex justify-content-center align-items-center" style="height: 100%;">
+                                <div class="contentCard contentCard--course text-center">
+                                    <h3>No Popular Courses Available</h3>
+                                </div>
+                            </div>
+                        </ng-template>
+                        <!-- ends here -->
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 text-center">
+                            <a routerLink="/searchCourse" class="button button-lg button--primary">Browse all
+                                Courses</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="pills-design" role="tabpanel" aria-labelledby="pills-design-tab">
+                    <div class="row">
+                        <!-- starts here -->
+                        <ng-container *ngIf="designCoursesInfo.length > 0; else noDesignCourses">
+                            <div *ngFor="let design of designCoursesInfo" class="col-xl-4 col-md-6">
+                                <div class="contentCard contentCard--course">
+                                    <div class="contentCard-top">
+                                        <a [routerLink]="['/courseDetails', design.title_en, design.id]"><img [src]="design.image" alt="images"
+                                                class="img-fluid" /></a>
+                                    </div>
+                                    <div class="contentCard-bottom">
+                                        <h5>
+                                            <a [routerLink]="['/courseDetails', design.title_en, design.id]"
+                                                class="font-title--card">{{ design.title_en }}</a>
+                                        </h5>
+                                        <div class="contentCard-info d-flex align-items-center justify-content-between">
+                                            <a [routerLink]="['/instructorProfile', design.instructor_name, design.instructor_designation, design.instructor_id]"
+                                                class="contentCard-user d-flex align-items-center">
+                                                <img [src]="design.instructor_image"
+                                                    alt="client-image" class="rounded-circle" height="34" width="34" />
+                                                <p class="font-para--md">{{ design.instructor_name }}</p>
+                                            </a>
+                                            <div class="price">
+                                                <span>{{design.price == null ? 'Free' : '$' + design.price}}</span>
+                                                <del>{{design.old_price ? '$' + design.old_price : ''}}</del>
+                                            </div>
+                                        </div>
+                                        <div class="contentCard-more">
+                                            <div class="d-flex align-items-center">
+                                                <div class="icon">
+                                                    <img src="assets/frontend/dist/images/icon/star.png"
+                                                        alt="star" />
+                                                </div>
+                                                <span>4.5</span>
+                                            </div>
+                                            <div class="eye d-flex align-items-center">
+                                                <div class="icon">
+                                                    <img src="assets/frontend/dist/images/icon/eye.png"
+                                                        alt="eye" />
+                                                </div>
+                                                <span>101</span>
+                                            </div>
+                                            <div class="book d-flex align-items-center">
+                                                <div class="icon">
+                                                    <img src="assets/frontend/dist/images/icon/book.png"
+                                                        alt="location" />
+                                                </div>
+                                                <span>{{design.lesson == null ? '0' : design.lesson}} Lessons</span>
+                                            </div>
+                                            <div class="clock d-flex align-items-center">
+                                                <div class="icon">
+                                                    <img src="assets/frontend/dist/images/icon/Clock.png"
+                                                        alt="clock" />
+                                                </div>
+                                                <span>{{design.duration == null ? '0' : design.duration}} Hours</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <!-- ends here -->
+                        <ng-template #noDesignCourses>
+                            <div class="d-flex justify-content-center align-items-center" style="height: 100%;">
+                                <div class="contentCard contentCard--course text-center">
+                                    <h3>No Design Courses Available</h3>
+                                </div>
+                            </div>
+                        </ng-template>
+                        <!-- ends here -->
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 text-center">
+                            <a routerLink="/searchCourse" class="button button-lg button--primary">Browse all
+                                Courses</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="pills-dev" role="tabpanel" aria-labelledby="pills-dev-tab">
+                    <div class="row">
+                        <!-- starts here -->
+                        <ng-container *ngIf="developmentCoursesInfo.length > 0; else noDevelopmentCourses">
+                        <div *ngFor="let development of developmentCoursesInfo" class="col-xl-4 col-md-6">
+                            <div class="contentCard contentCard--course">
+                                <div class="contentCard-top">
+                                    <a [routerLink]="['/courseDetails', development.title_en, development.id]"><img [src]="development.image" alt="images"
+                                            class="img-fluid" /></a>
+                                </div>
+                                <div class="contentCard-bottom">
+                                    <h5>
+                                        <a [routerLink]="['/courseDetails', development.title_en, development.id]"
+                                            class="font-title--card">{{ development.title_en }}</a>
+                                    </h5>
+                                    <div class="contentCard-info d-flex align-items-center justify-content-between">
+                                        <a [routerLink]="['/instructorProfile', development.instructor_name, development.instructor_designation, development.instructor_id]"
+                                            class="contentCard-user d-flex align-items-center">
+                                            <img [src]="development.instructor_image"
+                                                alt="client-image" class="rounded-circle" height="34" width="34" />
+                                            <p class="font-para--md">{{ development.instructor_name }}</p>
+                                        </a>
+                                        <div class="price">
+                                            <span>{{development.price == null ? 'Free' : '$' + development.price}}</span>
+                                            <del>{{development.old_price ? '$' + development.old_price : ''}}</del>
+                                        </div>
+                                    </div>
+                                    <div class="contentCard-more">
+                                        <div class="d-flex align-items-center">
+                                            <div class="icon">
+                                                <img src="assets/frontend/dist/images/icon/star.png"
+                                                    alt="star" />
+                                            </div>
+                                            <span>4.5</span>
+                                        </div>
+                                        <div class="eye d-flex align-items-center">
+                                            <div class="icon">
+                                                <img src="assets/frontend/dist/images/icon/eye.png"
+                                                    alt="eye" />
+                                            </div>
+                                            <span>101</span>
+                                        </div>
+                                        <div class="book d-flex align-items-center">
+                                            <div class="icon">
+                                                <img src="assets/frontend/dist/images/icon/book.png"
+                                                    alt="location" />
+                                            </div>
+                                            <span>{{development.lesson == null ? '0' : development.lesson}} Lessons</span>
+                                        </div>
+                                        <div class="clock d-flex align-items-center">
+                                            <div class="icon">
+                                                <img src="assets/frontend/dist/images/icon/Clock.png"
+                                                    alt="clock" />
+                                            </div>
+                                            <span>{{development.duration == null ? '0' : development.duration}} Hours</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </ng-container>
+                        <!-- ends here -->
+                        <ng-template #noDevelopmentCourses>
+                            <div class="col-xl-4 col-md-6">
+                                <div class="contentCard contentCard--course">
+                                    <h3>No Development Courses Available</h3>
+                                </div>
+                            </div>
+                        </ng-template>
+                        <!-- ends here -->
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 text-center">
+                            <a routerLink="/searchCourse" class="button button-lg button--primary">Browse all
+                                Courses</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="pills-bus" role="tabpanel" aria-labelledby="pills-bus-tab">
+                    <div class="row">
+                        <!-- starts here -->
+                        <ng-container *ngIf="businessCoursesInfo.length > 0; else noBusinessCourses">
+                            <div *ngFor="let business of businessCoursesInfo" class="col-xl-4 col-md-6">
+                                <div class="contentCard contentCard--course">
+                                    <div class="contentCard-top">
+                                        <a [routerLink]="['/courseDetails', business.title_en, business.id]"><img [src]="business.image" alt="images"
+                                                class="img-fluid" /></a>
+                                    </div>
+                                    <div class="contentCard-bottom">
+                                        <h5>
+                                            <a [routerLink]="['/courseDetails', business.title_en, business.id]"
+                                                class="font-title--card">{{ business.title_en }}</a>
+                                        </h5>
+                                        <div class="contentCard-info d-flex align-items-center justify-content-between">
+                                            <a [routerLink]="['/instructorProfile', business.instructor_name, business.instructor_designation, business.instructor_id]"
+                                                class="contentCard-user d-flex align-items-center">
+                                                <img [src]="business.instructor_image"
+                                                    alt="client-image" class="rounded-circle" height="34" width="34" />
+                                                <p class="font-para--md">{{ business.instructor_name }}</p>
+                                            </a>
+                                            <div class="price">
+                                                <span>{{business.price == null ? 'Free' : '$' + business.price}}</span>
+                                                <del>{{business.old_price ? '$' + business.old_price : ''}}</del>
+                                            </div>
+                                        </div>
+                                        <div class="contentCard-more">
+                                            <div class="d-flex align-items-center">
+                                                <div class="icon">
+                                                    <img src="assets/frontend/dist/images/icon/star.png"
+                                                        alt="star" />
+                                                </div>
+                                                <span>4.5</span>
+                                            </div>
+                                            <div class="eye d-flex align-items-center">
+                                                <div class="icon">
+                                                    <img src="assets/frontend/dist/images/icon/eye.png"
+                                                        alt="eye" />
+                                                </div>
+                                                <span>101</span>
+                                            </div>
+                                            <div class="book d-flex align-items-center">
+                                                <div class="icon">
+                                                    <img src="assets/frontend/dist/images/icon/book.png"
+                                                        alt="location" />
+                                                </div>
+                                                <span>{{business.lesson == null ? '0' : business.lesson}} Lessons</span>
+                                            </div>
+                                            <div class="clock d-flex align-items-center">
+                                                <div class="icon">
+                                                    <img src="assets/frontend/dist/images/icon/Clock.png"
+                                                        alt="clock" />
+                                                </div>
+                                                <span>{{business.duration == null ? '0' : business.duration}} Hours</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <!-- ends here -->
+                        <ng-template #noBusinessCourses>
+                            <div class="d-flex justify-content-center align-items-center" style="height: 100%;">
+                                <div class="contentCard contentCard--course text-center">
+                                    <h3>No Business Courses Available</h3>
+                                </div>
+                            </div>
+                        </ng-template>
+                        <!-- ends here -->
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 text-center">
+                            <a routerLink="/searchCourse" class="button button-lg button--primary">Browse all
+                                Courses</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="pills-its" role="tabpanel" aria-labelledby="pills-its-tab">
+                    <div class="row">
+                        <!-- starts here -->
+                        <ng-container *ngIf="softwareCoursesInfo.length > 0; else noSoftwareCourses">
+                            <div *ngIf="softwareCoursesInfo.length > 0">
+                                <div *ngFor="let software of softwareCoursesInfo" class="col-xl-4 col-md-6">
+                                    <div class="contentCard contentCard--course">
+                                        <div class="contentCard-top">
+                                            <a [routerLink]="['/courseDetails', software.title_en, software.id]"><img [src]="software.image" alt="images"
+                                                    class="img-fluid" /></a>
+                                        </div>
+                                        <div class="contentCard-bottom">
+                                            <h5>
+                                                <a [routerLink]="['/courseDetails', software.title_en, software.id]"
+                                                    class="font-title--card">{{ software.title_en }}</a>
+                                            </h5>
+                                            <div class="contentCard-info d-flex align-items-center justify-content-between">
+                                                <a [routerLink]="['/instructorProfile', software.instructor_name, software.instructor_designation, software.instructor_id]"
+                                                    class="contentCard-user d-flex align-items-center">
+                                                    <img [src]="software.instructor_image"
+                                                        alt="client-image" class="rounded-circle" height="34" width="34" />
+                                                    <p class="font-para--md">{{ software.instructor_name }}</p>
+                                                </a>
+                                                <div class="price">
+                                                    <span>{{software.price == null ? 'Free' : '$' + software.price}}</span>
+                                                    <del>{{software.old_price ? '$' + software.old_price : ''}}</del>
+                                                </div>
+                                            </div>
+                                            <div class="contentCard-more">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="icon">
+                                                        <img src="assets/frontend/dist/images/icon/star.png"
+                                                            alt="star" />
+                                                    </div>
+                                                    <span>4.5</span>
+                                                </div>
+                                                <div class="eye d-flex align-items-center">
+                                                    <div class="icon">
+                                                        <img src="assets/frontend/dist/images/icon/eye.png"
+                                                            alt="eye" />
+                                                    </div>
+                                                    <span>101</span>
+                                                </div>
+                                                <div class="book d-flex align-items-center">
+                                                    <div class="icon">
+                                                        <img src="assets/frontend/dist/images/icon/book.png"
+                                                            alt="location" />
+                                                    </div>
+                                                    <span>{{software.lesson == null ? '0' : software.lesson}} Lessons</span>
+                                                </div>
+                                                <div class="clock d-flex align-items-center">
+                                                    <div class="icon">
+                                                        <img src="assets/frontend/dist/images/icon/Clock.png"
+                                                            alt="clock" />
+                                                    </div>
+                                                    <span>{{software.duration == null ? '0' : software.duration}} Hours</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <!-- ends here -->
+                        <ng-template #noSoftwareCourses>
+                            <div class="d-flex justify-content-center align-items-center" style="height: 100%;">
+                                <div class="contentCard contentCard--course text-center">
+                                    <h3>No IT & Software Courses Available</h3>
+                                </div>
+                            </div>
+                        </ng-template>                        
+                        <!-- ends here -->
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 text-center">
+                            <a routerLink="/searchCourse" class="button button-lg button--primary">Browse all
+                                Courses</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="featured-popular-courses-shape">
+        <img src="assets/frontend/dist/images/shape/dots/dots-img-12.png" alt="Shape"
+            class="img-fluid dot-06" />
+        <img src="assets/frontend/dist/images/shape/triangel.png" alt="Shape" class="img-fluid dot-07" />
+    </div>
+</section>

@@ -1,0 +1,220 @@
+<div class="main-wrapper">
+
+	<div class="row page-titles mx-0">
+		<div class="col-sm-6 p-md-0">
+			<div class="welcome-text">
+				<h4>Course Status Operations</h4>
+			</div>
+		</div>
+		<div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a routerLink="/admin-buffalo/master-dashboard">Home</a></li>
+				<li class="breadcrumb-item active"><a routerLink="/admin-buffalo/course-management/dashboard-course-status">Status</a></li>
+				<li class="breadcrumb-item active"><a routerLink="/admin-buffalo/course-management/dashboard-course-status">All Statuses</a></li>
+			</ol>
+		</div>
+    </div> 
+
+	<!-- Add Status Popup -->
+	<ng-container *ngIf="addStatusForm.value && addPopupVisible">
+		<dx-popup [(visible)]="addPopupVisible" [width]="'auto'" [height]="'auto'" [showTitle]="true"
+			[title]="'Add New Status'" (onHidden)="onPopupHidden()">
+			<form (ngSubmit)="onAddStatusSubmit(false)" [formGroup]="addStatusForm">
+
+				<div class="row">
+					<div class="col-lg-12">
+						<label for="name">Name:<span class="text-danger">*</span></label>
+						<dx-text-box [showClearButton]="true" formControlName="name" placeholder="Status Name"></dx-text-box>
+						<!-- Display error message for the name field -->
+						<div *ngIf="addStatusForm.get('name')?.invalid && (addStatusForm.get('name')?.touched || addStatusForm.get('name')?.dirty)"
+							class="text-danger">
+							<ng-container *ngIf="addStatusForm.get('name')?.errors?.['required']">Status Name is required</ng-container>
+							<ng-container *ngIf="addStatusForm.get('name')?.errors?.['pattern']">Invalid Status name</ng-container>
+						</div>
+					</div>
+	
+					<div class="col-lg-12">
+						<label for="description">Description:<span class="text-danger">*</span></label>
+						<dx-text-box [showClearButton]="true" formControlName="description" placeholder="Description"></dx-text-box>
+						<!-- Display error message for the description field -->
+						<div *ngIf="addStatusForm.get('description')?.invalid && (addStatusForm.get('description')?.touched || addStatusForm.get('description')?.dirty)"
+							class="text-danger">
+							<ng-container *ngIf="addStatusForm.get('description')?.errors?.['required']">Description is required</ng-container>
+						</div>
+					</div>
+				</div>
+	
+				<div class="row">
+					<div class="button-container-popup">
+						<dx-button text="Save and Add Another" type="success" [elementAttr]="{ id: 'first-btn', class: 'pull-right' }"
+							(onClick)="onAddStatusSubmit(true)">
+							<!-- spinner -->
+							<ng-container *ngIf="!isSubmittingSaveAndAddAnother">Save and Add Another</ng-container>
+							<ng-container *ngIf="isSubmittingSaveAndAddAnother">
+								<div class="spinnerc"></div>
+							</ng-container>
+							<!-- spinner -->
+						</dx-button>
+						<dx-button text="Save" type="success" [elementAttr]="{ class: 'pull-right' }"
+							(onClick)="onAddStatusSubmit(false)">
+							<!-- spinner -->
+							<ng-container *ngIf="!isSubmittingSave">Save</ng-container>
+							<ng-container *ngIf="isSubmittingSave">
+								<div class="spinnerc"></div>
+							</ng-container>
+							<!-- spinner -->
+						</dx-button>
+					</div>
+				</div>
+			</form>
+		</dx-popup>
+	</ng-container>
+
+	<!-- Update Status Popup -->
+	<ng-container *ngIf="updateStatusForm.value && updatePopupVisible">
+		<dx-popup [(visible)]="updatePopupVisible" [width]="550" [height]="'auto'" [showTitle]="true"
+			[title]="'Update Status'" (onHidden)="onPopupHidden()">
+			<form (ngSubmit)="onUpdateStatusSubmit()" [formGroup]="updateStatusForm">
+				<div class="row">
+					<!-- Status Name -->
+					<div class="col-lg-12">
+						<label for="name">Status Name:</label>
+						<dx-text-box formControlName="name" placeholder="Status Name"></dx-text-box>
+					  </div>
+					  <!-- Description -->
+					  <div class="col-lg-12">
+						<label for="description">Description:</label>
+						<dx-text-area formControlName="description" placeholder="Description"></dx-text-area>
+					  </div>
+					  <!-- Update and Cancel Buttons -->
+					  <div class="button-container-popup">
+						<dx-button text="Cancel" type="danger"  [elementAttr]="{ id: 'first-btn', class: 'pull-right' }"
+						  (onClick)="updatePopupVisible = false"></dx-button>
+						<dx-button text="Update" type="success" [elementAttr]="{ class: 'pull-right' }"
+						  (onClick)="onUpdateStatusSubmit()">
+						  <!-- spinner -->
+						  <ng-container *ngIf="!isSubmitting">Update</ng-container>
+						  <ng-container *ngIf="isSubmitting">
+							  <div class="spinnerc"></div>
+						  </ng-container>
+						  <!-- spinner -->
+						</dx-button>
+					  </div>
+				</div>
+			</form>
+			
+		</dx-popup>
+	</ng-container>
+
+	<!-- Delete Status Popup -->
+	<ng-container *ngIf="deleteStatusForm.value && deletePopupVisible">
+		<dx-popup [(visible)]="deletePopupVisible" height="auto" width="auto" [showTitle]="true" title="Delete Confirmation"
+			(onHidden)="deletePopupVisible = false">
+			<form (ngSubmit)="onDeleteStatusSubmit()" [formGroup]="deleteStatusForm">
+				<div>
+					<p *ngIf="deleteStatusForm.value && deletePopupVisible" class="confirmation-text">
+						Are you sure you want to delete "<strong>{{deleteStatusForm.value.name}}</strong>"?
+					</p>
+					<div class="button-container-popup">
+					  <dx-button text="Cancel" (onClick)="deletePopupVisible = false" [elementAttr]="{ id: 'first-btn', class: 'pull-right' }"></dx-button>
+					  <dx-button text="Delete" type="danger" (onClick)="onDeleteStatusSubmit()" [elementAttr]="{ class: 'pull-right' }">
+						 <!-- spinner -->
+						<ng-container *ngIf="!isSubmitting">Delete</ng-container>
+						<ng-container *ngIf="isSubmitting">
+							<div class="spinnerc"></div>
+						</ng-container>
+						<!-- spinner -->
+					  </dx-button>
+				  </div>
+				</div>
+			</form>
+		</dx-popup>
+	</ng-container>
+
+	<!-- Spinner -->
+	<div *ngIf="isLoading" class="spinner-container">
+		<div class="spinner"></div>
+	</div>
+
+	<!-- Data Grid to display Status -->
+	<div *ngIf="!isLoading">
+		<!-- Menu for Add/Delete Actions -->
+		<div class="button-container">
+			<dx-menu 
+				[style]="{ 'background-color': 'lightblue' }"
+				(onItemClick)="onMenuItemClick($event)" 
+				[items]="permitGeneralStatusMenuItems">
+			</dx-menu>
+		</div>
+
+		<!-- Data Grid to display Statuss -->
+	<dx-data-grid 
+	#multipleStatusGrid
+	class="table row-border hover" 
+	[dataSource]="Status" 
+	[remoteOperations]='true' 
+	[showBorders]="true"
+	[allowColumnResizing]="true" 
+	[columnHidingEnabled]="false" 
+	(onSelectionChanged)="selectionChanged($event)" 
+	keyExpr="id">
+		<!-- <dxo-filter-row [visible]="true"></dxo-filter-row> -->
+		<dxo-search-panel [visible]="true"></dxo-search-panel>
+		<dxo-paging [enabled]="true"></dxo-paging>
+		<dxo-pager [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)" [showPageSizeSelector]="true"
+			[allowedPageSizes]="[5,10]"></dxo-pager>
+		<!-- <dxo-export [enabled]="true" fileName="Statuss" [allowExportSelectedData]="true"></dxo-export> -->
+		<!-- <dxo-selection mode="multiple"></dxo-selection> -->
+		<!-- Selection, group panel, and other configurations -->
+		<dxo-selection mode="multiple"></dxo-selection>
+		<dxo-group-panel [visible]="true"></dxo-group-panel>
+
+		<!-- menu actions -->
+		<dxi-column [width]="150" caption="Action" name="command-editing"
+		[allowFiltering]="false" 
+		[allowSorting]="false" 
+		cellTemplate="cellTemplate">
+		<div *dxTemplate="let data of 'cellTemplate'">
+		  <dx-menu 
+			(onItemClick)="permitStatusActionColClick($event,data)"
+			[items]="permitStatusMenuItems">
+		  </dx-menu>
+		</div>
+	    </dxi-column>
+		<!-- menu actions -->
+
+		<dxo-group-panel [visible]="true"></dxo-group-panel>
+		<dxi-column dataField="id" caption="ID" [visible]="false"></dxi-column>
+		<dxi-column dataField="name" caption="Status Name"></dxi-column>
+		<dxi-column dataField="description" caption="Description"></dxi-column>
+		<dxi-column dataField="created_by" caption="Created By"></dxi-column>
+		<dxi-column dataField="duration" caption="Time Posted"></dxi-column>
+		
+		<dxo-paging [pageSize]="10"></dxo-paging>
+	</dx-data-grid>
+	</div>
+
+	<!-- Delete Multiple Status Popup -->
+    <ng-container *ngIf="selectedStatusForDeletion.length > 0 && deleteMultiplePopupVisible">
+		<dx-popup [(visible)]="deleteMultiplePopupVisible" height="auto" width="auto" [showTitle]="true" title="Delete Confirmation"
+			(onHidden)="deleteMultiplePopupVisible = false">
+			<div>
+				<p class="confirmation-text">
+					Are you sure you want to delete <strong>{{selectedStatusCount}}</strong> Blog Status(s)?
+				</p>
+				<div class="button-container-popup">
+					<dx-button text="Cancel" (onClick)="deleteMultiplePopupVisible = false" [elementAttr]="{ id: 'first-btn', class: 'pull-right' }"></dx-button>
+					<dx-button text="Delete" type="danger" (onClick)="confirmDeleteMultipleStatus()" [elementAttr]="{ class: 'pull-right' }">
+						<!-- spinner -->
+						<ng-container *ngIf="!isSubmitting">Delete</ng-container>
+						<ng-container *ngIf="isSubmitting">
+							<div class="spinnerc"></div>
+						</ng-container>
+						<!-- spinner -->
+					</dx-button>
+				</div>
+			</div>
+		</dx-popup>
+	</ng-container>
+
+</div>

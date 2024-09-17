@@ -1,0 +1,25 @@
+::ng-deep #gridContainer {
+    height: 440px;
+  }
+  
+  ::ng-deep #gridContainer .dx-datagrid-content tr.dx-data-row {
+    cursor: pointer;
+  }
+  
+  ::ng-deep .employeeInfo .employeePhoto {
+    height: 140px;
+    float: left;
+    padding: 20px 5px 20px 0;
+  }
+  
+  ::ng-deep .employeeInfo .employeeContent {
+    padding-top: 20px;
+    text-align: justify;
+    white-space: normal;
+  }
+  
+  .scrollable-content {
+    max-height: 150px; /* Adjust the height as needed */
+    overflow-y: auto;
+  }
+  

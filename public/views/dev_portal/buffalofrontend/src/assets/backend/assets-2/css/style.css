@@ -1,0 +1,226 @@
+/* You can add global styles to this file, and also import other style files */
+
+/********** Template CSS **********/
+:root {
+    --primary: #06BBCC;
+    --light: #F0FBFC;
+    --dark: #181d38;
+}
+
+.fw-medium {
+    font-weight: 600 !important;
+}
+
+.fw-semi-bold {
+    font-weight: 700 !important;
+}
+
+
+
+
+/*** Button ***/
+.btn {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    transition: .5s;
+}
+
+.btn.btn-primary,
+.btn.btn-secondary {
+    color: #FFFFFF;
+}
+
+.btn-square {
+    width: 38px;
+    height: 38px;
+}
+
+.btn-sm-square {
+    width: 32px;
+    height: 32px;
+}
+
+.btn-lg-square {
+    width: 48px;
+    height: 48px;
+}
+
+.btn-square,
+.btn-sm-square,
+.btn-lg-square {
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: normal;
+    border-radius: 0px;
+}
+
+
+/*** Section Title ***/
+.section-title {
+    position: relative;
+    display: inline-block;
+    text-transform: uppercase;
+}
+
+.section-title::before {
+    position: absolute;
+    content: "";
+    width: calc(100% + 80px);
+    height: 2px;
+    top: 4px;
+    left: -40px;
+    background: var(--primary);
+    z-index: -1;
+}
+
+.section-title::after {
+    position: absolute;
+    content: "";
+    width: calc(100% + 120px);
+    height: 2px;
+    bottom: 5px;
+    left: -60px;
+    background: var(--primary);
+    z-index: -1;
+}
+
+.section-title.text-start::before {
+    width: calc(100% + 40px);
+    left: 0;
+}
+
+.section-title.text-start::after {
+    width: calc(100% + 60px);
+    left: 0;
+}
+
+
+/*** Service ***/
+.service-item {
+    background: var(--light);
+    transition: .5s;
+}
+
+.service-item:hover {
+    margin-top: -10px;
+    background: var(--primary);
+}
+
+.service-item * {
+    transition: .5s;
+}
+
+.service-item:hover * {
+    color: var(--light) !important;
+}
+
+
+/*** Categories & Courses ***/
+.category img,
+.course-item img {
+    transition: .5s;
+}
+
+.category a:hover img,
+.course-item:hover img {
+    transform: scale(1.1);
+}
+
+
+/*** Team ***/
+.team-item img {
+    transition: .5s;
+}
+
+.team-item:hover img {
+    transform: scale(1.1);
+}
+
+
+.swal2-popup.swal2-toast .swal2-validation-message {
+    font-size: 1em; }
+
+.swal2-validation-message {
+  align-items: center;
+  justify-content: center;
+  margin: 0 -2.7em;
+  padding: 0.625em;
+  overflow: hidden;
+  background: #f0f0f0;
+  color: #666666;
+  font-size: 1em;
+  font-weight: 300; }
+
+.swal2-validation-message::before {
+    content: '!';
+    display: inline-block;
+    width: 1.5em;
+    min-width: 1.5em;
+    height: 1.5em;
+    margin: 0 .625em;
+    border-radius: 50%;
+    background-color: #f27474;
+    color: #fff;
+    font-weight: 600;
+    line-height: 1.5em;
+    text-align: center; }
+
+.uploader-file #response #messages {
+      margin-bottom: 0.5rem; }
+
+.chat-content .chat-left .chat-message {
+    text-align: left;
+    float: left;
+    margin: 0 .3rem 1.8rem 1.3rem;
+    color: #676E8A;
+    background-color: #fff;
+    -webkit-box-shadow: 0px 0px 20px 0px rgba(44, 101, 144, 0.1);
+    -moz-box-shadow: 0px 0px 20px 0px rgba(44, 101, 144, 0.1);
+    -ms-box-shadow: 0px 0px 20px 0px rgba(44, 101, 144, 0.1);
+    -o-box-shadow: 0px 0px 20px 0px rgba(44, 101, 144, 0.1);
+    box-shadow: 0px 0px 20px 0px rgba(44, 101, 144, 0.1); }
+  .chat-content .chat-body .chat-message p {
+    margin-bottom: 0; }
+
+.chat-detail {
+  overflow: hidden; }
+  .chat-detail .chat-message .chat-time {
+    position: absolute;
+    bottom: -20px;
+    right: 0;
+    color: #676E8A;
+    font-size: .8rem;
+    white-space: nowrap; }
+
+.chat-message {
+  position: relative;
+  float: right;
+  text-align: right;
+  padding: .75rem 1rem;
+  margin: 0 1.33rem 1.33rem .3rem;
+  clear: both;
+  word-break: break-word;
+  color: #fff;
+  background: #32BDEA;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  border-radius: 10px;
+  -webkit-box-shadow: 0 2px 4px 0 #50b5ff;
+  -moz-box-shadow: 0 2px 4px 0 #50b5ff;
+  -ms-box-shadow: 0 2px 4px 0 #50b5ff;
+  -o-box-shadow: 0 2px 4px 0 #50b5ff;
+  box-shadow: 0 2px 4px 0 #50b5ff; }
+
+.chat-message > p {
+    margin: 0; }
+
+.chat-left .chat-message::after {
+  right: auto;
+  left: -7px;
+  border-width: 5px 7px 5px 0;
+  border-color: transparent #fff transparent transparent; }
+

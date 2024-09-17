@@ -1,0 +1,26 @@
+// Ensure the popup is not blurred
+#addBlogPopup {
+    z-index: 10000; // Ensure it's on top of other elements
+    backdrop-filter: none; // Remove any potential blurring
+  }
+  
+  // Additional styling for better appearance
+  .wrapper {
+    padding: 20px;
+  }
+  
+  .button-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+  
+  .dx-popup-content {
+    overflow: visible; // Ensure content is fully visible
+  }
+  
+  .col-lg-12 {
+    margin-bottom: 5px;
+  }
+  

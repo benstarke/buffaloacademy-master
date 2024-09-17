@@ -1,0 +1,55 @@
+<!--  Learning Rules Starts Here -->
+<div *ngIf="loading" class="spinner-container">
+    <div class="spinner"></div>
+    <span class="loading-text">Loading...</span>
+</div>  
+<section *ngIf="!loading" class="section learning-rules">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 order-2 order-lg-0">
+                <div class="learning-rules-starts">
+                    <h2 class="font-title--md">
+                        Buffallo Simple <br class="d-none d-md-block" />
+                        Learning Steps
+                    </h2>
+                    <!-- simple learning steps -->
+                    <div class="learning-rules__wrapper">
+                        <div *ngFor="let step of simpleLearningStepsInfo; let i = index" class="learning-rules-item">
+                            <div *ngIf="simpleLearningStepsInfo" class="item-number"><span>{{ ('0' + (i + 1)).slice(-2) }}.</span></div>
+                            <div class="item-text">
+                                <h6>{{ step.title }}</h6>
+                                <p>
+                                    {{ step.description }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- simple learning steps -->
+                    <a routerLink="/app-student-auth/authentication-sub-system/studentLogin" class="button button-lg button--primary">Start Learning</a>
+                </div>
+            </div>
+            
+            <div class="col-lg-6 order-1 order-lg-0">
+                <div class="learning-rules-ends">
+                    <img *ngIf="simpleLearningStepsImage" [src]="simpleLearningStepsImage.image" alt="img"
+                        class="img-fluid rounded"/>
+                    <div class="learning-rules-ends-circle">
+                        <img src="assets/frontend/dist/images/shape/l03.png" alt="shape"
+                            class="img-fluid" />
+                    </div>
+                    <div class="earning-rules-ends-shape">
+                        <img src="assets/frontend/dist/images/shape/l04.png" alt="shape"
+                            class="img-fluid shape-1" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="learning-rules-shape">
+        <img src="assets/frontend/dist/images/shape/dots/dots-img-16.png" alt="shape"
+            class="img-fluid shape-01" />
+        <img src="assets/frontend/dist/images/shape/l02.png" alt="shape" class="img-fluid shape-02" />
+    </div>
+</section>
+
+<!--  Learning Rules Starts Here -->

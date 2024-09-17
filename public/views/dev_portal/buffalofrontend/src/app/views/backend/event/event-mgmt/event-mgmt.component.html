@@ -1,0 +1,267 @@
+<div class="main-wrapper">
+    <!-- Add Button -->
+    <div class="button-container">
+      <dx-button text="Add New Event" type="default" icon="fa fa-plus"
+      [elementAttr]="{ id: 'addEventBtn', class: 'pull-right' }" (onClick)="onAddEventClick()">
+      </dx-button>
+    </div>
+  
+    <!-- Add Event Popup -->
+    <ng-container *ngIf="addEventForm.value && addPopupVisible">
+      <dx-popup [(visible)]="addPopupVisible"  [width]="950" [height]="'auto'" [showTitle]="true"
+          [title]="'Add New Event'" (onHidden)="onPopupHidden()">
+          <form (ngSubmit)="onAddEventSubmit()" [formGroup]="addEventForm">
+              <div class="row">
+                  <div class="row">
+                    <div class="col-lg-6">
+                        <label for="title">Event Title:</label>
+                        <dx-text-box formControlName="title"></dx-text-box>
+                    </div>
+  
+                    <div class="col-lg-6">
+                      <label for="topic">Event Topic:</label>
+                      <dx-text-box formControlName="topic"></dx-text-box>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-4">
+                        <label for="location">Event Location:</label>
+                        <dx-text-box formControlName="location"></dx-text-box>
+                      </div>
+    
+                      <div class="col-lg-4">
+                        <label for="hosted_by">Hosted By:</label>
+                        <dx-text-box formControlName="hosted_by"></dx-text-box>
+                      </div>
+    
+                      <div class="col-lg-4">
+                        <label for="event_day">Day Event:</label>
+                        <dx-date-box 
+                          formControlName="event_day"
+                          [pickerType]="'calendar'" 
+                          [displayFormat]="'yyyy-MM-dd'">
+                        </dx-date-box>
+                      </div>
+                      
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-12">
+                        <label for="goal">Event Goal:</label>
+                        <dx-text-box formControlName="goal"></dx-text-box>
+                      </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-12">
+                        <label for="description">Description:</label>
+                        <dx-text-area formControlName="description"></dx-text-area>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-12">
+                        <label for="image">Event Image:</label>
+                        <!-- <dx-file-uploader
+                          formControlName="image"
+                          uploadUrl="https://your-backend-url/api/upload"
+                          [multiple]="false"
+                          accept="image/*" 
+                          [(value)]="imageValue"
+                          uploadMode="userButtons"
+                        ></dx-file-uploader> -->
+                        <dx-file-uploader
+                        formControlName="image"
+                        [multiple]="false"
+                        accept="image/*" 
+                        [(value)]="imageValue"
+                        uploadMode="instantly" 
+                        ></dx-file-uploader>
+
+                    </div>  
+                </div>
+              </div>
+  
+              <div class="button-container">
+                   <dx-button text="Cancel" type="danger" [elementAttr]="{ class: 'pull-left' }"
+                      (onClick)="addPopupVisible = false"></dx-button>
+                  <dx-button text="Create" type="success" [elementAttr]="{ class: 'pull-left' }"
+                      (onClick)="onAddEventSubmit()"></dx-button>
+              </div>
+          </form>
+      </dx-popup>
+    </ng-container>
+  
+    <!-- Update Event Popup -->
+    <ng-container *ngIf="updateEventForm.value && updatePopupVisible">
+      <dx-popup [(visible)]="updatePopupVisible" [width]="950" [height]="'auto'" [showTitle]="true"
+          [title]="'Update Event'" (onHidden)="onPopupHidden()">
+        <form (ngSubmit)="onUpdateEventSubmit()" [formGroup]="updateEventForm">
+            <div class="row">
+                <div class="row">
+                  <div class="col-lg-6">
+                      <label for="title">Event Title:</label>
+                      <dx-text-box formControlName="title"></dx-text-box>
+                  </div>
+
+                  <div class="col-lg-6">
+                    <label for="topic">Event Topic:</label>
+                    <dx-text-box formControlName="topic"></dx-text-box>
+                  </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-8">
+                        <label for="goal">Event Goal:</label>
+                        <dx-text-box formControlName="goal"></dx-text-box>
+                      </div>
+                      <!-- <div class="col-lg-4">
+                        <label for="image">Event Image:</label>
+                        <dx-text-box formControlName="image"></dx-text-box>
+                      </div> -->
+                  </div>
+
+                <div class="row">
+                  <div class="col-lg-4">
+                      <label for="location">Event Location:</label>
+                      <dx-text-box formControlName="location"></dx-text-box>
+                    </div>
+  
+                    <div class="col-lg-4">
+                      <label for="hosted_by">Hosted By:</label>
+                      <dx-text-box formControlName="hosted_by"></dx-text-box>
+                    </div>
+  
+                    <div class="col-lg-4">
+                        <label for="event_day">Day Event:</label>
+                        <dx-date-box 
+                          formControlName="event_day"
+                          [pickerType]="'calendar'" 
+                          [displayFormat]="'yyyy-MM-dd'">
+                        </dx-date-box>
+                      </div>
+                      
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <label for="description">Description:</label>
+                        <dx-text-area formControlName="description"></dx-text-area>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <label for="image">Event Image:</label>
+                        <dx-file-uploader
+                          formControlName="image"
+                          uploadUrl="https://your-backend-url/api/upload"
+                          [multiple]="false"
+                          accept="image/*" 
+                          [(value)]="imageValue"
+                          uploadMode="instantly"
+                        ></dx-file-uploader>
+                      </div>                      
+                </div>
+            </div>
+            <div class="button-container">
+                <dx-button text="Cancel" type="danger"  [elementAttr]="{ class: 'pull-left' }"
+                (onClick)="updatePopupVisible = false"></dx-button>
+                <dx-button text="Update" type="success" [elementAttr]="{ class: 'pull-left' }"
+                (onClick)="onUpdateEventSubmit()"></dx-button>
+            </div>
+        </form>
+      </dx-popup>
+    </ng-container>
+  
+    <!-- Delete Event Popup -->
+    <ng-container *ngIf="deleteEventForm.value && deletePopupVisible">
+      <dx-popup [(visible)]="deletePopupVisible" height="auto" width="auto" [showTitle]="true" title="Delete Confirmation"
+          (onHidden)="deletePopupVisible = false">
+          <form (ngSubmit)="onDeleteEventSubmit()" [formGroup]="deleteEventForm">
+              <div>
+                  <p *ngIf="deleteEventForm.value && deletePopupVisible" class="confirmation-text">
+                      Are you sure you want to delete "<strong>{{deleteEventForm.value.name}}</strong>"?
+                  </p>
+                  <div class="button-container">
+                      <dx-button text="Cancel" (onClick)="deletePopupVisible = false"></dx-button>
+                      <dx-button text="Delete" type="danger" (onClick)="onDeleteEventSubmit()"></dx-button>
+                  </div>
+              </div>
+          </form>
+      </dx-popup>
+    </ng-container>
+  
+    <!-- Data Grid to display Events -->
+    <dx-data-grid 
+    class="table row-border hover" 
+    [dataSource]="events" 
+    [remoteOperations]='true' 
+    [showBorders]="true"
+    [allowColumnResizing]="true" 
+    [columnHidingEnabled]="false" 
+    (onSelectionChanged)="selectionChanged($event)" 
+    (onSelectionChanged)="onSelectionChanged($event)" 
+    (onContentReady)="onContentReady($event)"
+    keyExpr="id">
+      <!-- <dxo-filter-row [visible]="true"></dxo-filter-row> -->
+      <dxo-search-panel [visible]="true"></dxo-search-panel>
+      <dxo-paging [enabled]="true"></dxo-paging>
+      <dxo-pager [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)" [showPageSizeSelector]="true"
+          [allowedPageSizes]="[5,10]"></dxo-pager>
+      <!-- <dxo-export [enabled]="true" fileName="Events" [allowExportSelectedData]="true"></dxo-export> -->
+      <!-- <dxo-selection mode="multiple"></dxo-selection> -->
+       <!-- Selection, group panel, and other configurations -->
+
+    <!-- master detail api -->
+    <dxo-master-detail [enabled]="true" template="detail"></dxo-master-detail>
+    <!-- master detail api -->
+
+    <dxo-selection mode="single"></dxo-selection>
+    <dxo-group-panel [visible]="true"></dxo-group-panel>
+
+    <dxi-column dataField="title" caption="Title"></dxi-column>
+    <!-- <dxi-column dataField="description" caption="Description"></dxi-column> -->
+    <!-- <dxi-column dataField="image" caption="Event Image"></dxi-column> -->
+    <dxi-column dataField="topic" caption="Topic"></dxi-column>
+    <dxi-column dataField="goal" caption="Goal"></dxi-column>
+    <dxi-column dataField="location" caption="Location"></dxi-column>
+    <dxi-column dataField="hosted_by" caption="Hosted By"></dxi-column>
+    <dxi-column dataField="created_by" caption="Created By"></dxi-column>
+    <dxi-column dataField="duration" caption="Time Posted"></dxi-column>
+    <dxi-column dataField="event_day" caption="Day of Event"></dxi-column>
+
+     <!-- <dxi-column dataField="description" caption="Content"> -->
+    <dxi-column dataField="description" caption="Content">
+        <div *dxTemplate="let events of 'detail'">
+          <div class="employeeInfo">
+            <a style="cursor: pointer;">
+                <img
+                class="employeePhoto"
+                [src]="events.data.image"
+                alt="Event Image"
+                (click)="openImageDialog(events.data.image)" />
+            </a>
+            <div class="scrollable-content">
+              <p class="employeeContent" [innerHTML]="events.data.description"></p>
+            </div>
+          </div>
+        </div>
+    </dxi-column>
+      
+    <!-- </dxi-column> -->
+
+    <!-- Code for displaying Edit and Delete actions -->
+    <dxi-column [width]="150" caption="Action" name="command-editing"
+    [allowFiltering]="false" [allowSorting]="false" cellTemplate="cellTemplate">
+    <div *dxTemplate="let data of 'cellTemplate'">
+        <dx-menu (onItemClick)="permitEventActionColClick($event,data)"
+            [items]="permitEventMenuItems"></dx-menu>
+    </div>
+    </dxi-column>
+      
+      <dxo-paging [pageSize]="10"></dxo-paging>
+    </dx-data-grid>
+  
+  </div>
+  

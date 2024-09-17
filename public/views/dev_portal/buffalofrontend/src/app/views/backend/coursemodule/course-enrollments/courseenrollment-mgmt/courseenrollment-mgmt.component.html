@@ -1,0 +1,269 @@
+<div class="main-wrapper">
+
+	<div class="row page-titles mx-0">
+		<div class="col-sm-6 p-md-0">
+			<div class="welcome-text">
+				<h4>Course Enrollment Operations</h4> 
+			</div>
+		</div>
+		<div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a routerLink="/admin-buffalo/master-dashboard">Home</a></li>
+				<li class="breadcrumb-item active"><a routerLink="/admin-buffalo/course-management/dashboard-course-enrollments">Enrollment</a></li>
+				<li class="breadcrumb-item active"><a routerLink="/admin-buffalo/course-management/dashboard-course-enrollments">All Enrollments</a></li>
+			</ol>
+		</div>
+    </div> 
+
+	<!-- Add Enrollment Popup -->
+	<ng-container *ngIf="addEnrollmentForm.value && addPopupVisible">
+		<dx-popup [(visible)]="addPopupVisible" [width]="550" [height]="'auto'" [showTitle]="true"
+			[title]="'Add New Enrollment'" (onHidden)="onPopupHidden()">
+			<form (ngSubmit)="onAddEnrollmentSubmit(false)" [formGroup]="addEnrollmentForm">
+
+				<div class="row">
+                    <div class="col-lg-12">
+						<label for="student_id">Student:<span class="text-danger">*</span></label>
+                        <!-- Course select box with required validation and error message -->
+                        <dx-select-box [dataSource]="Student" formControlName="student_id"
+                            valueExpr="id" [searchEnabled]="true" displayExpr="name_en">
+                        </dx-select-box>
+                        <!-- Display error message for the course_id field -->
+                        <div *ngIf="addEnrollmentForm.get('student_id')?.invalid && (addEnrollmentForm.get('student_id')?.touched || addEnrollmentForm.get('student_id')?.dirty)"
+                            class="text-danger">
+                            <ng-container *ngIf="addEnrollmentForm.get('student_id')?.errors?.['required']">Student is required</ng-container>
+                        </div>
+					</div>
+                    <div class="col-lg-12">
+						<label for="course_id">Course:<span class="text-danger">*</span></label>
+                        <!-- Course select box with required validation and error message -->
+                        <dx-select-box [dataSource]="Course" formControlName="course_id"
+                            valueExpr="id" [searchEnabled]="true" displayExpr="title_en">
+                        </dx-select-box>
+                        <!-- Display error message for the course_id field -->
+                        <div *ngIf="addEnrollmentForm.get('course_id')?.invalid && (addEnrollmentForm.get('course_id')?.touched || addEnrollmentForm.get('course_id')?.dirty)"
+                            class="text-danger">
+                            <ng-container *ngIf="addEnrollmentForm.get('course_id')?.errors?.['required']">Course is required</ng-container>
+                        </div>
+					</div>
+	
+					<div class="col-lg-6">
+                        <label for="start_date">Start Date:<span class="text-danger">*</span></label>
+                        <dx-date-box [showClearButton]="true" formControlName="start_date" placeholder="Start Date"></dx-date-box>
+                        <!-- Display error message for the start_date field -->
+                        <div *ngIf="addEnrollmentForm.get('start_date')?.invalid && (addEnrollmentForm.get('start_date')?.touched || addEnrollmentForm.get('start_date')?.dirty)"
+                            class="text-danger">
+                            <ng-container *ngIf="addEnrollmentForm.get('start_date')?.errors?.['required']">Start date is required</ng-container>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-6">
+                        <label for="end_date">End Date:<span class="text-danger">*</span></label>
+                        <dx-date-box [showClearButton]="true" formControlName="end_date" placeholder="End Date"></dx-date-box>
+                        <!-- Display error message for the end_date field -->
+                        <div *ngIf="addEnrollmentForm.get('end_date')?.invalid && (addEnrollmentForm.get('end_date')?.touched || addEnrollmentForm.get('end_date')?.dirty)"
+                            class="text-danger">
+                            <ng-container *ngIf="addEnrollmentForm.get('end_date')?.errors?.['required']">End date is required</ng-container>
+                        </div>
+                    </div>                    
+				</div>
+	
+				<div class="row">
+					<div class="button-container-popup">
+						<dx-button text="Save and Add Another" type="success" [elementAttr]="{ id: 'first-btn', class: 'pull-right' }"
+							(onClick)="onAddEnrollmentSubmit(true)">
+							<!-- spinner -->
+							<ng-container *ngIf="!isSubmittingSaveAndAddAnother">Save and Add Another</ng-container>
+							<ng-container *ngIf="isSubmittingSaveAndAddAnother">
+								<div class="spinnerc"></div>
+							</ng-container>
+							<!-- spinner -->
+						</dx-button>
+						<dx-button text="Save" type="success" [elementAttr]="{ class: 'pull-right' }"
+							(onClick)="onAddEnrollmentSubmit(false)">
+							<!-- spinner -->
+							<ng-container *ngIf="!isSubmittingSave">Save</ng-container>
+							<ng-container *ngIf="isSubmittingSave">
+								<div class="spinnerc"></div>
+							</ng-container>
+							<!-- spinner -->
+						</dx-button>
+					</div>
+				</div>
+			</form>
+		</dx-popup>
+	</ng-container>
+
+	<!-- Update Enrollment Popup -->
+	<ng-container *ngIf="updateEnrollmentForm.value && updatePopupVisible">
+		<dx-popup [(visible)]="updatePopupVisible" [width]="550" [height]="'auto'" [showTitle]="true"
+			[title]="'Update Enrollment'" (onHidden)="onPopupHidden()">
+			<form (ngSubmit)="onUpdateEnrollmentSubmit()" [formGroup]="updateEnrollmentForm">
+				<div class="row">
+					<!-- Student Name -->
+                     <div class="col-lg-12">
+						<label>Student</label>
+                        <dx-select-box [dataSource]="Student" formControlName="student_id"
+                            valueExpr="id" [searchEnabled]="true" displayExpr="name_en">
+                        </dx-select-box>
+					  </div>
+                      <!-- Course -->
+					  <div class="col-lg-12">
+						<label>Course</label>
+                        <dx-select-box [dataSource]="Course" formControlName="course_id"
+                            valueExpr="id" [searchEnabled]="true" displayExpr="title_en">
+                        </dx-select-box>
+					  </div>
+                      <!-- Start Date -->
+					  <div class="col-lg-6">
+                        <label for="start_date">Start Date</label>
+                        <dx-date-box [showClearButton]="true" formControlName="start_date" placeholder="Start Date">
+                        </dx-date-box>
+                       </div> 
+					  <!-- End Date -->
+					  <div class="col-lg-6">
+                        <label for="end_date">End Date</label>
+                        <dx-date-box [showClearButton]="true" formControlName="end_date" placeholder="End Date">
+                        </dx-date-box>
+                       </div> 
+					  <!-- Update and Cancel Buttons -->
+					  <div class="button-container-popup">
+						<dx-button text="Cancel" type="danger"  [elementAttr]="{ id: 'first-btn', class: 'pull-right' }"
+						  (onClick)="updatePopupVisible = false"></dx-button>
+						<dx-button text="Update" type="success" [elementAttr]="{ class: 'pull-right' }"
+						  (onClick)="onUpdateEnrollmentSubmit()">
+						  <!-- spinner -->
+						  <ng-container *ngIf="!isSubmitting">Update</ng-container>
+						  <ng-container *ngIf="isSubmitting">
+							  <div class="spinnerc"></div>
+						  </ng-container>
+						  <!-- spinner -->
+						</dx-button>
+					  </div>
+				</div>
+			</form>
+			
+		</dx-popup>
+	</ng-container>
+
+	<!-- Delete Enrollment Popup -->
+	<ng-container *ngIf="deleteEnrollmentForm.value && deletePopupVisible">
+		<dx-popup [(visible)]="deletePopupVisible" height="auto" width="auto" [showTitle]="true" title="Delete Confirmation"
+			(onHidden)="deletePopupVisible = false">
+			<form (ngSubmit)="onDeleteEnrollmentSubmit()" [formGroup]="deleteEnrollmentForm">
+				<div>
+					<p *ngIf="deleteEnrollmentForm.value && deletePopupVisible" class="confirmation-text">
+						Are you sure you want to delete "<strong>{{deleteEnrollmentForm.value.name}}</strong>"?
+					</p>
+					<div class="button-container-popup">
+					  <dx-button text="Cancel" (onClick)="deletePopupVisible = false" [elementAttr]="{ id: 'first-btn', class: 'pull-right' }"></dx-button>
+					  <dx-button text="Delete" type="danger" (onClick)="onDeleteEnrollmentSubmit()" [elementAttr]="{ class: 'pull-right' }">
+						 <!-- spinner -->
+						<ng-container *ngIf="!isSubmitting">Delete</ng-container>
+						<ng-container *ngIf="isSubmitting">
+							<div class="spinnerc"></div>
+						</ng-container>
+						<!-- spinner -->
+					  </dx-button>
+				  </div>
+				</div>
+			</form>
+		</dx-popup>
+	</ng-container>
+
+	<!-- Spinner -->
+	<div *ngIf="isLoading" class="spinner-container">
+		<div class="spinner"></div>
+	</div>
+
+	<!-- Data Grid to display Enrollment -->
+	<div *ngIf="!isLoading">
+		<!-- Menu for Add/Delete Actions -->
+		<div class="button-container">
+			<dx-menu 
+				[style]="{ 'background-color': 'lightblue' }"
+				(onItemClick)="onMenuItemClick($event)" 
+				[items]="permitGeneralEnrollmentMenuItems">
+			</dx-menu>
+		</div>
+
+		<!-- Data Grid to display Enrollments -->
+	<dx-data-grid 
+	#multipleEnrollmentGrid
+	class="table row-border hover" 
+	[dataSource]="Enrollments" 
+	[remoteOperations]='true' 
+	[showBorders]="true"
+	[allowColumnResizing]="true" 
+	[columnHidingEnabled]="false" 
+	(onSelectionChanged)="selectionChanged($event)" 
+	keyExpr="id">
+		<dxo-search-panel [visible]="true"></dxo-search-panel>
+		<dxo-paging [enabled]="true"></dxo-paging>
+		<dxo-pager [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)" [showPageSizeSelector]="true"
+			[allowedPageSizes]="[5,10]"></dxo-pager>
+
+		<dxo-selection mode="multiple"></dxo-selection>
+		<dxo-group-panel [visible]="true"></dxo-group-panel>
+
+		<!-- menu actions -->
+		<dxi-column [width]="150" caption="Action" name="command-editing"
+		[allowFiltering]="false" 
+		[allowSorting]="false" 
+		cellTemplate="cellTemplate">
+		<div *dxTemplate="let data of 'cellTemplate'">
+		  <dx-menu 
+			(onItemClick)="permitEnrollmentActionColClick($event,data)"
+			[items]="permitEnrollmentMenuItems">
+		  </dx-menu>
+		</div>
+	    </dxi-column>
+		<!-- menu actions -->
+
+        <dxi-column dataField="id" caption="ID" [visible]="false"></dxi-column>
+
+        <dxi-column dataField="student_id" caption="Student">
+            <dxo-lookup [dataSource]="Student" displayExpr="name_en" valueExpr="id">
+            </dxo-lookup>
+        </dxi-column>
+    
+        <dxi-column dataField="course_id" caption="Course">
+            <dxo-lookup [dataSource]="Course" displayExpr="title_en" valueExpr="id">
+            </dxo-lookup>
+        </dxi-column>
+    
+        <dxi-column dataField="enrollment_date" caption="Enrollment Date"></dxi-column>
+        <dxi-column dataField="start_date" caption="Start Date"></dxi-column>
+        <dxi-column dataField="end_date" caption="End Date"></dxi-column>
+    
+        <dxi-column dataField="created_by" caption="Created By"></dxi-column>
+        <dxi-column dataField="duration" caption="Time Posted"></dxi-column>
+		
+		<dxo-paging [pageSize]="10"></dxo-paging>
+	</dx-data-grid>
+	</div>
+
+	<!-- Delete Multiple Enrollment Popup -->
+    <ng-container *ngIf="selectedEnrollmentForDeletion.length > 0 && deleteMultiplePopupVisible">
+		<dx-popup [(visible)]="deleteMultiplePopupVisible" height="auto" width="auto" [showTitle]="true" title="Delete Confirmation"
+			(onHidden)="deleteMultiplePopupVisible = false">
+			<div>
+				<p class="confirmation-text">
+					Are you sure you want to delete <strong>{{selectedEnrollmentCount}}</strong> Enrollment(s)?
+				</p>
+				<div class="button-container-popup">
+					<dx-button text="Cancel" (onClick)="deleteMultiplePopupVisible = false" [elementAttr]="{ id: 'first-btn', class: 'pull-right' }"></dx-button>
+					<dx-button text="Delete" type="danger" (onClick)="confirmDeleteMultipleEnrollment()" [elementAttr]="{ class: 'pull-right' }">
+						<!-- spinner -->
+						<ng-container *ngIf="!isSubmitting">Delete</ng-container>
+						<ng-container *ngIf="isSubmitting">
+							<div class="spinnerc"></div>
+						</ng-container>
+						<!-- spinner -->
+					</dx-button>
+				</div>
+			</div>
+		</dx-popup>
+	</ng-container>
+
+</div>

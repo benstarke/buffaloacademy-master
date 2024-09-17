@@ -1,0 +1,150 @@
+
+/* HTML EDITOR
+ */
+
+ ::ng-deep .dx-htmleditor-content img {
+    vertical-align: middle;
+    padding-right: 10px;
+  }
+  
+  ::ng-deep .dx-htmleditor-content table {
+    width: 50%;
+  }
+  
+  .options {
+    padding: 20px;
+    background-color: rgba(191, 191, 191, 0.15);
+    margin-top: 20px;
+  }
+  
+  .caption {
+    font-size: 18px;
+    font-weight: 500;
+  }
+  
+  .option {
+    margin-top: 10px;
+    display: inline-block;
+    margin-right: 40px;
+  }
+  
+  ::ng-deep .option > .dx-selectbox,
+  ::ng-deep .option > .label {
+    display: inline-block;
+    vertical-align: middle;
+  }
+  
+  ::ng-deep .option > .label {
+    margin-right: 10px;
+  }
+
+
+ /* HTML EDITOR */
+
+
+/* .custom-popup-style .dx-overlay-content {
+    background-color: darkgray;
+    color: black;
+} */
+
+/* Stylying the Next Button */
+.dx-button.pull-left {
+  display: flex;
+  margin-bottom: 2;
+  padding: 0;
+justify-content: center;
+}
+.dx-button.sync-button {
+  display: flex;
+  justify-content: center;
+}
+
+.button-container {
+  display: flex; /* Use Flexbox */
+  justify-content: right; /* Align items horizontally to the center */
+}
+
+/* You can also adjust individual button styles if needed */
+.dx-button {
+margin-top: 2px; 
+  margin-right: 10px; /* Adds some spacing between buttons */
+}
+
+.confirmation-text {
+font-size: 18px; /* Adjust the font size as needed */
+}
+
+
+
+
+/* MENU ADVANCED API */
+
+
+::ng-deep #gridContainer {
+    height: 440px;
+  }
+  
+  ::ng-deep #gridContainer .dx-datagrid-content tr.dx-data-row {
+    cursor: pointer;
+  }
+  
+  ::ng-deep .employeeInfo .employeePhoto {
+    height: 140px;
+    float: left;
+    padding: 20px 5px 20px 0;
+  }
+  
+  ::ng-deep .employeeInfo .employeeContent {
+    padding-top: 20px;
+    text-align: justify;
+    white-space: normal;
+  }
+  
+  .scrollable-content {
+    max-height: 150px; /* Adjust the height as needed */
+    overflow-y: auto;
+  }
+  
+
+
+  /* ADD BUTTON */
+  
+
+  .main-wrapper {
+    padding-top: 1px; /* Adjust as needed to give space between the button and grid */
+  }
+  
+  .button-container {
+    text-align: right;
+    margin-bottom: 10px; /* Space between the button and the grid */
+  }
+  
+  .table {
+    width: 100%;
+  }
+
+  
+  /* spinner */
+  .spinner-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+
+  .spinner {
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #3498db;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 2s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  
+  

@@ -1,0 +1,36 @@
+/* .custom-tab {
+    list-style-type: none;
+    display: inline-block;
+    margin-right: 10px; 
+  }
+  
+  .custom-tab a.active {
+
+    color: #333; 
+  }
+  
+  .custom-tab .first-tab {
+    margin-left: 0;
+  }
+  
+  .custom-tab .last-tab {
+    margin-right: 0; 
+  }
+   */
+
+  .custom-tab {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .custom-tab i {
+    margin-right: 5px;
+  }
+  
+  .dx-tab-selected .custom-tab {
+    font-weight: bold;
+    color: #007bff;
+  }
+  

@@ -1,0 +1,11 @@
+{
+    "name": "SystemCourses",
+    "alias": "systemcourses",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\SystemCourses\\Providers\\SystemCoursesServiceProvider"
+    ],
+    "files": []
+}

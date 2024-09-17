@@ -1,0 +1,40 @@
+
+<!-- Browse Sub-Categories Starts Here -->
+<div *ngIf="loading" class="spinner-container">
+    <div class="spinner"></div>
+    <span class="loading-text">Loading...</span>
+</div>  
+<section *ngIf="!loading" class="section browse-categories">
+    <div class="container">
+        <h2 class="font-title--md text-center mb-0">Browse Course with Top Categories</h2>
+        <div class="col-12 browse-categories__wrapper position-relative">
+            <div class="row categories--box">
+                <!-- starts here -->
+                <div *ngFor="let sub of courseSubCategoryInfo" class="mb-2 browse-categories-item default-item-one mb-2">
+                    <div class="browse-categories-item-icon">
+                        <div class="categories-one default-categories">
+                            <img [src]="sub.sub_category_image"
+                                class="rounded-circle" width="80" height="80" alt="">
+                        </div>
+                    </div>
+                    <div class="browse-categories-item-text">
+                        <h6 class="font-title--card"><a href="#">{{ sub.sub_category_name }}</a></h6>
+                        <p>{{ sub.course_count }}  Courses</p>
+                    </div>
+                </div>
+                <!-- end here -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <a routerLink="/searchCourse" class="button button-lg button--primary mt-5">Browse all Courses</a>
+            </div>
+        </div>
+    </div>
+    <div class="browse-categories-shape">
+        <img src="assets/frontend/dist/images/shape/dots/dots-img-11.png" alt="shape"
+            class="img-fluid shape-01" />
+        <img src="assets/frontend/dist/images/shape/line01.png" alt="shape" class="img-fluid shape-02" />
+    </div>
+</section>
+<!-- Browse Sub-Categories Starts Here -->

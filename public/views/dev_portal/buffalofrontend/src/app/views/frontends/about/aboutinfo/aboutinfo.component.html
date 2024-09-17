@@ -1,0 +1,60 @@
+<div *ngIf="loading" class="spinner-container">
+    <div class="spinner"></div>
+    <span class="loading-text">Loading...</span>
+</div>  
+<!-- About Intro Starts Here -->
+<section *ngIf="!loading && aboutInfo" class="about-intro section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 position-relative mt-4 mt-lg-0" style="z-index: 0;">
+                <div class="about-intro__img-wrapper">
+                    <img src="../../../../assets/frontend/dist/images/about/intro.jpg" alt="Intro Image"
+                        class="img-fluid rounded-2 ms-lg-5 position-relative intro-image" />
+                        <!-- <img [src]="aboutInfo.about_image_path" alt="Intro Image"
+               class="img-fluid rounded-2 ms-lg-5 position-relative intro-image" /> -->
+                </div>
+                <div class="intro-shape">
+                    <img src="../../../../assets/frontend/dist/images/shape/rec04.png" alt="Shape"
+                        class="img-fluid shape-01" />
+                    <img src="../../../../assets/frontend/dist/images/shape/dots/dots-img-09.png" alt="Shape"
+                        class="img-fluid shape-02" />
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="about-intro__textContent">
+                    <h2 class="font-title--md mb-3">{{ aboutInfo.title }}</h2>
+                    <p class="mt-2 mt-lg-1 mb-2 mb-lg-4 text-secondary">
+                        {{ aboutInfo.description }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- About Intro Ends Here -->
+
+<!-- About Feature Starts Here -->
+<section *ngIf="!loading && aboutInfo" class="section aboutFeature pb-0">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="about-feature dark-feature">
+                    <h5 class="text-white font-title--sm">Who We Are</h5>
+                    <p class="text-lowblack">
+                        {{ aboutInfo.who_we_are }}
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-6 mt-4 mt-lg-0">
+                <div class="about-feature">
+                    <h5 class="font-title--sm">Our Mission</h5>
+                    <p class="text-secondary">
+                        {{ aboutInfo.our_mission }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- About Feature Ends Here -->
+

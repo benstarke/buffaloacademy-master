@@ -1,0 +1,105 @@
+/* Stylying the Next Button */
+.dx-button.pull-left {
+    display: flex;
+  justify-content: center;
+  }
+  .dx-button.sync-button {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .button-container {
+    display: flex; /* Use Flexbox */
+    justify-content: center; /* Align items horizontally to the center */
+  }
+  
+  /* You can also adjust individual button styles if needed */
+  .dx-button {
+  margin-top: 10px; 
+    float:right;
+  }
+  
+  .confirmation-text {
+  font-size: 18px; /* Adjust the font size as needed */
+  }
+  
+
+  /* spinner */
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+
+/* Spinner */
+/* Spinner Container */
+.spinner-container {
+    display: flex;
+    align-items: center; /* Center items vertically */
+    justify-content: center; /* Center items horizontally */
+    height: 100%; /* Full height of the button */
+  }
+  
+  /* Spinner */
+  .spinner {
+    width: 24px; /* Smaller size to fit well inside the button */
+    height: 24px;
+    border: 4px solid transparent;
+    border-top-color: #fff; /* White color for the spinning border */
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    background: linear-gradient(90deg, transparent, transparent 40%, rgba(255, 255, 255, 0.3)); /* Light white background */
+    margin-left: 10px; /* Add some space between the text and the spinner */
+  }
+  
+  /* Spinner Animation */
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+  /* Loading Text */
+  .loading-text {
+    font-size: 16px; /* Adjust font size as needed */
+    color: #fff; /* White text color for visibility */
+  }
+  
+
+
+/* password toggle icon */
+.position-relative {
+    position: relative;
+}
+
+.password-input {
+    padding-right: 40px; /* Ensure there is space for the icon */
+}
+
+.form-alert-icon {
+    position: absolute;
+    right: 10px;
+    top: 75%;
+    transform: translateY(-50%); /* Center the icon vertically */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    height: 100%; /* Ensure it takes the full height of the input field */
+}
+
+.form-alert-icon svg {
+    pointer-events: none; /* Allow click to pass through to the parent div */
+    color: #6c757d; /* Adjust color if needed */
+}
+

@@ -1,0 +1,145 @@
+
+.custom-popup-style .dx-overlay-content {
+    background-color: darkgray;
+    color: black;
+  }
+  
+  /* Stylying the Next Button */
+  .dx-button.pull-left {
+  display: flex;
+  /* margin-bottom: 1; */
+  padding: 0;
+  justify-content: center;
+  }
+  .dx-button.sync-button {
+  display: flex;
+  justify-content: center;
+  }
+  
+  .button-container {
+  display: flex; /* Use Flexbox */
+  justify-content: right; /* Align items horizontally to the center */
+  }
+  
+  /* You can also adjust individual button styles if needed */
+  .dx-button {
+  margin-top: 5px; 
+  margin-right: 10px; /* Adds some spacing between buttons */
+  }
+  
+  .confirmation-text {
+  font-size: 18px; /* Adjust the font size as needed */
+  }
+  
+  
+  
+  
+  /* ADD BUTTON */
+  
+  .main-wrapper {
+    padding-top: 1px; /* Adjust as needed to give space between the button and grid */
+  }
+  
+  .button-container {
+    text-align: right;
+    /* Space between the button and the grid */
+    /* margin-bottom: 2px;  */
+    margin-top: 10px;
+  }
+  
+  .table {
+    width: 100%;
+  }
+  
+
+
+  
+/* MENU ADVANCED API */
+
+
+::ng-deep #gridContainer {
+    height: 440px;
+  }
+  
+  ::ng-deep #gridContainer .dx-datagrid-content tr.dx-data-row {
+    cursor: pointer;
+  }
+  
+  ::ng-deep .employeeInfo {
+    display: flex; /* Apply flexbox layout to the container */
+    align-items: flex-start; /* Align items to the top of the container */
+  }
+  
+  ::ng-deep .employeeInfo a {
+    display: block; /* Ensure the <a> tag takes up the height of the content */
+    margin-right: 20px; /* Add space between photo and content */
+  }
+  
+  ::ng-deep .employeeInfo .employeePhoto {
+    height: 200px;
+    width: 200px; /* Ensure the image has a fixed width */
+    object-fit: cover; /* Ensure the image covers the container */
+    /* Remove padding and float */
+  }
+  
+  ::ng-deep .employeeInfo .scrollable-content {
+    flex: 1; /* Allow this element to take up remaining space */
+  }
+  
+  ::ng-deep .employeeInfo .employeeContent {
+    padding-top: 20px;
+    text-align: justify;
+    white-space: normal;
+  }
+  
+  
+  .scrollable-content {
+    max-height: 150px; /* Adjust the height as needed */
+    overflow-y: auto;
+  }
+  
+
+
+  /* FILE (IMAGE) UPLOADER */
+  ::ng-deep .widget-container {
+    margin-right: 320px;
+  }
+  
+  ::ng-deep .content h4 {
+    margin-bottom: 10px;
+    font-weight: 500;
+    font-size: 18px;
+  }
+  
+  ::ng-deep .content {
+    margin-top: 50px;
+    margin-left: 10px;
+  }
+  
+  ::ng-deep .selected-item {
+    margin-bottom: 20px;
+  }
+  
+  ::ng-deep #selected-files {
+    display: none;
+  }
+  
+  .options {
+    padding: 20px;
+    background-color: rgba(191, 191, 191, 0.15);
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 260px;
+  }
+  
+  .caption {
+    font-size: 18px;
+    font-weight: 500;
+  }
+  
+  .option {
+    margin-top: 10px;
+  }
+  

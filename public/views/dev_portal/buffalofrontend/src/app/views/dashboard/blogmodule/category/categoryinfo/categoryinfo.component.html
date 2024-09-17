@@ -1,0 +1,27 @@
+<div class="wrapper">
+    <!-- Data Grid to display Categories -->
+    <dx-data-grid class="table row-border hover" [dataSource]="categories" [remoteOperations]='true' [showBorders]="true"
+      [allowColumnResizing]="true" [columnHidingEnabled]="false" (onSelectionChanged)="selectionChanged($event)" keyExpr="id">
+      <!-- <dxo-filter-row [visible]="true"></dxo-filter-row> -->
+      <dxo-search-panel [visible]="true"></dxo-search-panel>
+      <dxo-paging [enabled]="true"></dxo-paging>
+      <dxo-pager [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)" [showPageSizeSelector]="true"
+          [allowedPageSizes]="[5,10]"></dxo-pager>
+      <dxo-export [enabled]="true" fileName="Categories" [allowExportSelectedData]="true"></dxo-export>
+      <dxo-selection mode="multiple"></dxo-selection>
+       <!-- Selection, group panel, and other configurations -->
+      <!-- <dxo-selection mode="single"></dxo-selection> -->
+      <dxo-group-panel [visible]="true"></dxo-group-panel>
+  
+      <dxi-column dataField="id" caption="ID" [visible]="false"></dxi-column>
+      <dxi-column dataField="name" caption="Category Name"></dxi-column>
+      <dxi-column dataField="description" caption="Description"></dxi-column>
+      <dxi-column dataField="author" caption="Created By"></dxi-column>
+    <dxi-column dataField="duration" caption="Time Posted"></dxi-column>
+  
+      
+      <dxo-paging [pageSize]="10"></dxo-paging>
+    </dx-data-grid>
+  
+  </div>
+  

@@ -1,0 +1,210 @@
+cell 1::::
+import numpy as np
+from sklearn.datasets import load_iris
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+cell 2::::
+# Load the dataset
+iris = load_iris()
+X = iris.data  # features
+y = iris.target  # target values
+
+# Only use two features
+X = X[:, [0, -1]]
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+
+
+complete the below parts:
+
+cell 3::::
+
+# Part 1: Effectiveness of Standard Normalization
+# TODO: implement functions for feature standard normalization
+# Note that, when normalizing test data, the mean and std are obtained from training data
+def normalize_training_data(features):
+    # TODO
+    return normalized_features, mean, std
+
+def normalize_test_data(features, train_mean, train_std):
+    # TODO
+    return normalized_features
+
+
+
+cell 4::::
+# TODO: apply standard normalization on training and test data
+# the normalized features are called X_train_norm and X_test_norm
+
+
+
+cell 5::::
+# Train a logistic regression model on raw data
+model = LogisticRegression(max_iter=200)
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+accuracy = accuracy_score(y_test, y_pred)
+iterations = model.n_iter_
+
+# Train the model on normalized data
+model_norm = LogisticRegression(max_iter=200)
+model_norm.fit(X_train_norm, y_train)
+y_pred_norm = model_norm.predict(X_test_norm)
+accuracy_norm = accuracy_score(y_test, y_pred_norm)
+iterations_norm = model_norm.n_iter_
+
+# Observe the results
+print(f"Accuracy without normalization: {accuracy:.4f}")
+print(f"Accuracy with normalization: {accuracy_norm:.4f}")
+print(f"Iterations without normalization: {iterations[0]}")
+print(f"Iterations with normalization: {iterations_norm[0]}")
+
+
+
+complete part 1 above by updating the cells by following the below parts:
+
+Part 1 Effectiveness of Standard Normalization 
+Step 1: Fit a linear regression model to the raw dataset. 
+Step 2: Write a function to normalize a feature  by x
+
+x = (x-μ) / σ
+
+
+Where:
+
+
+X: The normalized value (Z-score)
+
+x: The original data point
+
+μ: The mean of the dataset
+
+σ: The standard deviation of the dataset
+
+
+Apply the function to all features in the dataset. 
+Step 3: Fit a linear regression model to the normalized dataset and compare its performance with the previous one.
+
+
+
+
+next update the below 
+
+cell 6::::
+# Part 2 The Impact of Outliers on Normalization
+# Add outliers
+np.random.seed(42)  # Seed for reproducibility
+outliers_sepal_length = 20 + 5 * np.random.randn(10)
+outliers_petal_width = 20 + 0.5 * np.random.randn(10)
+outliers = np.column_stack((outliers_sepal_length, outliers_petal_width))
+X_train_outliers = np.vstack([X_train, outliers])  # Add outliers to the dataset
+y_train_outliers = np.append(y_train, [3]*10)  # Append arbitrary class labels for outliers
+
+
+cell 7::::
+# TODO: Normalize the features of data with outliers
+# the normalized features are called X_train_outliers_norm and X_test_norm
+
+
+
+cell 8::::
+# Train a logistic regression model on data with outliers
+model = LogisticRegression(max_iter=200)
+model.fit(X_train_outliers, y_train_outliers)
+y_pred = model.predict(X_test)
+accuracy = accuracy_score(y_test, y_pred)
+iterations = model.n_iter_
+
+# Train a logistic regression model on normalized data with outliers
+model_outliers = LogisticRegression(max_iter=200)
+model_outliers.fit(X_train_outliers_norm, y_train_outliers)
+y_pred_outliers = model_outliers.predict(X_test_norm)
+accuracy_outliers = accuracy_score(y_test, y_pred_outliers)
+iterations_outliers = model_outliers.n_iter_
+
+# observe the results
+print(f"Accuracy without normalization: {accuracy:.4f}")
+print(f"Accuracy with normalization on outliers: {accuracy_outliers:.4f}")
+print(f"Iterations without normalization: {iterations[0]}")
+print(f"Iterations with normalization on outliers: {iterations_outliers[0]}")
+
+
+
+
+update part 2 based on the below instructuons:
+Part 2 The Impact of Outliers on Normalization 
+Step 1: Insert a subset of data points with abnormal large attribute values to simulate outliers. 
+Step 2: Apply normalization (defined in Part 1) on the modified dataset and observe the changes in model’s 
+performance. 
+
+
+
+next:
+
+
+cell 9::::
+# Part 3 Implementing Robust Scaling
+# TODO: implement functions for feature robust normalization (use median and abs std)
+# Note that, when normalizing test data, the median and abs std are obtained from training data
+def robust_normalize_training_data(features):
+    # TODO
+    return normalized_features, median, mad
+
+def robust_normalize_test_data(features, train_median, train_mad):
+    # TODO
+    return normalized_features
+
+
+
+cell 10::::
+# TODO: Normalize the features of data with outliers
+# the normalized features are called X_train_outliers_norm and X_test_norm
+
+
+
+cell 11::::
+# Train a logistic regression model on normalized data with outliers
+model_outliers_norm = LogisticRegression(max_iter=200)
+model_outliers_norm.fit(X_train_outliers_norm, y_train_outliers)
+y_pred_outliers_norm = model_outliers_norm.predict(X_test_norm)
+accuracy_outliers_norm = accuracy_score(y_test, y_pred_outliers_norm)
+iterations_outliers_norm = model_outliers_norm.n_iter_
+
+# observe the results
+print(f"Accuracy without normalization: {accuracy:.4f}")
+print(f"Accuracy with normalization: {accuracy_outliers_norm:.4f}")
+print(f"Iterations without normalization: {iterations[0]}")
+print(f"Iterations with normalization: {iterations_outliers_norm[0]}")
+
+update the above based on:
+Part 3 Implementing Robust Scaling 
+Step 1: Implement the variant of normalization 
+●  Mean -> median 
+●  Standard deviation -> absolute standard deviation 
+Step 2: Apply robust normalization on the modified dataset and observe the changes in model’s performance.
+
+
+
+Part 1 results:
+Accuracy without normalization: 1.0000
+Accuracy with normalization: 1.0000
+Iterations without normalization: 48
+Iterations with normalization: 15
+
+Part 2 results:
+Accuracy without normalization: 1.0000
+Accuracy with normalization on outliers: 0.9333
+Iterations without normalization: 106
+Iterations with normalization on outliers: 18
+
+Part 3 results:
+Accuracy without normalization: 1.0000
+Accuracy with normalization: 0.9333
+Iterations without normalization: 106
+Iterations with normalization: 18
+
+ observe the changes in model’s performance.

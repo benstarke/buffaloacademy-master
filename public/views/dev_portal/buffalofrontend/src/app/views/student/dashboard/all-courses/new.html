@@ -1,0 +1,470 @@
+<!-- {{-- Tabs --}} -->
+<ul class="nav course-overview-nav nav-pills mb-3" id="pills-tab" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link font-para--lg" id="pills-profile-tab" data-bs-toggle="pill"
+            data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile"
+            aria-selected="false">
+            Curriculum
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link font-para--lg" id="pills-c-instructor-tab" data-bs-toggle="pill"
+            data-bs-target="#pills-c-instructor" type="button" role="tab"
+            aria-controls="pills-c-instructor" aria-selected="false">
+            Lessons
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link me-0 font-para--lg" id="pills-course-review-tab"
+            data-bs-toggle="pill" data-bs-target="#pills-review" type="button" role="tab"
+            aria-controls="pills-course-review-tab" aria-selected="false">
+            Materials
+        </button>
+    </li>
+</ul>
+<!-- {{-- Tabs --}} -->
+
+<div class="tab-content course-overview-content" id="pills-tabContentTwo">
+    <!-- Course Curriculum Area Starts Here -->
+    <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile">
+        <div class="row">
+            <div *ngIf="loading" class="spinner-container">
+                <div class="spinner"></div>
+                <span class="loading-text">Loading...</span>
+            </div>
+            <div class="course-curriculum-area">
+                <ng-container *ngIf="curriculum && curriculum.length > 0; else noCourseCurriculum">
+                    <div *ngFor="let item of curriculum" class="curriculum-area">
+                        <div class="curriculum-area-top" role="button" data-bs-toggle="collapse"
+                            [attr.data-bs-target]="'#collapse' + item.id" aria-expanded="false"
+                            [attr.aria-controls]="'collapse' + item.id">
+
+                            <div class="curriculum-area-top-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                    viewBox="0 0 20 20" fill="none">
+                                    <path d="M15.8332 7.08337L9.99984 12.9167L4.1665 7.08337"
+                                        stroke="#42414B" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                                <p class="font-para--lg">{{item.name}}</p>
+                            </div>
+
+                            <div *ngIf="item.lessonSummaryLoaded" class="curriculum-area-top-end">
+                                <div class="total-lesson">
+                                    <svg width="18" height="19" viewBox="0 0 18 19" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M1.5 2.75H6C6.79565 2.75 7.55871 3.06607 8.12132 3.62868C8.68393 4.19129 9 4.95435 9 5.75V16.25C9 15.6533 8.76295 15.081 8.34099 14.659C7.91903 14.2371 7.34674 14 6.75 14H1.5V2.75Z"
+                                            stroke="#00AF91" stroke-width="1.8" stroke-linecap="round"
+                                            stroke-linejoin="round" />
+                                        <path
+                                            d="M16.5 2.75H12C11.2044 2.75 10.4413 3.06607 9.87868 3.62868C9.31607 4.19129 9 4.95435 9 5.75V16.25C9 15.6533 9.23705 15.081 9.65901 14.659C10.081 14.2371 10.6533 14 11.25 14H16.5V2.75Z"
+                                            stroke="#00AF91" stroke-width="1.8" stroke-linecap="round"
+                                            stroke-linejoin="round" />
+                                    </svg>
+                                    <span class="pl-1">{{ item.lessonSummary?.total_lessons }} Lesson</span>
+                                </div>
+                                <div class="total-hours">
+                                    <svg width="18" height="19" viewBox="0 0 18 19" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M9 17C13.1421 17 16.5 13.6421 16.5 9.5C16.5 5.35786 13.1421 2 9 2C4.85786 2 1.5 5.35786 1.5 9.5C1.5 13.6421 4.85786 17 9 17Z"
+                                            stroke="#FFC91B" stroke-width="1.8" stroke-linecap="round"
+                                            stroke-linejoin="round" />
+                                        <path d="M9 5V9.5L12 11" stroke="#FFC91B" stroke-width="1.8"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                    <span class="pl-1">{{ item.lessonSummary?.total_duration?.hours }}H {{ item.lessonSummary?.total_duration?.minutes }}M</span>
+                                </div>
+                            </div>
+                            <div *ngIf="!item.lessonSummaryLoaded">
+                                <p>Loading lesson summary...</p>
+                            </div>
+                        </div>
+                        <div *ngIf="item.lessons" class="curriculum-area-bottom collapse show" [id]="'collapse' + item.id">
+
+                            <div *ngFor="let lesson of item.lessons" class="curriculum-description active">
+                                <div class="curriculum-description-start">
+                                    <p>
+                                        <a>
+                                            <!-- <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                class="feather feather-play-circle">
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                                <polygon points="10 8 16 12 10 16 10 8"></polygon>
+                                            </svg> -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                class="feather feather-file">
+                                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                                <polyline points="14 2 14 8 20 8"></polyline>
+                                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                                <polyline points="10 9 9 9 8 9"></polyline>
+                                            </svg>
+                                        </a>
+                                        <a href="#" (click)="handleLinkClick($event, lesson)">{{ lesson.id }}. {{ lesson.title }}</a>
+                                    </p>
+                                </div>
+                                
+                                
+                                <div class="curriculum-description-end">
+                                    <span class="pr-3">{{ lesson.minutes }}:{{ lesson.seconds }}</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                        class="feather feather-lock">
+                                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2">
+                                        </rect>
+                                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="!item.lessons">
+                            <span>Loading lessons...</span>
+                        </div>
+                        
+                    </div>
+                </ng-container>
+                <ng-template #noCourseCurriculum>
+                    <div class="curriculum-area-top-start">
+                        <p>No course curriculum information available.</p>
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+    <!-- Course Curriculum Area Ends Here -->
+    <!-- POPUP -->
+    <!-- popup material starts here -->
+    <dx-popup
+    id="popup"
+    [(visible)]="isMaterialPopupVisible"
+    [hideOnOutsideClick]="true"
+    [showTitle]="true"
+    [title]="currentlyOpenLesson?.title || ''"
+    [height]="500"
+    [width]="800"
+    [resizeEnabled]="true"
+    [dragEnabled]="true"
+    position="center"
+    [shading]="false"
+    (onHidden)="closePopup()">
+    <ng-container *ngIf="currentlyOpenLesson">
+        <p>{{ currentlyOpenLesson.description }}</p>
+        <p>{{ currentlyOpenLesson.notes }}</p>
+        
+        <!-- Display materials if they exist -->
+        <div class="row">
+            <div class="course-curriculum-area">
+                <div class="curriculum-area">
+                    <ng-container *ngIf="currentlyOpenLesson.materials && currentlyOpenLesson.materials.length">
+                        <p>Materials to download</p>
+                        <div class="curriculum-area-bottom collapse show">
+                            <div *ngFor="let material of currentlyOpenLesson.materials" class="curriculum-description active">
+                                <div class="curriculum-description-start">
+                                    <p>
+                                        <a *ngIf="material.type === 'video'">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                class="feather feather-play-circle">
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                                <polygon points="10 8 16 12 10 16 10 8"></polygon>
+                                            </svg>
+                                        </a>
+                                        <a *ngIf="material.type === 'document'">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                class="feather feather-file">
+                                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                                <polyline points="14 2 14 8 20 8"></polyline>
+                                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                                <polyline points="10 9 9 9 8 9"></polyline>
+                                            </svg>
+                                        </a>
+                                        <a>{{ material.id }}. {{ material.title }}</a>
+                                    </p>
+                                </div>
+                                
+                
+                                <!-- Add content below on a new row -->
+                                <div class="curriculum-description-content">
+                                    <p>{{ material.type }}</p>
+                                </div>
+
+                                <!-- download icon -->
+                                <div class="curriculum-description-end">
+                                    <a [href]="material.content" download>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                            class="feather feather-download icon-download">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                        <polyline points="7 10 12 15 17 10"></polyline>
+                                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <ng-template #noMaterials>
+                        <div class="curriculum-area-top-start">
+                            <p>No more materials. Thanks for Studying with us</p>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+    </dx-popup>
+
+    <!-- POP UP -->
+    <!-- pop up  -->
+    <!-- popup material ends here -->
+</div>
+
+
+
+
+<dx-popup
+id="popup"
+[(visible)]="isMaterialPopupVisible"
+[hideOnOutsideClick]="true"
+[showTitle]="true"
+[title]="currentlyOpenLesson?.title || ''"
+[height]="500"
+[width]="800"
+[resizeEnabled]="true"
+[dragEnabled]="true"
+position="center"
+[shading]="false"
+(onHidden)="closePopup()">
+
+
+<!-- {{-- Tabs --}} -->
+<ul class="nav course-overview-nav nav-pills mb-3" id="pills-tab" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link font-para--lg" id="pills-profile-tab" data-bs-toggle="pill"
+            data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile"
+            aria-selected="false">
+            Curriculum
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link font-para--lg" id="pills-c-instructor-tab" data-bs-toggle="pill"
+            data-bs-target="#pills-c-instructor" type="button" role="tab"
+            aria-controls="pills-c-instructor" aria-selected="false">
+            Lessons
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link me-0 font-para--lg" id="pills-course-review-tab"
+            data-bs-toggle="pill" data-bs-target="#pills-review" type="button" role="tab"
+            aria-controls="pills-course-review-tab" aria-selected="false">
+            Materials
+        </button>
+    </li>
+</ul>
+<!-- {{-- Tabs --}} -->
+
+<div class="tab-content course-overview-content" id="pills-tabContentTwo">
+<!-- Course Curriculum Area Starts Here -->
+<div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile">
+    <div class="row">
+        <div *ngIf="loading" class="spinner-container">
+            <div class="spinner"></div>
+            <span class="loading-text">Loading...</span>
+        </div>
+        <div class="course-curriculum-area">
+            <ng-container *ngIf="curriculum && curriculum.length > 0; else noCourseCurriculum">
+                <div *ngFor="let item of curriculum" class="curriculum-area">
+                    <div class="curriculum-area-top" role="button" data-bs-toggle="collapse"
+                        [attr.data-bs-target]="'#collapse' + item.id" aria-expanded="false"
+                        [attr.aria-controls]="'collapse' + item.id">
+
+                        <div class="curriculum-area-top-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                viewBox="0 0 20 20" fill="none">
+                                <path d="M15.8332 7.08337L9.99984 12.9167L4.1665 7.08337"
+                                    stroke="#42414B" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                            <p class="font-para--lg">{{item.name}}</p>
+                        </div>
+
+                        <div *ngIf="item.lessonSummaryLoaded" class="curriculum-area-top-end">
+                            <div class="total-lesson">
+                                <svg width="18" height="19" viewBox="0 0 18 19" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M1.5 2.75H6C6.79565 2.75 7.55871 3.06607 8.12132 3.62868C8.68393 4.19129 9 4.95435 9 5.75V16.25C9 15.6533 8.76295 15.081 8.34099 14.659C7.91903 14.2371 7.34674 14 6.75 14H1.5V2.75Z"
+                                        stroke="#00AF91" stroke-width="1.8" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path
+                                        d="M16.5 2.75H12C11.2044 2.75 10.4413 3.06607 9.87868 3.62868C9.31607 4.19129 9 4.95435 9 5.75V16.25C9 15.6533 9.23705 15.081 9.65901 14.659C10.081 14.2371 10.6533 14 11.25 14H16.5V2.75Z"
+                                        stroke="#00AF91" stroke-width="1.8" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                                <span class="pl-1">{{ item.lessonSummary?.total_lessons }} Lesson</span>
+                            </div>
+                            <div class="total-hours">
+                                <svg width="18" height="19" viewBox="0 0 18 19" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M9 17C13.1421 17 16.5 13.6421 16.5 9.5C16.5 5.35786 13.1421 2 9 2C4.85786 2 1.5 5.35786 1.5 9.5C1.5 13.6421 4.85786 17 9 17Z"
+                                        stroke="#FFC91B" stroke-width="1.8" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path d="M9 5V9.5L12 11" stroke="#FFC91B" stroke-width="1.8"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                                <span class="pl-1">{{ item.lessonSummary?.total_duration?.hours }}H {{ item.lessonSummary?.total_duration?.minutes }}M</span>
+                            </div>
+                        </div>
+                        <div *ngIf="!item.lessonSummaryLoaded">
+                            <p>Loading lesson summary...</p>
+                        </div>
+                    </div>
+                    <div *ngIf="item.lessons" class="curriculum-area-bottom collapse show" [id]="'collapse' + item.id">
+
+                        <div *ngFor="let lesson of item.lessons" class="curriculum-description active">
+                            <div class="curriculum-description-start">
+                                <p>
+                                    <a>
+                                        <!-- <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                            class="feather feather-play-circle">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <polygon points="10 8 16 12 10 16 10 8"></polygon>
+                                        </svg> -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                            class="feather feather-file">
+                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                            <polyline points="14 2 14 8 20 8"></polyline>
+                                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                                            <polyline points="10 9 9 9 8 9"></polyline>
+                                        </svg>
+                                    </a>
+                                    <a href="#" (click)="handleLinkClick($event, lesson)">{{ lesson.id }}. {{ lesson.title }}</a>
+                                </p>
+                            </div>
+                            
+                            
+                            <div class="curriculum-description-end">
+                                <span class="pr-3">{{ lesson.minutes }}:{{ lesson.seconds }}</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                    class="feather feather-lock">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2">
+                                    </rect>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="!item.lessons">
+                        <span>Loading lessons...</span>
+                    </div>
+                    
+                </div>
+            </ng-container>
+            <ng-template #noCourseCurriculum>
+                <div class="curriculum-area-top-start">
+                    <p>No course curriculum information available.</p>
+                </div>
+            </ng-template>
+        </div>
+    </div>
+</div>
+<!-- Course Curriculum Area Ends Here -->
+</div>
+
+<div class="tab-pane fade" id="pills-c-instructor" role="tabpanel" aria-labelledby="pills-c-instructor-tab">
+    <div class="row">
+        Lessons
+    </div>
+</div>
+
+<div class="tab-pane fade show course-review-content" id="pills-review" role="tabpanel"
+                            aria-labelledby="pills-review">
+                            <div class="tab-content" id="pills-tabContent">
+                                <div class="tab-pane fade" id="pills-courses" role="tabpanel"
+                                    aria-labelledby="pills-courses">
+
+<ng-container *ngIf="currentlyOpenLesson">
+    <p>{{ currentlyOpenLesson.description }}</p>
+    <p>{{ currentlyOpenLesson.notes }}</p>
+    
+    <!-- Display materials if they exist -->
+    <div class="row">
+        <div class="course-curriculum-area">
+            <div class="curriculum-area">
+                <ng-container *ngIf="currentlyOpenLesson.materials && currentlyOpenLesson.materials.length">
+                    <p>Materials to download</p>
+                    <div class="curriculum-area-bottom collapse show">
+                        <div *ngFor="let material of currentlyOpenLesson.materials" class="curriculum-description active">
+                            <div class="curriculum-description-start">
+                                <p>
+                                    <a *ngIf="material.type === 'video'">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                            class="feather feather-play-circle">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <polygon points="10 8 16 12 10 16 10 8"></polygon>
+                                        </svg>
+                                    </a>
+                                    <a *ngIf="material.type === 'document'">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                            class="feather feather-file">
+                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                            <polyline points="14 2 14 8 20 8"></polyline>
+                                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                                            <polyline points="10 9 9 9 8 9"></polyline>
+                                        </svg>
+                                    </a>
+                                    <a>{{ material.id }}. {{ material.title }}</a>
+                                </p>
+                            </div>
+                            
+            
+                            <!-- Add content below on a new row -->
+                            <div class="curriculum-description-content">
+                                <p>{{ material.type }}</p>
+                            </div>
+
+                            <!-- download icon -->
+                            <div class="curriculum-description-end">
+                                <a [href]="material.content" download>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                        class="feather feather-download icon-download">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+                <ng-template #noMaterials>
+                    <div class="curriculum-area-top-start">
+                        <p>No more materials. Thanks for Studying with us</p>
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</ng-container>
+                                </div>
+                            </div>
+</div>
+</dx-popup>

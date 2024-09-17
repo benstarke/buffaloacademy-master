@@ -1,0 +1,601 @@
+<div class="main-wrapper">
+
+    <div class="row page-titles mx-0">
+        <div class="col-sm-6 p-md-0">
+            <div class="welcome-text">
+                <h4>Buffalo Courses Operations</h4>
+            </div>
+        </div>
+        <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a routerLink="/admin-buffalo/master-dashboard">Home</a></li>
+                <li class="breadcrumb-item active"><a
+                        routerLink="/admin-buffalo/course-management/dashboard-courses">Course</a></li>
+                <li class="breadcrumb-item active"><a
+                        routerLink="/admin-buffalo/course-management/dashboard-courses">All Courses</a></li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- Add Course Popup -->
+    <ng-container *ngIf="addCourseForm.value && addPopupVisible">
+        <dx-popup [(visible)]="addPopupVisible" [width]="600" [height]="'auto'" [showTitle]="true"
+            [title]="'Add New Course'" (onHidden)="onPopupHidden()">
+            <form (ngSubmit)="onAddCourseSubmit(false)" [formGroup]="addCourseForm">
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <label for="title_en">Title of the Course:<span class="text-danger">*</span></label>
+                        <dx-text-box [showClearButton]="true" formControlName="title_en"
+                            placeholder="Course title"></dx-text-box>
+                        <!-- Display error message for the title field -->
+                        <div *ngIf="addCourseForm.get('title_en')?.invalid && (addCourseForm.get('title_en')?.touched || addCourseForm.get('title_en')?.dirty)"
+                            class="text-danger">
+                            <ng-container *ngIf="addCourseForm.get('title_en')?.errors?.['required']">Course title is
+                                required</ng-container>
+                            <ng-container *ngIf="addCourseForm.get('title_en')?.errors?.['pattern']">Invalid Course
+                                title</ng-container>
+                        </div>
+                    </div>
+
+                    <!-- Course Category -->
+    <div class="col-lg-6">
+        <label for="course_category_id">Course Category:<span class="text-danger">*</span></label>
+        <dx-select-box [dataSource]="Category" formControlName="course_category_id" valueExpr="id" [searchEnabled]="true" displayExpr="category_name">
+        </dx-select-box>
+        <div *ngIf="addCourseForm.get('course_category_id')?.invalid && (addCourseForm.get('course_category_id')?.touched || addCourseForm.get('course_category_id')?.dirty)" class="text-danger">
+            <ng-container *ngIf="addCourseForm.get('course_category_id')?.errors?.['required']">Course Category is required</ng-container>
+        </div>
+    </div>
+
+    <!-- Course SubCategory (Populated dynamically based on selected category) -->
+    <div class="col-lg-6">
+        <label for="course_sub_category_id">Course SubCategory:<span class="text-danger">*</span></label>
+        <dx-select-box [dataSource]="SubCategory" formControlName="course_sub_category_id" valueExpr="id" [searchEnabled]="true" displayExpr="sub_category_name">
+        </dx-select-box>
+        <div *ngIf="addCourseForm.get('course_sub_category_id')?.invalid && (addCourseForm.get('course_sub_category_id')?.touched || addCourseForm.get('course_sub_category_id')?.dirty)" class="text-danger">
+            <ng-container *ngIf="addCourseForm.get('course_sub_category_id')?.errors?.['required']">Course SubCategory is required</ng-container>
+        </div>
+    </div>
+
+                    <div class="col-lg-4">
+                        <label for="course_type_id">Course Type:<span class="text-danger">*</span></label>
+                        <dx-select-box [dataSource]="Type" formControlName="course_type_id" valueExpr="id"
+                            [searchEnabled]="true" displayExpr="name">
+                        </dx-select-box>
+                        <div *ngIf="addCourseForm.get('course_type_id')?.invalid && (addCourseForm.get('course_type_id')?.touched || addCourseForm.get('course_type_id')?.dirty)"
+                            class="text-danger">
+                            <ng-container *ngIf="addCourseForm.get('course_type_id')?.errors?.['required']">Course Type is required</ng-container>
+                        </div>
+                    </div>
+                
+                    <!-- Dynamically show currency_id and subscription_price if course type is Paid -->
+                    <div *ngIf="addCourseForm.get('course_type_id')?.value === 'Paid'">
+                        <div class="col-lg-4">
+                            <label for="currency_id">Course Currency:<span class="text-danger">*</span></label>
+                            <dx-select-box [dataSource]="Currency" formControlName="currency_id" valueExpr="id"
+                                [searchEnabled]="true" displayExpr="name">
+                            </dx-select-box>
+                            <div *ngIf="addCourseForm.get('currency_id')?.invalid && (addCourseForm.get('currency_id')?.touched || addCourseForm.get('currency_id')?.dirty)"
+                                class="text-danger">
+                                <ng-container *ngIf="addCourseForm.get('currency_id')?.errors?.['required']">Course Currency is required</ng-container>
+                            </div>
+                        </div>
+                
+                        <div class="col-lg-4">
+                            <label for="subscription_price">Course Subscription Fee:</label>
+                            <dx-text-box formControlName="subscription_price" placeholder="Subscription Fee"></dx-text-box>
+                        </div>
+                    </div>
+
+
+                
+
+
+                    <div class="col-lg-4">
+                        <label for="course_difficulty_id">Course Difficulty:<span class="text-danger">*</span></label>
+                        <!-- Course select box with required validation and error message -->
+                        <dx-select-box [dataSource]="Difficulty" formControlName="course_difficulty_id" valueExpr="id"
+                            [searchEnabled]="true" displayExpr="name">
+                        </dx-select-box>
+                        <!-- Display error message for the course_difficulty_id field -->
+                        <div *ngIf="addCourseForm.get('course_difficulty_id')?.invalid && (addCourseForm.get('course_difficulty_id')?.touched || addCourseForm.get('course_difficulty_id')?.dirty)"
+                            class="text-danger">
+                            <ng-container *ngIf="addCourseForm.get('course_difficulty_id')?.errors?.['required']">Course Difficulty
+                                is required</ng-container>
+                        </div>
+                    </div>
+
+
+                    <div class="col-lg-4">
+                        <label for="code">Course Duration:</label>
+                        <dx-number-box [min]="0" [showSpinButtons]="true" [showClearButton]="true" formControlName="duration" placeholder="Duration"></dx-number-box>
+                    </div>
+
+                    <!-- course image -->
+                    <div class="mt-3 col-lg-12">
+                        <label for="image">Course Image:<span class="text-danger">*</span></label>
+
+                        <!-- File input that dynamically updates based on Course type -->
+                        <input #fileInput type="file" (change)="onFileSelected($event, 'image')"
+                            [attr.accept]="getAcceptForFile('image')">
+
+                        <!-- Progress bar for file upload -->
+                        <div *ngIf="uploadProgress >= 0" style="margin-top: 1rem;">
+                            <label>Upload Progress:</label>
+                            <div class="progress" style="height: 30px; background-color: #f3f3f3; border-radius: 5px;">
+                                <div class="progress-bar" role="progressbar" [style.width]="uploadProgress + '%'"
+                                    aria-valuenow="uploadProgress" aria-valuemin="0" aria-valuemax="100"
+                                    style="height: 100%; line-height: 30px; background-color: #007bff; color: white; text-align: center; font-weight: bold;">
+                                    {{ uploadProgress }}%
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Display error message for the image field -->
+                        <div *ngIf="addCourseForm.get('image')?.invalid && (addCourseForm.get('image')?.touched || addCourseForm.get('image')?.dirty)"
+                            class="text-danger">
+                            <ng-container *ngIf="addCourseForm.get('image')?.errors?.['required']">Course image is
+                                required</ng-container>
+                            <ng-container *ngIf="fileError">{{ fileError }}</ng-container>
+                        </div>
+                    </div>
+
+                    <!-- course thumbnail image -->
+                    <div class="mt-3 col-lg-12">
+                        <label for="thumbnail_image">Course Thumbnail Image:<span class="text-danger">*</span></label>
+
+                        <!-- File input that dynamically updates based on Course type -->
+                        <input #fileInput type="file" (change)="onFileSelected($event, 'thumbnail_image')"
+                            [attr.accept]="getAcceptForFile('thumbnail_image')">
+
+                        <!-- Progress bar for file upload -->
+                        <div *ngIf="uploadProgress >= 0" style="margin-top: 1rem;">
+                            <label>Upload Progress:</label>
+                            <div class="progress" style="height: 30px; background-color: #f3f3f3; border-radius: 5px;">
+                                <div class="progress-bar" role="progressbar" [style.width]="uploadProgress + '%'"
+                                    aria-valuenow="uploadProgress" aria-valuemin="0" aria-valuemax="100"
+                                    style="height: 100%; line-height: 30px; background-color: #007bff; color: white; text-align: center; font-weight: bold;">
+                                    {{ uploadProgress }}%
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Display error message for the thumbnail_image field -->
+                        <div *ngIf="addCourseForm.get('thumbnail_image')?.invalid && (addCourseForm.get('thumbnail_image')?.touched || addCourseForm.get('thumbnail_image')?.dirty)"
+                            class="text-danger">
+                            <ng-container *ngIf="addCourseForm.get('thumbnail_image')?.errors?.['required']">Course thumbnail image is
+                                required</ng-container>
+                            <ng-container *ngIf="fileError">{{ fileError }}</ng-container>
+                        </div>
+                    </div>
+
+                    <!-- course thumbnail video -->
+                    <div class="mt-3 col-lg-12">
+                        <label for="content">Course Thumbnail video:<span class="text-danger">*</span></label>
+
+                        <!-- File input that dynamically updates based on Course type -->
+                        <input #fileInput type="file" (change)="onFileSelected($event, 'thumbnail_video')"
+                            [attr.accept]="getAcceptForFile('thumbnail_video')">
+
+                        <!-- Progress bar for file upload -->
+                        <div *ngIf="uploadProgress >= 0" style="margin-top: 1rem;">
+                            <label>Upload Progress:</label>
+                            <div class="progress" style="height: 30px; background-color: #f3f3f3; border-radius: 5px;">
+                                <div class="progress-bar" role="progressbar" [style.width]="uploadProgress + '%'"
+                                    aria-valuenow="uploadProgress" aria-valuemin="0" aria-valuemax="100"
+                                    style="height: 100%; line-height: 30px; background-color: #007bff; color: white; text-align: center; font-weight: bold;">
+                                    {{ uploadProgress }}%
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Display error message for the thumbnail_video field -->
+                        <div *ngIf="addCourseForm.get('thumbnail_video')?.invalid && (addCourseForm.get('thumbnail_video')?.touched || addCourseForm.get('thumbnail_video')?.dirty)"
+                            class="text-danger">
+                            <ng-container *ngIf="addCourseForm.get('thumbnail_video')?.errors?.['required']">Course thumbnail_video is
+                                required</ng-container>
+                            <ng-container *ngIf="fileError">{{ fileError }}</ng-container>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="button-container-popup">
+                        <dx-button text="Save and Add Another" type="success"
+                            [elementAttr]="{ id: 'first-btn', class: 'pull-right' }"
+                            (onClick)="onAddCourseSubmit(true)">
+                            <!-- spinner -->
+                            <ng-container *ngIf="!isSubmittingSaveAndAddAnother">Save and Add Another</ng-container>
+                            <ng-container *ngIf="isSubmittingSaveAndAddAnother">
+                                <div class="spinnerc"></div>
+                            </ng-container>
+                            <!-- spinner -->
+                        </dx-button>
+                        <dx-button text="Save" type="success" [elementAttr]="{ class: 'pull-right' }"
+                            (onClick)="onAddCourseSubmit(false)">
+                            <!-- spinner -->
+                            <ng-container *ngIf="!isSubmittingSave">Save</ng-container>
+                            <ng-container *ngIf="isSubmittingSave">
+                                <div class="spinnerc"></div>
+                            </ng-container>
+                            <!-- spinner -->
+                        </dx-button>
+                    </div>
+                </div>
+            </form>
+        </dx-popup>
+    </ng-container>
+
+    <!-- Update Course Popup -->
+    <ng-container *ngIf="updateCourseForm.value && updatePopupVisible">
+        <dx-popup [(visible)]="updatePopupVisible" [width]="600" [height]="'auto'" [showTitle]="true"
+            [title]="'Update Course'" (onHidden)="onPopupHidden()">
+            <form (ngSubmit)="onUpdateCourseSubmit()" [formGroup]="updateCourseForm">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <label for="title_en">Title of the Course:<span class="text-danger">*</span></label>
+                        <dx-text-box [showClearButton]="true" formControlName="title_en"
+                            placeholder="Course title"></dx-text-box>
+                        <!-- Display error message for the title field -->
+                        <div *ngIf="addCourseForm.get('title_en')?.invalid && (addCourseForm.get('title_en')?.touched || addCourseForm.get('title_en')?.dirty)"
+                            class="text-danger">
+                            <ng-container *ngIf="addCourseForm.get('title_en')?.errors?.['required']">Course title is
+                                required</ng-container>
+                            <ng-container *ngIf="addCourseForm.get('title_en')?.errors?.['pattern']">Invalid Course
+                                title</ng-container>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <label for="course_category_id">Course Category:<span class="text-danger">*</span></label>
+                        <!-- Course select box with required validation and error message -->
+                        <dx-select-box [dataSource]="Category" formControlName="course_category_id" valueExpr="id"
+                            [searchEnabled]="true" displayExpr="category_name">
+                        </dx-select-box>
+                        <!-- Display error message for the course_category_id field -->
+                        <div *ngIf="addCourseForm.get('course_category_id')?.invalid && (addCourseForm.get('course_category_id')?.touched || addCourseForm.get('course_category_id')?.dirty)"
+                            class="text-danger">
+                            <ng-container *ngIf="addCourseForm.get('course_category_id')?.errors?.['required']">Course Category
+                                is required</ng-container>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <label for="course_sub_category_id">Course SubCategory:<span class="text-danger">*</span></label>
+                        <!-- Course select box with required validation and error message -->
+                        <dx-select-box [dataSource]="SubCategory" formControlName="course_sub_category_id" valueExpr="id"
+                            [searchEnabled]="true" displayExpr="sub_category_name">
+                        </dx-select-box>
+                        <!-- Display error message for the course_sub_category_id field -->
+                        <div *ngIf="addCourseForm.get('course_sub_category_id')?.invalid && (addCourseForm.get('course_sub_category_id')?.touched || addCourseForm.get('course_sub_category_id')?.dirty)"
+                            class="text-danger">
+                            <ng-container *ngIf="addCourseForm.get('course_sub_category_id')?.errors?.['required']">Course SubCategory
+                                is required</ng-container>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <label for="course_type_id">Course Type:<span class="text-danger">*</span></label>
+                        <!-- Course select box with required validation and error message -->
+                        <dx-select-box [dataSource]="Type" formControlName="course_type_id" valueExpr="id"
+                            [searchEnabled]="true" displayExpr="name">
+                        </dx-select-box>
+                        <!-- Display error message for the course_type_id field -->
+                        <div *ngIf="addCourseForm.get('course_type_id')?.invalid && (addCourseForm.get('course_type_id')?.touched || addCourseForm.get('course_type_id')?.dirty)"
+                            class="text-danger">
+                            <ng-container *ngIf="addCourseForm.get('course_type_id')?.errors?.['required']">Course Type
+                                is required</ng-container>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <label for="course_tag_id">Course Tag:<span class="text-danger">*</span></label>
+                        <!-- Course select box with required validation and error message -->
+                        <dx-select-box [dataSource]="Tag" formControlName="course_tag_id" valueExpr="id"
+                            [searchEnabled]="true" displayExpr="name">
+                        </dx-select-box>
+                        <!-- Display error message for the course_tag_id field -->
+                        <div *ngIf="addCourseForm.get('course_tag_id')?.invalid && (addCourseForm.get('course_tag_id')?.touched || addCourseForm.get('course_tag_id')?.dirty)"
+                            class="text-danger">
+                            <ng-container *ngIf="addCourseForm.get('course_tag_id')?.errors?.['required']">Course Tag
+                                is required</ng-container>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <label for="course_difficulty_id">Course Difficulty:<span class="text-danger">*</span></label>
+                        <!-- Course select box with required validation and error message -->
+                        <dx-select-box [dataSource]="Difficulty" formControlName="course_difficulty_id" valueExpr="id"
+                            [searchEnabled]="true" displayExpr="name">
+                        </dx-select-box>
+                        <!-- Display error message for the course_difficulty_id field -->
+                        <div *ngIf="addCourseForm.get('course_difficulty_id')?.invalid && (addCourseForm.get('course_difficulty_id')?.touched || addCourseForm.get('course_difficulty_id')?.dirty)"
+                            class="text-danger">
+                            <ng-container *ngIf="addCourseForm.get('course_difficulty_id')?.errors?.['required']">Course Difficulty
+                                is required</ng-container>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <label for="currency_id">Course Currency:<span class="text-danger">*</span></label>
+                        <!-- Course select box with required validation and error message -->
+                        <dx-select-box [dataSource]="Currency" formControlName="currency_id" valueExpr="id"
+                            [searchEnabled]="true" displayExpr="name">
+                        </dx-select-box>
+                        <!-- Display error message for the currency_id field -->
+                        <div *ngIf="addCourseForm.get('currency_id')?.invalid && (addCourseForm.get('currency_id')?.touched || addCourseForm.get('currency_id')?.dirty)"
+                            class="text-danger">
+                            <ng-container *ngIf="addCourseForm.get('currency_id')?.errors?.['required']">Course Currency
+                                is required</ng-container>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <label for="course_status_id">Course Status:<span class="text-danger">*</span></label>
+                        <!-- Course select box with required validation and error message -->
+                        <dx-select-box [dataSource]="Status" formControlName="course_status_id" valueExpr="id"
+                            [searchEnabled]="true" displayExpr="name">
+                        </dx-select-box>
+                        <!-- Display error message for the course_status_id field -->
+                        <div *ngIf="addCourseForm.get('course_status_id')?.invalid && (addCourseForm.get('course_status_id')?.touched || addCourseForm.get('course_status_id')?.dirty)"
+                            class="text-danger">
+                            <ng-container *ngIf="addCourseForm.get('course_status_id')?.errors?.['required']">Course Status
+                                is required</ng-container>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <label for="code">Course Subscription Fee:</label>
+                        <dx-text-box formControlName="subscription_price" placeholder="Subscription Fee">
+                        </dx-text-box>
+                    </div>
+
+                    <!-- course image -->
+                    <div class="mt-3 col-lg-12">
+                        <label for="image">Course Image:<span class="text-danger">*</span></label>
+
+                        <!-- File input that dynamically updates based on Course type -->
+                        <input #fileInput type="file" (change)="onFileSelected($event, 'image')"
+                            [attr.accept]="getAcceptForFile('image')">
+
+                        <!-- Progress bar for file upload -->
+                        <div *ngIf="uploadProgress >= 0" style="margin-top: 1rem;">
+                            <label>Upload Progress:</label>
+                            <div class="progress" style="height: 30px; background-color: #f3f3f3; border-radius: 5px;">
+                                <div class="progress-bar" role="progressbar" [style.width]="uploadProgress + '%'"
+                                    aria-valuenow="uploadProgress" aria-valuemin="0" aria-valuemax="100"
+                                    style="height: 100%; line-height: 30px; background-color: #007bff; color: white; text-align: center; font-weight: bold;">
+                                    {{ uploadProgress }}%
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Display error message for the image field -->
+                        <div *ngIf="addCourseForm.get('image')?.invalid && (addCourseForm.get('image')?.touched || addCourseForm.get('image')?.dirty)"
+                            class="text-danger">
+                            <ng-container *ngIf="addCourseForm.get('image')?.errors?.['required']">Course image is
+                                required</ng-container>
+                            <ng-container *ngIf="fileError">{{ fileError }}</ng-container>
+                        </div>
+                    </div>
+
+                    <!-- course thumbnail image -->
+                    <div class="mt-3 col-lg-12">
+                        <label for="thumbnail_image">Course Thumbnail Image:<span class="text-danger">*</span></label>
+
+                        <!-- File input that dynamically updates based on Course type -->
+                        <input #fileInput type="file" (change)="onFileSelected($event, 'thumbnail_image')"
+                            [attr.accept]="getAcceptForFile('thumbnail_image')">
+
+                        <!-- Progress bar for file upload -->
+                        <div *ngIf="uploadProgress >= 0" style="margin-top: 1rem;">
+                            <label>Upload Progress:</label>
+                            <div class="progress" style="height: 30px; background-color: #f3f3f3; border-radius: 5px;">
+                                <div class="progress-bar" role="progressbar" [style.width]="uploadProgress + '%'"
+                                    aria-valuenow="uploadProgress" aria-valuemin="0" aria-valuemax="100"
+                                    style="height: 100%; line-height: 30px; background-color: #007bff; color: white; text-align: center; font-weight: bold;">
+                                    {{ uploadProgress }}%
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Display error message for the thumbnail_image field -->
+                        <div *ngIf="addCourseForm.get('thumbnail_image')?.invalid && (addCourseForm.get('thumbnail_image')?.touched || addCourseForm.get('thumbnail_image')?.dirty)"
+                            class="text-danger">
+                            <ng-container *ngIf="addCourseForm.get('thumbnail_image')?.errors?.['required']">Course thumbnail image is
+                                required</ng-container>
+                            <ng-container *ngIf="fileError">{{ fileError }}</ng-container>
+                        </div>
+                    </div>
+
+                    <!-- course thumbnail video -->
+                    <div class="mt-3 col-lg-12">
+                        <label for="content">Course Thumbnail video:<span class="text-danger">*</span></label>
+
+                        <!-- File input that dynamically updates based on Course type -->
+                        <input #fileInput type="file" (change)="onFileSelected($event, 'thumbnail_video')"
+                            [attr.accept]="getAcceptForFile('thumbnail_video')">
+
+                        <!-- Progress bar for file upload -->
+                        <div *ngIf="uploadProgress >= 0" style="margin-top: 1rem;">
+                            <label>Upload Progress:</label>
+                            <div class="progress" style="height: 30px; background-color: #f3f3f3; border-radius: 5px;">
+                                <div class="progress-bar" role="progressbar" [style.width]="uploadProgress + '%'"
+                                    aria-valuenow="uploadProgress" aria-valuemin="0" aria-valuemax="100"
+                                    style="height: 100%; line-height: 30px; background-color: #007bff; color: white; text-align: center; font-weight: bold;">
+                                    {{ uploadProgress }}%
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Display error message for the thumbnail_video field -->
+                        <div *ngIf="addCourseForm.get('thumbnail_video')?.invalid && (addCourseForm.get('thumbnail_video')?.touched || addCourseForm.get('thumbnail_video')?.dirty)"
+                            class="text-danger">
+                            <ng-container *ngIf="addCourseForm.get('thumbnail_video')?.errors?.['required']">Course thumbnail_video is
+                                required</ng-container>
+                            <ng-container *ngIf="fileError">{{ fileError }}</ng-container>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Update and Cancel Buttons -->
+                <div class="row">
+                    <div class="button-container-popup">
+                        <dx-button text="Cancel" type="danger" [elementAttr]="{ id: 'first-btn', class: 'pull-right' }"
+                            (onClick)="updatePopupVisible = false"></dx-button>
+                        <dx-button text="Update" type="success" [elementAttr]="{ class: 'pull-right' }"
+                            (onClick)="onUpdateCourseSubmit()">
+                            <!-- spinner -->
+                            <ng-container *ngIf="!isSubmitting">Update</ng-container>
+                            <ng-container *ngIf="isSubmitting">
+                                <div class="spinnerc"></div>
+                            </ng-container>
+                            <!-- spinner -->
+                        </dx-button>
+                    </div>
+                </div>
+            </form>
+        </dx-popup>
+    </ng-container>
+
+
+    <!-- Delete Course Popup -->
+    <ng-container *ngIf="deleteCourseForm.value && deletePopupVisible">
+        <dx-popup [(visible)]="deletePopupVisible" height="auto" width="auto" [showTitle]="true"
+            title="Delete Confirmation" (onHidden)="deletePopupVisible = false">
+            <form (ngSubmit)="onDeleteCourseSubmit()" [formGroup]="deleteCourseForm">
+                <div>
+                    <p *ngIf="deleteCourseForm.value && deletePopupVisible" class="confirmation-text">
+                        Are you sure you want to delete "<strong>{{deleteCourseForm.value.title_en}}</strong>"?
+                    </p>
+                    <div class="button-container-popup">
+                        <dx-button text="Cancel" (onClick)="deletePopupVisible = false"
+                            [elementAttr]="{ id: 'first-btn', class: 'pull-right' }"></dx-button>
+                        <dx-button text="Delete" type="danger" (onClick)="onDeleteCourseSubmit()"
+                            [elementAttr]="{ class: 'pull-right' }">
+                            <!-- spinner -->
+                            <ng-container *ngIf="!isSubmitting">Delete</ng-container>
+                            <ng-container *ngIf="isSubmitting">
+                                <div class="spinnerc"></div>
+                            </ng-container>
+                            <!-- spinner -->
+                        </dx-button>
+                    </div>
+                </div>
+            </form>
+        </dx-popup>
+    </ng-container>
+
+    <!-- Spinner -->
+    <div *ngIf="isLoading" class="spinner-container">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Data Grid to display Course -->
+    <div *ngIf="!isLoading">
+        <!-- Menu for Add/Delete Actions -->
+        <div class="button-container">
+            <dx-menu [style]="{ 'background-color': 'lightblue' }" (onItemClick)="onMenuItemClick($event)"
+                [items]="permitGeneralCourseMenuItems">
+            </dx-menu>
+        </div>
+
+        <!-- Data Grid to display Courses -->
+        <dx-data-grid #multipleCourseGrid class="table row-border hover" [dataSource]="Courses"
+            [remoteOperations]='true' [showBorders]="true" [allowColumnResizing]="true" [columnHidingEnabled]="false"
+            (onSelectionChanged)="selectionChanged($event)" keyExpr="id">
+            <dxo-search-panel [visible]="true"></dxo-search-panel>
+            <dxo-paging [enabled]="true"></dxo-paging>
+            <dxo-pager [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)" [showPageSizeSelector]="true"
+                [allowedPageSizes]="[5,10]"></dxo-pager>
+
+            <dxo-selection mode="multiple"></dxo-selection>
+            <dxo-group-panel [visible]="true"></dxo-group-panel>
+
+            <!-- menu actions -->
+            <dxi-column [width]="100" caption="Action" name="command-editing" [allowFiltering]="false"
+                [allowSorting]="false" cellTemplate="cellTemplate">
+                <div *dxTemplate="let data of 'cellTemplate'">
+                    <dx-menu (onItemClick)="permitCourseActionColClick($event,data)" [items]="permitCourseMenuItems">
+                    </dx-menu>
+                </div>
+            </dxi-column>
+            <!-- menu actions -->
+
+            <dxi-column dataField="id" caption="ID" [visible]="false"></dxi-column>
+            <dxi-column dataField="title_en" caption="Course Name"></dxi-column>
+
+            <dxi-column dataField="course_category_id" caption="Course Category">
+                <dxo-lookup [dataSource]="Category" displayExpr="category_name" valueExpr="id">
+                </dxo-lookup>
+            </dxi-column>
+
+            <dxi-column dataField="course_sub_category_id" caption="Course SubCategory">
+                <dxo-lookup [dataSource]="SubCategory" displayExpr="sub_category_name" valueExpr="id">
+                </dxo-lookup>
+            </dxi-column>
+
+            <dxi-column dataField="course_type_id" caption="Course Type">
+                <dxo-lookup [dataSource]="Type" displayExpr="name" valueExpr="id">
+                </dxo-lookup>
+            </dxi-column>
+
+            <dxi-column dataField="course_tag_id" caption="Course Tag">
+                <dxo-lookup [dataSource]="Tag" displayExpr="name" valueExpr="id">
+                </dxo-lookup>
+            </dxi-column>
+
+            <dxi-column dataField="course_difficulty_id" caption="Course Levels">
+                <dxo-lookup [dataSource]="Difficulty" displayExpr="name" valueExpr="id">
+                </dxo-lookup>
+            </dxi-column>
+
+            <dxi-column dataField="currency_id" caption="Currency">
+                <dxo-lookup [dataSource]="Currency" displayExpr="name" valueExpr="id">
+                </dxo-lookup>
+            </dxi-column>
+
+            <dxi-column dataField="subscription_price" caption="Subscription Fee"></dxi-column>
+
+            <dxi-column dataField="created_by" caption="Created By"></dxi-column>
+
+            <dxi-column dataField="course_status_id" caption="Course Status">
+                <dxo-lookup [dataSource]="Status" displayExpr="name" valueExpr="id">
+                </dxo-lookup>
+            </dxi-column>
+
+            <dxi-column dataField="duration" caption="Time Posted"></dxi-column>
+
+            <dxo-paging [pageSize]="10"></dxo-paging>
+        </dx-data-grid>
+    </div>
+
+    <!-- Delete Multiple Course Popup -->
+    <ng-container *ngIf="selectedCourseForDeletion.length > 0 && deleteMultiplePopupVisible">
+        <dx-popup [(visible)]="deleteMultiplePopupVisible" height="auto" width="auto" [showTitle]="true"
+            title="Delete Confirmation" (onHidden)="deleteMultiplePopupVisible = false">
+            <div>
+                <p class="confirmation-text">
+                    Are you sure you want to delete <strong>{{selectedCourseCount}}</strong> Course(s)?
+                </p>
+                <div class="button-container-popup">
+                    <dx-button text="Cancel" (onClick)="deleteMultiplePopupVisible = false"
+                        [elementAttr]="{ id: 'first-btn', class: 'pull-right' }"></dx-button>
+                    <dx-button text="Delete" type="danger" (onClick)="confirmDeleteMultipleCourse()"
+                        [elementAttr]="{ class: 'pull-right' }">
+                        <!-- spinner -->
+                        <ng-container *ngIf="!isSubmitting">Delete</ng-container>
+                        <ng-container *ngIf="isSubmitting">
+                            <div class="spinnerc"></div>
+                        </ng-container>
+                        <!-- spinner -->
+                    </dx-button>
+                </div>
+            </div>
+        </dx-popup>
+    </ng-container>
+
+</div>

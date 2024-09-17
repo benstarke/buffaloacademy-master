@@ -1,0 +1,28 @@
+.dlabnav {
+    height: 100vh; /* Full viewport height */
+    overflow: hidden; /* Prevent overflow of the entire sidebar */
+  }
+  
+  .dlabnav-scroll {
+    max-height: 100%;
+    overflow-y: auto; /* Enable vertical scrolling */
+    padding-right: 10px; /* Add padding to prevent content from being hidden behind the scrollbar */
+  }
+  
+  .metismenu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .metismenu li {
+    margin-bottom: 5px;
+  }
+  
+  .metismenu a {
+    text-decoration: none;
+    display: block;
+    padding: 10px 15px;
+    color: #333;
+  }
+  

@@ -1,0 +1,240 @@
+<div class="main-wrapper">
+
+	<div class="row page-titles mx-0">
+		<div class="col-sm-6 p-md-0">
+			<div class="welcome-text">
+				<h4>Course Curriculum Operations</h4> 
+			</div>
+		</div>
+		<div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a routerLink="/admin-buffalo/master-dashboard">Home</a></li>
+				<li class="breadcrumb-item active"><a routerLink="/admin-buffalo/course-management/dashboard-course-curriculums">Curriculum</a></li>
+				<li class="breadcrumb-item active"><a routerLink="/admin-buffalo/course-management/dashboard-course-curriculums">All Curriculums</a></li>
+			</ol>
+		</div>
+    </div> 
+
+	<!-- Add Curriculum Popup -->
+	<ng-container *ngIf="addCurriculumForm.value && addPopupVisible">
+		<dx-popup [(visible)]="addPopupVisible" [width]="'auto'" [height]="'auto'" [showTitle]="true"
+			[title]="'Add New Curriculum'" (onHidden)="onPopupHidden()">
+			<form (ngSubmit)="onAddCurriculumSubmit(false)" [formGroup]="addCurriculumForm">
+
+				<div class="row">
+					<div class="col-lg-12">
+						<label for="name">Curriculum Name:<span class="text-danger">*</span></label>
+						<dx-text-box [showClearButton]="true" formControlName="name" placeholder="Curriculum Name"></dx-text-box>
+						<!-- Display error message for the name field -->
+						<div *ngIf="addCurriculumForm.get('name')?.invalid && (addCurriculumForm.get('name')?.touched || addCurriculumForm.get('name')?.dirty)"
+							class="text-danger">
+							<ng-container *ngIf="addCurriculumForm.get('name')?.errors?.['required']">Curriculum Name is required</ng-container>
+							<ng-container *ngIf="addCurriculumForm.get('name')?.errors?.['pattern']">Invalid Curriculum name</ng-container>
+						</div>
+					</div>
+
+                    <div class="col-lg-12">
+						<label for="course_id">Course:<span class="text-danger">*</span></label>
+                        <!-- Course select box with required validation and error message -->
+                        <dx-select-box [dataSource]="Course" formControlName="course_id"
+                            valueExpr="id" [searchEnabled]="true" displayExpr="title_en">
+                        </dx-select-box>
+                        <!-- Display error message for the course_id field -->
+                        <div *ngIf="addCurriculumForm.get('course_id')?.invalid && (addCurriculumForm.get('course_id')?.touched || addCurriculumForm.get('course_id')?.dirty)"
+                            class="text-danger">
+                            <ng-container *ngIf="addCurriculumForm.get('course_id')?.errors?.['required']">Course is required</ng-container>
+                        </div>
+					</div>
+	
+					<div class="col-lg-12">
+						<label for="description">Curriculum Description:<span class="text-danger">*</span></label>
+						<dx-text-box [showClearButton]="true" formControlName="description" placeholder="Description"></dx-text-box>
+						<!-- Display error message for the description field -->
+						<div *ngIf="addCurriculumForm.get('description')?.invalid && (addCurriculumForm.get('description')?.touched || addCurriculumForm.get('description')?.dirty)"
+							class="text-danger">
+							<ng-container *ngIf="addCurriculumForm.get('description')?.errors?.['required']">Description is required</ng-container>
+						</div>
+					</div>
+				</div>
+	
+				<div class="row">
+					<div class="button-container-popup">
+						<dx-button text="Save and Add Another" type="success" [elementAttr]="{ id: 'first-btn', class: 'pull-right' }"
+							(onClick)="onAddCurriculumSubmit(true)">
+							<!-- spinner -->
+							<ng-container *ngIf="!isSubmittingSaveAndAddAnother">Save and Add Another</ng-container>
+							<ng-container *ngIf="isSubmittingSaveAndAddAnother">
+								<div class="spinnerc"></div>
+							</ng-container>
+							<!-- spinner -->
+						</dx-button>
+						<dx-button text="Save" type="success" [elementAttr]="{ class: 'pull-right' }"
+							(onClick)="onAddCurriculumSubmit(false)">
+							<!-- spinner -->
+							<ng-container *ngIf="!isSubmittingSave">Save</ng-container>
+							<ng-container *ngIf="isSubmittingSave">
+								<div class="spinnerc"></div>
+							</ng-container>
+							<!-- spinner -->
+						</dx-button>
+					</div>
+				</div>
+			</form>
+		</dx-popup>
+	</ng-container>
+
+	<!-- Update Curriculum Popup -->
+	<ng-container *ngIf="updateCurriculumForm.value && updatePopupVisible">
+		<dx-popup [(visible)]="updatePopupVisible" [width]="550" [height]="'auto'" [showTitle]="true"
+			[title]="'Update Curriculum'" (onHidden)="onPopupHidden()">
+			<form (ngSubmit)="onUpdateCurriculumSubmit()" [formGroup]="updateCurriculumForm">
+				<div class="row">
+					<!-- Curriculum Name -->
+					  <div class="col-lg-12">
+						<label for="name">Curriculum Name:</label>
+						<dx-text-box formControlName="name" placeholder="Curriculum Name"></dx-text-box>
+					  </div>
+                      <!-- Course -->
+					  <div class="col-lg-12">
+						<label>Course</label>
+                        <dx-select-box [dataSource]="Course" formControlName="course_id"
+                            valueExpr="id" [searchEnabled]="true" displayExpr="title_en">
+                        </dx-select-box>
+					  </div>
+					  <!-- Description -->
+					  <div class="col-lg-12">
+						<label for="description">Curriculum Description:</label>
+						<dx-text-area formControlName="description" placeholder="Description"></dx-text-area>
+					  </div>
+					  <!-- Update and Cancel Buttons -->
+					  <div class="button-container-popup">
+						<dx-button text="Cancel" type="danger"  [elementAttr]="{ id: 'first-btn', class: 'pull-right' }"
+						  (onClick)="updatePopupVisible = false"></dx-button>
+						<dx-button text="Update" type="success" [elementAttr]="{ class: 'pull-right' }"
+						  (onClick)="onUpdateCurriculumSubmit()">
+						  <!-- spinner -->
+						  <ng-container *ngIf="!isSubmitting">Update</ng-container>
+						  <ng-container *ngIf="isSubmitting">
+							  <div class="spinnerc"></div>
+						  </ng-container>
+						  <!-- spinner -->
+						</dx-button>
+					  </div>
+				</div>
+			</form>
+			
+		</dx-popup>
+	</ng-container>
+
+	<!-- Delete Curriculum Popup -->
+	<ng-container *ngIf="deleteCurriculumForm.value && deletePopupVisible">
+		<dx-popup [(visible)]="deletePopupVisible" height="auto" width="auto" [showTitle]="true" title="Delete Confirmation"
+			(onHidden)="deletePopupVisible = false">
+			<form (ngSubmit)="onDeleteCurriculumSubmit()" [formGroup]="deleteCurriculumForm">
+				<div>
+					<p *ngIf="deleteCurriculumForm.value && deletePopupVisible" class="confirmation-text">
+						Are you sure you want to delete "<strong>{{deleteCurriculumForm.value.name}}</strong>"?
+					</p>
+					<div class="button-container-popup">
+					  <dx-button text="Cancel" (onClick)="deletePopupVisible = false" [elementAttr]="{ id: 'first-btn', class: 'pull-right' }"></dx-button>
+					  <dx-button text="Delete" type="danger" (onClick)="onDeleteCurriculumSubmit()" [elementAttr]="{ class: 'pull-right' }">
+						 <!-- spinner -->
+						<ng-container *ngIf="!isSubmitting">Delete</ng-container>
+						<ng-container *ngIf="isSubmitting">
+							<div class="spinnerc"></div>
+						</ng-container>
+						<!-- spinner -->
+					  </dx-button>
+				  </div>
+				</div>
+			</form>
+		</dx-popup>
+	</ng-container>
+
+	<!-- Spinner -->
+	<div *ngIf="isLoading" class="spinner-container">
+		<div class="spinner"></div>
+	</div>
+
+	<!-- Data Grid to display Curriculum -->
+	<div *ngIf="!isLoading">
+		<!-- Menu for Add/Delete Actions -->
+		<div class="button-container">
+			<dx-menu 
+				[style]="{ 'background-color': 'lightblue' }"
+				(onItemClick)="onMenuItemClick($event)" 
+				[items]="permitGeneralCurriculumMenuItems">
+			</dx-menu>
+		</div>
+
+		<!-- Data Grid to display Curriculums -->
+	<dx-data-grid 
+	#multipleCurriculumGrid
+	class="table row-border hover" 
+	[dataSource]="Curriculums" 
+	[remoteOperations]='true' 
+	[showBorders]="true"
+	[allowColumnResizing]="true" 
+	[columnHidingEnabled]="false" 
+	(onSelectionChanged)="selectionChanged($event)" 
+	keyExpr="id">
+		<dxo-search-panel [visible]="true"></dxo-search-panel>
+		<dxo-paging [enabled]="true"></dxo-paging>
+		<dxo-pager [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)" [showPageSizeSelector]="true"
+			[allowedPageSizes]="[5,10]"></dxo-pager>
+
+		<dxo-selection mode="multiple"></dxo-selection>
+		<dxo-group-panel [visible]="true"></dxo-group-panel>
+
+		<!-- menu actions -->
+		<dxi-column [width]="150" caption="Action" name="command-editing"
+		[allowFiltering]="false" 
+		[allowSorting]="false" 
+		cellTemplate="cellTemplate">
+		<div *dxTemplate="let data of 'cellTemplate'">
+		  <dx-menu 
+			(onItemClick)="permitCurriculumActionColClick($event,data)"
+			[items]="permitCurriculumMenuItems">
+		  </dx-menu>
+		</div>
+	    </dxi-column>
+		<!-- menu actions -->
+
+		<dxi-column dataField="id" caption="ID" [visible]="false"></dxi-column>
+        <dxi-column dataField="name" caption="Curriculum Name"></dxi-column>
+        <dxi-column dataField="description" caption="Curriculum Description"></dxi-column>
+        <dxi-column dataField="course_id" caption="Course">
+            <dxo-lookup [dataSource]="Course" displayExpr="title_en" valueExpr="id">
+            </dxo-lookup>
+        </dxi-column>
+        <dxi-column dataField="created_by" caption="Created By"></dxi-column>
+        <dxi-column dataField="duration" caption="Time Posted"></dxi-column>
+		
+		<dxo-paging [pageSize]="10"></dxo-paging>
+	</dx-data-grid>
+	</div>
+
+	<!-- Delete Multiple Curriculum Popup -->
+    <ng-container *ngIf="selectedCurriculumForDeletion.length > 0 && deleteMultiplePopupVisible">
+		<dx-popup [(visible)]="deleteMultiplePopupVisible" height="auto" width="auto" [showTitle]="true" title="Delete Confirmation"
+			(onHidden)="deleteMultiplePopupVisible = false">
+			<div>
+				<p class="confirmation-text">
+					Are you sure you want to delete <strong>{{selectedCurriculumCount}}</strong> Curriculum(s)?
+				</p>
+				<div class="button-container-popup">
+					<dx-button text="Cancel" (onClick)="deleteMultiplePopupVisible = false" [elementAttr]="{ id: 'first-btn', class: 'pull-right' }"></dx-button>
+					<dx-button text="Delete" type="danger" (onClick)="confirmDeleteMultipleCurriculum()" [elementAttr]="{ class: 'pull-right' }">
+						<!-- spinner -->
+						<ng-container *ngIf="!isSubmitting">Delete</ng-container>
+						<ng-container *ngIf="isSubmitting">
+							<div class="spinnerc"></div>
+						</ng-container>
+						<!-- spinner -->
+					</dx-button>
+				</div>
+			</div>
+		</dx-popup>
+	</ng-container>
+
+</div>

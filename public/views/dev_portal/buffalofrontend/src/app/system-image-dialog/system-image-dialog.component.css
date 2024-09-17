@@ -1,0 +1,30 @@
+
+  .dialog-container {
+    position: relative;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.5); /* Add a semi-transparent background for contrast */
+    padding: 16px; /* Add padding to ensure spacing around the image */
+    border-radius: 8px; /* Optional: rounded corners for the dialog */
+  }
+  
+  .popup-image {
+    /* max-width: 100%; */
+    width: 700px;
+    /* max-height: 80vh; */
+    display: block; /* Ensure the image is displayed as a block element */
+    margin: 0 auto; /* Center the image horizontally */
+  }
+  
+  .close-button {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    color: red;
+    background: rgba(0, 0, 0, 0.5); /* Optional: semi-transparent background for better visibility */
+    border: none; /* Remove default button border */
+    border-radius: 50%; /* Optional: round button */
+    padding: 8px; /* Add padding to increase click area */
+    cursor: pointer; /* Change cursor to pointer for better UX */
+    font-size: 24px; /* Increase font size for better visibility */
+  }
+  

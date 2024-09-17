@@ -1,0 +1,71 @@
+<div class="wrapper">   
+
+    <!-- Data Grid to display Blog Posts -->
+    <dx-data-grid 
+    class="table row-border hover" 
+    [dataSource]="blogs" 
+    [remoteOperations]='true' 
+    [showBorders]="true"  
+    [columnHidingEnabled]="true"
+    [allowColumnResizing]="true" 
+    [allowColumnReordering]="true" 
+    [columnAutoWidth]="false"  
+    [columnHidingEnabled]="false" 
+    (onSelectionChanged)="selectionChanged($event)" 
+    (onSelectionChanged)="onSelectionChanged($event)" 
+    (onContentReady)="onContentReady($event)"
+    keyExpr="id">
+
+    <!-- master detail api -->
+    <dxo-master-detail [enabled]="false" template="detail"></dxo-master-detail>
+    <!-- master detail api -->
+
+      <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+
+      <dxo-search-panel [visible]="true"></dxo-search-panel>
+      <dxo-paging [enabled]="true"></dxo-paging>
+      <dxo-pager [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)" [showPageSizeSelector]="true"
+          [allowedPageSizes]="[5,10]"></dxo-pager>
+      <dxo-export [enabled]="true" fileName="BlogPosts" [allowExportSelectedData]="true"></dxo-export>
+      <dxo-selection mode="multiple"></dxo-selection>
+      <dxo-group-panel [visible]="true"></dxo-group-panel>
+  
+      <dxi-column dataField="id" caption="ID" [visible]="false"></dxi-column>
+      <!-- <dxi-column dataField="name" [showInColumnChooser]="true"  caption="Blog Title"></dxi-column> -->
+  
+      <dxi-column dataField="tags_id" [showInColumnChooser]="true" caption="Tags">
+        <dxo-lookup [dataSource]="tagsDataSource" displayExpr="name" valueExpr="id">
+        </dxo-lookup>
+      </dxi-column>
+  
+      <dxi-column dataField="blog_categories_id" [showInColumnChooser]="true" caption="Categories">
+        <dxo-lookup [dataSource]="categoriesDataSource" displayExpr="name" valueExpr="id">
+        </dxo-lookup>
+      </dxi-column>
+      
+      <dxi-column dataField="author" caption="Author"></dxi-column>
+      <dxi-column dataField="duration" caption="Time Posted"></dxi-column>
+  
+      <dxi-column dataField="blog_status_id" caption="Status">
+        <dxo-lookup [dataSource]="statusDataSource" displayExpr="description" valueExpr="id">
+        </dxo-lookup>
+      </dxi-column>
+
+      <!-- <dxi-column dataField="description" caption="Content"> -->
+        <div *dxTemplate="let blogs of 'detail'">
+          <div class="employeeInfo">
+            <p [innerHTML]="blogs.data.name" class="employeePhoto"></p>
+            <div class="scrollable-content">
+              <p class="employeeContent" [innerHTML]="blogs.data.description"></p>
+            </div>
+          </div>
+        </div>
+      <!-- </dxi-column> -->
+
+      
+  
+      <dxo-paging [pageSize]="5"></dxo-paging>
+    </dx-data-grid>
+  
+  </div>
+  

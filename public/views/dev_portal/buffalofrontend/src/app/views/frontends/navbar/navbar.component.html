@@ -1,0 +1,134 @@
+<!-- Header Starts Here -->
+<div *ngIf="loading" class="spinner-container">
+    <div class="spinner"></div>
+    <span class="loading-text">Fetching From API...</span>
+</div>  
+<header *ngIf="!loading && SystemInfo">
+    <nav class="navbarf navbarf-expand-xl navbarf-light bg-transparent">
+        <div class="container">
+            <!-- Logo -->
+            <a class="navbarf-brand" routerLink="/">
+                <!-- <img src="{{asset('frontend/dist/images/logo/logo.png')}}" alt="Logo" class="img-fluid" /> -->
+                <!-- <img class="logo-abbr" src="{{asset('images/logo-white.png')}}" alt=""> -->
+                <img class="logo-abbr" [src]="SystemInfo.logo" alt="">
+                {{ SystemInfo.title }}
+            </a>
+            <a *ngIf="!loading && !SystemInfo" class="navbarf-brand" routerLink="/">
+                Waiting for updates
+            </a>
+            <button class="menu-icon-container" (click)="toggleMobileMenu()">
+                <span class="menu-icon"></span>
+            </button>
+            <!-- navbarf Item -->
+            <div class="collapse navbarf-collapse d-none d-xl-block d-none d-xl-block" id="navbarfSupportedContent">
+                <ul class="navbarf-nav mx-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" routerLink="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" routerLink="/searchCourse">Courses</a>
+                    </li>
+                    <!-- Newly added start-->
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" routerLink="/blog_list">Blogs</a>
+                    </li>
+                    <!-- Newly added end -->
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" routerLink="/about">About</a>
+                    </li>
+                    <!-- {{-- <li class="nav-item">
+                        <a class="nav-link" href="http://localhost:8081/">
+                            Events
+                        </a>
+                    </li> --}} -->
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/contact">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/admin-buffalo/aunthentication-sign-in">Admin</a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center justify-content-between rightContent">
+                    <form class="header__Search-form" id="searchForm">
+                        <button type="button" class="border-0 bg-transparent header__Search-button"
+                            onclick="openSearch()">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="9.19522" cy="9.19518" r="7.61714" stroke="#35343E" stroke-width="1.6"
+                                    stroke-linecap="round" stroke-linejoin="round"></circle>
+                                <path d="M15.0493 15.4866L18.3493 18.778" stroke="#35343E" stroke-width="1.6"
+                                    stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </button>
+                        <div id="myOverlay" class="overlay">
+                            <span class="closebtn" onclick="closeSearch()" title="Close Overlay">×</span>
+                            <div class="overlay-content">
+                                <div>
+                                    <input type="text" placeholder="Search.." name="search" />
+                                    <button type="button">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="#ffff" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round"
+                                            class="feather feather-search">
+                                            <circle cx="11" cy="11" r="8"></circle>
+                                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <a routerLink="/cart" class="cart-nav border-0 bg-transparent mx-3">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M2.87778 2.51099L2.77634 2.50038C2.40716 2.48688 2.07562 2.74796 2.01087 3.12209L2.00026 3.22354C1.98676 3.59272 2.24784 3.92426 2.62197 3.98901L4.13098 4.25L5.04551 15.1457L5.06443 15.3095C5.24843 16.5519 6.31708 17.486 7.58988 17.486H18.5019L18.6662 17.4808C19.8626 17.4044 20.8545 16.4996 21.0291 15.2978L21.9781 8.73941L21.9945 8.58877C22.0819 7.38969 21.132 6.349 19.9089 6.349H5.81198L5.57725 3.54727L5.55956 3.43641C5.49112 3.14809 5.25673 2.92273 4.95778 2.87099L2.87778 2.51099ZM7.47394 15.9797C6.97867 15.9255 6.58258 15.5277 6.54028 15.0207L5.93798 7.849H19.9089L19.997 7.85548C20.3128 7.90242 20.5409 8.19769 20.4936 8.52465L19.5446 15.0826L19.5208 15.1998C19.4005 15.6584 18.985 15.986 18.5019 15.986H7.58988L7.47394 15.9797ZM5.90828 20.5853C5.90828 19.7492 6.58595 19.0703 7.42228 19.0703C8.25849 19.0703 8.93728 19.7491 8.93728 20.5853C8.93728 21.4216 8.25838 22.0993 7.42228 22.0993C6.58606 22.0993 5.90828 21.4215 5.90828 20.5853ZM17.1597 20.5853C17.1597 19.7491 17.8385 19.0703 18.6747 19.0703C19.5109 19.0703 20.1897 19.7491 20.1897 20.5853C20.1897 21.4216 19.5108 22.0993 18.6747 22.0993C17.8386 22.0993 17.1597 21.4216 17.1597 20.5853ZM17.6484 10.795C17.6484 10.3808 17.3126 10.045 16.8984 10.045H14.1254L14.0236 10.0518C13.6575 10.1015 13.3754 10.4153 13.3754 10.795C13.3754 11.2092 13.7112 11.545 14.1254 11.545H16.8984L17.0001 11.5382C17.3662 11.4885 17.6484 11.1747 17.6484 10.795Z"
+                                fill="#35343E"></path>
+                        </svg>
+                        <!-- <span class="badge bg-primary">{{ count((array) session('cart')) }}</span> -->
+                        <span class="visually-hidden">Items Added</span>
+                    </a>
+                    
+                    <div *ngIf="authService.isLoggedIn" class="dropdown user-image ms-3" id="imageDropdown">
+                        <a href="#" (click)="toggleDropdown($event)">
+                          <img [src]="imageUrl"  alt="Student Profile" *ngIf="imageUrl && !isLoadingProfile"  height="48" width="48">
+                          <div *ngIf="isLoadingProfile" class="spinner-border position-absolute" role="status" style="top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                            <span class="sr-only">Loading...</span>
+                          </div>
+                        </a>
+                        <div class="dropdown-content">
+                          <a routerLink="/app-student-profile/main-dashboard/student_profile">Profile</a>
+                          <a routerLink="/app-student/main-dashboard">Dashboard</a>
+                          <a (click)="onLogout()" routerLink="/" class="text-danger">Logout</a>
+                        </div>
+                      </div>
+                      
+                      <a *ngIf="!authService.isLoggedIn" routerLink="/app-student-auth/authentication-sub-system/studentLogin" class="button button--text">Sign in</a>
+                      <a *ngIf="!authService.isLoggedIn" routerLink="/app-student-auth/authentication-sub-system/studentRegister" class="button button--dark">Sign Up</a>                      
+                   </div>
+            </div>
+
+            <!-- {{-- Mobile navbarf --}} -->
+
+            <!-- Drawer Navbar Items -->
+            <div [ngClass]="{'drawer-nav': true, 'open': mobileMenuOpen}">
+                <ul>
+                    <li><a class="nav-link" routerLink="/" (click)="toggleMobileMenu()">Home</a></li>
+                    <li><a class="nav-link" routerLink="/searchCourse" (click)="toggleMobileMenu()">Courses</a></li>
+                    <li><a class="nav-link" routerLink="/blog_list" (click)="toggleMobileMenu()">Blogs</a></li>
+                    <li><a class="nav-link" routerLink="/about" (click)="toggleMobileMenu()">About</a></li>
+                    <li><a class="nav-link" routerLink="/contact" (click)="toggleMobileMenu()">Contact</a></li>
+                    <li><a class="nav-link" routerLink="/admin-buffalo/master-dashboard" (click)="toggleMobileMenu()">Admin</a></li>
+                    <li *ngIf="authService.isLoggedIn"><a routerLink="/app-student-profile/main-dashboard/student_profile" (click)="toggleMobileMenu()">Profile</a></li>
+                    <li *ngIf="authService.isLoggedIn"><a routerLink="/app-student/main-dashboard" (click)="toggleMobileMenu()">Dashboard</a></li>
+                    <li *ngIf="authService.isLoggedIn"><a (click)="onLogout()" routerLink="/" class="text-danger">Logout</a></li>
+                    <li *ngIf="!authService.isLoggedIn"><a routerLink="/app-student-auth/authentication-sub-system/studentLogin" class="text-dark ms-3" (click)="toggleMobileMenu()"><i class="fas fa-sign-in-alt"></i> Sign In</a></li>
+                    <li *ngIf="!authService.isLoggedIn"><a routerLink="/app-student-auth/authentication-sub-system/studentRegister" class="btn btn-primary text-white ms-3" (click)="toggleMobileMenu()">Sign Up</a></li>
+                </ul>
+            </div>
+            <!-- Mobile Navbar Items -->
+
+            <!-- {{-- Mobile navbarf --}} -->
+        </div>
+    </nav>
+</header>

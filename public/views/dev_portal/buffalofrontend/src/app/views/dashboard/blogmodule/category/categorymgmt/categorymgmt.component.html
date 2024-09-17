@@ -1,0 +1,108 @@
+<div class="wrapper">
+    <!-- Add Button -->
+    <dx-button text="Add New Category" type="default" icon="fa fa-plus"
+      [elementAttr]="{ id: 'addCategoryBtn', class: 'pull-right' }" (onClick)="onAddCategoryClick()">
+    </dx-button>
+  
+    <!-- Add Category Popup -->
+    <ng-container *ngIf="addCategoryForm.value && addPopupVisible">
+      <dx-popup [(visible)]="addPopupVisible" [width]="550" [height]="300" [showTitle]="true"
+          [title]="'Add New Category'" (onHidden)="onPopupHidden()">
+          <form (ngSubmit)="onAddCategorySubmit()" [formGroup]="addCategoryForm">
+              <div class="row">
+                  <div class="col-lg-12">
+                      <label for="name">Category Name:</label>
+                      <dx-text-box formControlName="name" placeholder="Category Name"></dx-text-box>
+                  </div>
+  
+                  <div class="col-lg-12">
+                      <label for="description">Description:</label>
+                      <dx-text-area formControlName="description" placeholder="Description"></dx-text-area>
+                  </div>
+              </div>
+  
+              <div class="button-container">
+                  <dx-button text="Create" type="success" icon="fa fa-plus" [elementAttr]="{ class: 'pull-left' }"
+                      (onClick)="onAddCategorySubmit()"></dx-button>
+                  <dx-button text="Cancel" type="danger" icon="fa fa-times" [elementAttr]="{ class: 'pull-left' }"
+                      (onClick)="addPopupVisible = false"></dx-button>
+              </div>
+          </form>
+      </dx-popup>
+    </ng-container>
+  
+    <!-- Update Category Popup -->
+    <ng-container *ngIf="updateCategoryForm.value && updatePopupVisible">
+      <dx-popup [(visible)]="updatePopupVisible" [width]="550" [height]="300" [showTitle]="true"
+          [title]="'Update Category'" (onHidden)="onPopupHidden()">
+          <form (ngSubmit)="onUpdateCategorySubmit()" [formGroup]="updateCategoryForm">
+              <div class="col-lg-12">
+                <label for="name">Category Name:</label>
+                <dx-text-box formControlName="name" placeholder="Category Name"></dx-text-box>
+              </div>
+              <div class="col-lg-12">
+                <label for="description">Description:</label>
+                <dx-text-area formControlName="description" placeholder="Description"></dx-text-area>
+              </div>
+              <div class="button-container">
+                <dx-button text="Update" type="success" icon="fa fa-plus" [elementAttr]="{ class: 'pull-left' }"
+                  (onClick)="onUpdateCategorySubmit()"></dx-button>
+                <dx-button text="Cancel" type="danger" icon="fa fa-times" [elementAttr]="{ class: 'pull-left' }"
+                  (onClick)="updatePopupVisible = false"></dx-button>
+              </div>
+            </form>
+      </dx-popup>
+    </ng-container>
+  
+    <!-- Delete Category Popup -->
+    <ng-container *ngIf="deleteCategoryForm.value && deletePopupVisible">
+      <dx-popup [(visible)]="deletePopupVisible" height="200" width="600" [showTitle]="true" title="Delete Confirmation"
+          (onHidden)="deletePopupVisible = false">
+          <form (ngSubmit)="onDeleteCategorySubmit()" [formGroup]="deleteCategoryForm">
+              <div>
+                  <p *ngIf="deleteCategoryForm.value && deletePopupVisible" class="confirmation-text">
+                      Are you sure you want to delete "<strong>{{deleteCategoryForm.value.name}}</strong>"?
+                  </p>
+                  <div class="button-container">
+                      <dx-button text="Yes" type="danger" (onClick)="onDeleteCategorySubmit()"></dx-button>
+                      <dx-button text="No" (onClick)="deletePopupVisible = false"></dx-button>
+                  </div>
+              </div>
+          </form>
+      </dx-popup>
+    </ng-container>
+  
+    <!-- Data Grid to display Categories -->
+    <dx-data-grid class="table row-border hover" [dataSource]="categories" [remoteOperations]='true' [showBorders]="true"
+      [allowColumnResizing]="true" [columnHidingEnabled]="false" (onSelectionChanged)="selectionChanged($event)" keyExpr="id">
+      <!-- <dxo-filter-row [visible]="true"></dxo-filter-row> -->
+      <dxo-search-panel [visible]="true"></dxo-search-panel>
+      <dxo-paging [enabled]="true"></dxo-paging>
+      <dxo-pager [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)" [showPageSizeSelector]="true"
+          [allowedPageSizes]="[5,10]"></dxo-pager>
+      <!-- <dxo-export [enabled]="true" fileName="Categories" [allowExportSelectedData]="true"></dxo-export> -->
+      <!-- <dxo-selection mode="multiple"></dxo-selection> -->
+       <!-- Selection, group panel, and other configurations -->
+      <dxo-selection mode="single"></dxo-selection>
+      <dxo-group-panel [visible]="true"></dxo-group-panel>
+  
+      <dxi-column dataField="id" caption="ID" [visible]="false"></dxi-column>
+      <dxi-column dataField="name" caption="Category Name"></dxi-column>
+      <dxi-column dataField="description" caption="Description"></dxi-column>
+      <dxi-column dataField="author" caption="Created By"></dxi-column>
+      <dxi-column dataField="duration" caption="Time Posted"></dxi-column>
+  
+      <!-- Code for displaying Edit and Delete actions -->
+      <dxi-column [width]="150" caption="Action" name="command-editing"
+      [allowFiltering]="false" [allowSorting]="false" cellTemplate="cellTemplate">
+      <div *dxTemplate="let data of 'cellTemplate'">
+          <dx-menu (onItemClick)="permitCategoryActionColClick($event,data)"
+              [items]="permitCategoryMenuItems"></dx-menu>
+      </div>
+      </dxi-column>
+      
+      <dxo-paging [pageSize]="10"></dxo-paging>
+    </dx-data-grid>
+  
+  </div>
+  

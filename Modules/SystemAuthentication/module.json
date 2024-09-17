@@ -1,0 +1,11 @@
+{
+    "name": "SystemAuthentication",
+    "alias": "systemauthentication",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\SystemAuthentication\\Providers\\SystemAuthenticationServiceProvider"
+    ],
+    "files": []
+}

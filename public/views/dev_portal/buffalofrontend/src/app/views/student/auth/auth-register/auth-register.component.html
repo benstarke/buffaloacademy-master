@@ -1,0 +1,169 @@
+<!-- SignUp Area Starts Here -->
+<section class="signup-area signin-area p-3">
+    <div class="container">
+      <div class="row align-items-center justify-content-md-center">
+        <div class="col-lg-5 order-2 order-lg-0">
+          <div class="signup-area-textwrapper">
+            <h2 class="font-title--md mb-0">Sign Up</h2>
+            <p class="mt-2 mb-lg-4 mb-3">Already have an account? <a routerLink="/app-student-auth/authentication-sub-system/studentLogin" class="text-black-50">Sign In</a></p>
+              
+            <!-- show registration message successful -->
+            <div *ngIf="showVerificationMessage; else registrationForm">
+              <p>Successfully Registered. Please verify your email.</p>
+              <p>Go to your email inbox and make sure to log in with <strong>{{ email }}</strong>:</p>
+              <ul>
+                <li *ngFor="let link of emailProviderLink">
+                  <a [href]="link.url" target="_blank">
+                    <i class="fa fa-envelope email-provider-icon"></i>
+                    Open {{ link.name }}
+                  </a>
+                </li>
+              </ul>
+              <button (click)="resendVerificationEmail()" class="btn btn-primary">Resend email</button>
+            </div>
+            <!-- show registration message successful -->
+
+            <ng-template #registrationForm>
+
+            
+
+          <form (submit)="register($event)">
+            <div class="form-row">
+              <!-- First Name and Email on the same row -->
+              <div class="form-element col-md-6">
+                <label for="name">First Name</label>
+                <input type="text" placeholder="Enter Your Name" id="name" [(ngModel)]="name" name="name" />
+                <small *ngIf="errors?.name" class="d-block text-danger">{{ errors?.name }}</small>
+              </div>
+              <div class="form-element col-md-6">
+                <label for="email">Email</label>
+                <input
+                  type="email"
+                  placeholder="example@email.com"
+                  id="email"
+                  [(ngModel)]="email"
+                  name="email"
+                  (input)="validateEmail()"
+                  [class.is-invalid]="(!emailValid || emailExists) && email !== ''"
+                />
+                <small *ngIf="!emailValid && email !== ''" class="d-block text-danger">Invalid email address</small>
+                <small *ngIf="emailExists && email !== ''" class="d-block text-danger">Email already exists</small>
+                <small *ngIf="errors?.email" class="d-block text-danger">{{ errors?.email }}</small>
+              </div>
+            </div>
+          
+            <!-- Password and Confirm Password on the same row -->
+            <div class="form-row">
+              <div class="form-element col-md-6">
+                <label for="password" class="w-100" style="text-align: left;">Password</label>
+                <div class="form-alert-input">
+                  <input
+                    type="password"
+                    placeholder="Type here..."
+                    id="password"
+                    [(ngModel)]="password"
+                    name="password"
+                    (input)="validatePasswordStrength()"
+                  />
+                  <div class="form-alert-icon" (click)="togglePassword('password')">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="feather feather-eye"
+                    >
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                      <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                  </div>
+                </div>
+                <small *ngIf="passwordStrength === 'weak' && password !== ''" class="d-block text-danger">Weak password</small>
+                <small *ngIf="passwordStrength === 'medium'" class="d-block text-warning">Medium strength password</small>
+                <small *ngIf="passwordStrength === 'strong'" class="d-block text-success">Strong password</small>
+                <small *ngIf="passwordSameAsEmail && password !== ''" class="d-block text-danger">The password cannot be the same as the email.</small>
+                <small *ngIf="errors?.password" class="d-block text-danger">{{ errors?.password }}</small>
+              </div>
+              <div class="form-element col-md-6">
+                <label for="password_confirmation" class="w-100" style="text-align: left;">Confirm Password</label>
+                <div class="form-alert-input">
+                  <input
+                    type="password"
+                    placeholder="Type here..."
+                    id="password_confirmation"
+                    [(ngModel)]="password_confirmation"
+                    name="password_confirmation"
+                    (input)="validatePasswordConfirmation()"
+                    [class.is-invalid]="!passwordsMatch && password_confirmation !== ''"
+                  />
+                  <div class="form-alert-icon" (click)="togglePassword('password_confirmation')">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="feather feather-eye"
+                    >
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                      <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                  </div>
+                </div>
+                <small *ngIf="!passwordsMatch && password_confirmation !== ''" class="d-block text-danger">Passwords do not match</small>
+                <small *ngIf="errors?.password_confirmation" class="d-block text-danger">{{ errors?.password_confirmation }}</small>
+              </div>
+            </div>
+          
+            <div class="form-element d-flex align-items-center terms">
+              <input class="checkbox-primary me-1" type="checkbox" id="agree" [(ngModel)]="agree" name="agree" />
+              <label for="agree" class="text-secondary mb-0">Accept the
+                <a routerLink="/" style="text-decoration: underline;">Terms</a> and
+                <a routerLink="/" style="text-decoration: underline;">Privacy Policy</a>
+              </label>
+            </div>
+            
+            <div class="form-element">
+              <button type="submit" class="button button-lg button--primary w-100" [disabled]="loading">
+                <div *ngIf="loading" class="spinner-container">
+                  <div class="spinner"></div>
+                  <span class="loading-text pl-1">Signing up...</span>
+                </div>
+                <span *ngIf="!loading">Sign me up</span>
+              </button>
+            </div> 
+          </form>
+          
+          
+
+            <!-- <div class="text-center" *ngIf="loading">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+            </div> -->
+            <div *ngIf="loading" class="spinner-container">
+              <div class="spinner"></div>
+              <span class="loading-text">Registration In Progress...</span>
+            </div> 
+            </ng-template>
+            
+          </div>
+        </div>
+        <div class="col-lg-7 order-1 order-lg-0">
+          <div class="signup-area-image">
+            <img src="assets/frontend/dist/images/signup/Illustration.png" alt="Illustration Image" class="img-fluid" /> 
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+<!-- SignUp Area Ends Here -->
