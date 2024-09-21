@@ -8,12 +8,24 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Helpers\DbHelper;
 
+use Carbon\Carbon;
+
 class IconsInfoController extends Controller
 {
     public function index()
     {
-        $iconsInfo = DB::table('par_icons')->get();
-        return response()->json($iconsInfo);
+        $iconsInfos = DB::table('par_icons')->latest()->get();
+        // Add duration field 
+        $iconsInfos = $iconsInfos->map(function ($iconsInfo) {
+            $createdDate = Carbon::parse($iconsInfo->created_at);
+            $iconsInfo->duration = $createdDate->diffForHumans();
+            return $iconsInfo;
+        });
+
+        return response()->json([
+            'success' => true,
+            'data' => $iconsInfos
+        ]);
     }
 
     public function show($id)

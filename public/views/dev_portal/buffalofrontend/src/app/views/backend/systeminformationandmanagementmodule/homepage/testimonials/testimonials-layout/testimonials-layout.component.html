@@ -1,1 +1,16 @@
-<p>testimonials-layout works!</p>
+<div class="wrapper">
+    <div class="content-body">
+        <dx-tab-panel
+            [dataSource]="items"
+            itemTitleTemplate="tabTitle"
+            [selectedIndex]="selectedIndex"
+            (onSelectionChanged)="onTabChange($event)">
+            <div *dxTemplate="let data of 'tabTitle'">
+                <div class="custom-tab">
+                    <i class="{{ data.icon }}"></i> {{ data.label }}
+                </div>
+            </div>
+        </dx-tab-panel>
+        <router-outlet></router-outlet>
+    </div>
+</div>

@@ -194,22 +194,70 @@ import { WhylearnwithusInfoComponent } from '../../views/backend/systeminformati
 import { WhylearnwithusMgmtComponent } from '../../views/backend/systeminformationandmanagementmodule/homepage/whylearnwithus/whylearnwithus-mgmt/whylearnwithus-mgmt.component';
 import { WhylearnwithusLayoutComponent } from '../../views/backend/systeminformationandmanagementmodule/homepage/whylearnwithus/whylearnwithus-layout/whylearnwithus-layout.component';
 
-// OTHER PAGES
+
+
+// CONTACT PAGE
+// Company Address
+import { CompanyAddressInfoComponent } from '../../views/backend/systeminformationandmanagementmodule/contactpage/company-address/company-address-info/company-address-info.component';
+import { CompanyAddressMgmtComponent } from '../../views/backend/systeminformationandmanagementmodule/contactpage/company-address/company-address-mgmt/company-address-mgmt.component';
+import { CompanyAddressLayoutComponent } from '../../views/backend/systeminformationandmanagementmodule/contactpage/company-address/company-address-layout/company-address-layout.component';
+
+// Company Branches
+import { CompanyBranchesInfoComponent } from '../../views/backend/systeminformationandmanagementmodule/contactpage/company-branches/company-branches-info/company-branches-info.component';
+import { CompanyBranchesMgmtComponent } from '../../views/backend/systeminformationandmanagementmodule/contactpage/company-branches/company-branches-mgmt/company-branches-mgmt.component';
+import { CompanyBranchesLayoutComponent } from '../../views/backend/systeminformationandmanagementmodule/contactpage/company-branches/company-branches-layout/company-branches-layout.component';
+
+// Company Branch Info
+import { CompanyBranchInfoComponent } from '../../views/backend/systeminformationandmanagementmodule/contactpage/company-branch-info/company-branch-info/company-branch-info.component';
+import { CompanyBranchMgmtComponent } from '../../views/backend/systeminformationandmanagementmodule/contactpage/company-branch-info/company-branch-mgmt/company-branch-mgmt.component';
+import { CompanyBranchLayoutComponent } from '../../views/backend/systeminformationandmanagementmodule/contactpage/company-branch-info/company-branch-layout/company-branch-layout.component';
+
+// Contacts
+import { ContactsInfoComponent } from '../../views/backend/systeminformationandmanagementmodule/contactpage/contacts/contacts-info/contacts-info.component';
+import { ContactsMgmtComponent } from '../../views/backend/systeminformationandmanagementmodule/contactpage/contacts/contacts-mgmt/contacts-mgmt.component';
+import { ContactsLayoutComponent } from '../../views/backend/systeminformationandmanagementmodule/contactpage/contacts/contacts-layout/contacts-layout.component';
+
+// Contact Info
+import { ContactInfoComponent } from '../../views/backend/systeminformationandmanagementmodule/contactpage/contact-info/contact-info/contact-info.component';
+import { ContactMgmtComponent } from '../../views/backend/systeminformationandmanagementmodule/contactpage/contact-info/contact-mgmt/contact-mgmt.component';
+import { ContactLayoutComponent } from '../../views/backend/systeminformationandmanagementmodule/contactpage/contact-info/contact-layout/contact-layout.component';
+
+// Email Info
+import { EmailInfoComponent } from '../../views/backend/systeminformationandmanagementmodule/contactpage/email-info/email-info/email-info.component';
+import { EmailMgmtComponent } from '../../views/backend/systeminformationandmanagementmodule/contactpage/email-info/email-mgmt/email-mgmt.component';
+import { EmailLayoutComponent } from '../../views/backend/systeminformationandmanagementmodule/contactpage/email-info/email-layout/email-layout.component';
+
+
+
+// ABOUT PAGE
 // About
-import { AboutInfoComponent } from '../../views/backend/systeminformationandmanagementmodule/otherpages/about/about-info/about-info.component';
-import { AboutMgmtComponent } from '../../views/backend/systeminformationandmanagementmodule/otherpages/about/about-mgmt/about-mgmt.component';
-import { AboutLayoutComponent } from '../../views/backend/systeminformationandmanagementmodule/otherpages/about/about-layout/about-layout.component'; 
+import { AboutInfoComponent } from '../../views/backend/systeminformationandmanagementmodule/aboutpage/about-info/about-info.component'; 
+import { AboutMgmtComponent } from '../../views/backend/systeminformationandmanagementmodule/aboutpage/about-mgmt/about-mgmt.component'; 
+import { AboutLayoutComponent } from '../../views/backend/systeminformationandmanagementmodule/aboutpage/about-layout/about-layout.component';  
 
-// Contact
-import { ContactInfoComponent } from '../../views/backend/systeminformationandmanagementmodule/otherpages/contact/contact-info/contact-info.component';
-import { ContactMgmtComponent } from '../../views/backend/systeminformationandmanagementmodule/otherpages/contact/contact-mgmt/contact-mgmt.component';
-import { ContactLayoutComponent } from '../../views/backend/systeminformationandmanagementmodule/otherpages/contact/contact-layout/contact-layout.component';
-
+// GENERAL PAGES
 // Footer
-import { FooterInfoComponent } from '../../views/backend/systeminformationandmanagementmodule/otherpages/footer/footer-info/footer-info.component';
-import { FooterMgmtComponent } from '../../views/backend/systeminformationandmanagementmodule/otherpages/footer/footer-mgmt/footer-mgmt.component';
-import { FooterLayoutComponent } from '../../views/backend/systeminformationandmanagementmodule/otherpages/footer/footer-layout/footer-layout.component';
+import { FooterInfoComponent } from '../../views/backend/systeminformationandmanagementmodule/generalpages/footer/footer-info/footer-info.component'; 
+import { FooterMgmtComponent } from '../../views/backend/systeminformationandmanagementmodule/generalpages/footer/footer-mgmt/footer-mgmt.component';
+import { FooterLayoutComponent } from '../../views/backend/systeminformationandmanagementmodule/generalpages/footer/footer-layout/footer-layout.component';
 
+
+// Icons
+import { IconsInfoComponent } from '../../views/backend/systeminformationandmanagementmodule/generalpages/icons/icons-info/icons-info.component';
+import { IconsMgmtComponent } from '../../views/backend/systeminformationandmanagementmodule/generalpages/icons/icons-mgmt/icons-mgmt.component';
+import { IconsLayoutComponent } from '../../views/backend/systeminformationandmanagementmodule/generalpages/icons/icons-layout/icons-layout.component';
+
+
+// Partners
+import { PartnersInfoComponent } from '../../views/backend/systeminformationandmanagementmodule/generalpages/partners/partners-info/partners-info.component'; 
+import { PartnersMgmtComponent } from '../../views/backend/systeminformationandmanagementmodule/generalpages/partners/partners-mgmt/partners-mgmt.component'; 
+import { PartnersLayoutComponent } from '../../views/backend/systeminformationandmanagementmodule/generalpages/partners/partners-layout/partners-layout.component';
+
+
+// Team
+import { TeamInfoComponent } from '../../views/backend/systeminformationandmanagementmodule/generalpages/team/team-info/team-info.component';
+import { TeamMgmtComponent } from '../../views/backend/systeminformationandmanagementmodule/generalpages/team/team-mgmt/team-mgmt.component';
+import { TeamLayoutComponent } from '../../views/backend/systeminformationandmanagementmodule/generalpages/team/team-layout/team-layout.component';
 
 
 // SYSTEM ACTIVITY & LOGS MODULE
@@ -918,27 +966,63 @@ export const backendRoutes: Routes = [
       ]
     },
 
-    // OTHER PAGES
+    // CONTACT PAGE
     {
-      path: 'system-information-management/other-pages/dashboard-about',
-      component: AboutLayoutComponent,
+      path: 'system-information-management/contact-page/dashboard-company-address',
+      component: CompanyAddressLayoutComponent,
       children: [
         {
           path: '',
-          component: AboutInfoComponent
+          component: CompanyAddressInfoComponent
         },
         {
-          path: 'about-information',
-          component: AboutInfoComponent
+          path: 'company-address-information',
+          component: CompanyAddressInfoComponent
         },
         {
-          path: 'about-management',
-          component: AboutMgmtComponent
+          path: 'company-address-management',
+          component: CompanyAddressMgmtComponent
         }
       ]
     },
     {
-      path: 'system-information-management/other-pages/dashboard-contact',
+      path: 'system-information-management/contact-page/dashboard-company-branch-info',
+      component: CompanyBranchLayoutComponent,
+      children: [
+        {
+          path: '',
+          component: CompanyBranchInfoComponent
+        },
+        {
+          path: 'company-branch-info-information',
+          component: CompanyBranchInfoComponent
+        },
+        {
+          path: 'company-branch-info-management',
+          component: CompanyBranchMgmtComponent
+        }
+      ]
+    },
+    {
+      path: 'system-information-management/contact-page/dashboard-company-branches',
+      component: CompanyBranchesLayoutComponent,
+      children: [
+        {
+          path: '',
+          component: CompanyBranchesInfoComponent
+        },
+        {
+          path: 'company-branches-information',
+          component: CompanyBranchesInfoComponent
+        },
+        {
+          path: 'company-branches-management',
+          component: CompanyBranchesMgmtComponent
+        }
+      ]
+    },
+    {
+      path: 'system-information-management/contact-page/dashboard-contact',
       component: ContactLayoutComponent,
       children: [
         {
@@ -956,7 +1040,83 @@ export const backendRoutes: Routes = [
       ]
     },
     {
-      path: 'system-information-management/other-pages/dashboard-footer',
+      path: 'system-information-management/contact-page/dashboard-contacts',
+      component: ContactsLayoutComponent,
+      children: [
+        {
+          path: '',
+          component: ContactsInfoComponent
+        },
+        {
+          path: 'contacts-information',
+          component: ContactsInfoComponent
+        },
+        {
+          path: 'contacts-management',
+          component: ContactsMgmtComponent
+        }
+      ]
+    },
+    {
+      path: 'system-information-management/contact-page/dashboard-email',
+      component: EmailLayoutComponent,
+      children: [
+        {
+          path: '',
+          component: EmailInfoComponent
+        },
+        {
+          path: 'email-information',
+          component: EmailInfoComponent
+        },
+        {
+          path: 'email-management',
+          component: EmailMgmtComponent
+        }
+      ]
+    },
+
+    // ABOUT PAGE
+    {
+      path: 'system-information-management/about-page/dashboard-about',
+      component: AboutLayoutComponent,
+      children: [
+        {
+          path: '',
+          component: AboutInfoComponent
+        },
+        {
+          path: 'about-information',
+          component: AboutInfoComponent
+        },
+        {
+          path: 'about-management',
+          component: AboutMgmtComponent
+        }
+      ]
+    },
+
+    // GENERAL PAGES
+    {
+      path: 'system-information-management/general-pages/dashboard-icons',
+      component: IconsLayoutComponent,
+      children: [
+        {
+          path: '',
+          component: IconsInfoComponent
+        },
+        {
+          path: 'icons-information',
+          component: IconsInfoComponent
+        },
+        {
+          path: 'icons-management',
+          component: IconsMgmtComponent
+        }
+      ]
+    },
+    {
+      path: 'system-information-management/general-pages/dashboard-footer',
       component: FooterLayoutComponent,
       children: [
         {
@@ -970,6 +1130,42 @@ export const backendRoutes: Routes = [
         {
           path: 'footer-management',
           component: FooterMgmtComponent
+        }
+      ]
+    },
+    {
+      path: 'system-information-management/general-pages/dashboard-partners',
+      component: PartnersLayoutComponent,
+      children: [
+        {
+          path: '',
+          component: PartnersInfoComponent
+        },
+        {
+          path: 'partners-information',
+          component: PartnersInfoComponent
+        },
+        {
+          path: 'partners-management',
+          component: PartnersMgmtComponent
+        }
+      ]
+    },
+    {
+      path: 'system-information-management/general-pages/dashboard-team',
+      component: TeamLayoutComponent,
+      children: [
+        {
+          path: '',
+          component: TeamInfoComponent
+        },
+        {
+          path: 'team-information',
+          component: TeamInfoComponent
+        },
+        {
+          path: 'team-management',
+          component: TeamMgmtComponent
         }
       ]
     },

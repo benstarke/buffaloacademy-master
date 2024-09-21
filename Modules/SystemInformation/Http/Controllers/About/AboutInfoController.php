@@ -32,7 +32,7 @@ class AboutInfoController extends Controller
 
     public function index()
     {
-        $aboutInfos = DB::table('par_about_info')->get();
+        $aboutInfos = DB::table('par_about_info')->latest()->get();
        
         // Add duration field 
         $aboutInfos = $aboutInfos->map(function ($aboutInfo) {
@@ -247,11 +247,15 @@ class AboutInfoController extends Controller
         }
     }
 
+    /**
+     * Remove the specified resource from storage.
+     * delete multiple records at a time
+     */
     public function destroyMultiple(Request $request): JsonResponse
     {
         $ids = $request->input('ids'); // Expecting an array of IDs
 
-        // Validate if IDs are provided
+        // Check if the IDs array is empty or not provided
         if (empty($ids) || !is_array($ids)) {
             return response()->json([
                 'success' => false,
@@ -259,39 +263,50 @@ class AboutInfoController extends Controller
             ], 400);
         }
 
-        $aboutInfos = DB::table('par_about_info')->whereIn('id', $ids)->get();
+        $blogCategories = DB::table('par_about_info')->whereIn('id', $ids)->get();
 
-        if ($aboutInfos->isEmpty()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'About info records not found'
-            ], 404);
-        }
+        // if ($blogCategories->isEmpty()) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'About info not found'
+        //     ], 404);
+        // }
 
         try {
             // Fetch the current user ID from the JWT token
             $userId = $this->getCurrentUserId(request());
 
-            // Get user email (check for instructor first, then fallback to regular user)
+            // Check if the user is an instructor
             $userEmail = DB::table('par_instructors')->where('id', $userId)->value('email');
+
+            // If not found as an instructor, check if they are a regular user
             if (!$userEmail) {
                 $userEmail = DB::table('par_users')->where('id', $userId)->value('email');
             }
 
+            // If email is still not found, return an error
             if (!$userEmail) {
                 return response()->json(['error' => 'User email not found'], 404);
             }
 
             // Audit trail logic for deletion
-            foreach ($aboutInfos as $aboutInfo) {
-                $previousData = (array)$aboutInfo;
+            foreach ($blogCategories as $blogCategory) {
+                $previousData = (array)$blogCategory;
+
+                $auditTrailData = [
+                    'table_name' => 'par_about_info',
+                    'table_action' => 'delete',
+                    'prev_tabledata' => json_encode($previousData),
+                    'current_tabledata' => null,
+                    'user_id' => $userEmail, // Use the user email for the audit trail
+                ];
 
                 DbHelper::auditTrail(
-                    'par_about_info',
-                    'delete',
-                    json_encode($previousData),
-                    null,
-                    $userEmail
+                    $auditTrailData['table_name'],
+                    $auditTrailData['table_action'],
+                    $auditTrailData['prev_tabledata'],
+                    $auditTrailData['current_tabledata'],
+                    $auditTrailData['user_id']
                 );
             }
 
@@ -300,9 +315,10 @@ class AboutInfoController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => $deletedCount . ' about info records deleted successfully'
+                'message' => $deletedCount . ' About info records deleted successfully'
             ], 200);
         } catch (Exception $e) {
+            \Log::error($e->getMessage());
             return response()->json(['error' => 'Server Error', 'message' => $e->getMessage()], 500);
         }
     }

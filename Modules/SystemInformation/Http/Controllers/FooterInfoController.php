@@ -8,12 +8,24 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Helpers\DbHelper;
 
+use Carbon\Carbon;
+
 class FooterInfoController extends Controller
 {
     public function index()
     {
-        $footerInfo = DB::table('par_footer_info')->get();
-        return response()->json($footerInfo);
+        $footerInfos = DB::table('par_footer_info')->latest()->get();
+        // Add duration field 
+        $footerInfos = $footerInfos->map(function ($footerInfo) {
+            $createdDate = Carbon::parse($footerInfo->created_at);
+            $footerInfo->duration = $createdDate->diffForHumans();
+            return $footerInfo;
+        });
+
+        return response()->json([
+            'success' => true,
+            'data' => $footerInfos
+        ]);
     }
 
     public function show($id)

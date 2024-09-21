@@ -8,12 +8,24 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Helpers\DbHelper;
 
+use Carbon\Carbon;
+
 class PartnersInfoController extends Controller
 {
     public function index()
     {
-        $partnersInfo = DB::table('par_partners_info')->get();
-        return response()->json($partnersInfo);
+        $partnersInfos = DB::table('par_partners_info')->latest()->get();
+        // Add duration field 
+        $partnersInfos = $partnersInfos->map(function ($partnersInfo) {
+            $createdDate = Carbon::parse($partnersInfo->created_at);
+            $partnersInfo->duration = $createdDate->diffForHumans();
+            return $partnersInfo;
+        });
+
+        return response()->json([
+            'success' => true,
+            'data' => $partnersInfos
+        ]);
     }
 
     public function show($id)

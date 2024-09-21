@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Helpers\DbHelper;
 
+use Carbon\Carbon;
+
 class TeamInfoController extends Controller
 {
     /**
@@ -24,10 +26,21 @@ class TeamInfoController extends Controller
 
     public function index()
     {
-        $team = DB::table('par_instructors')
+        $teams = DB::table('par_instructors')
                 ->limit(4)
+                ->latest()
                 ->get();
-        return response()->json($team);
+        // Add duration field 
+        $teams = $teams->map(function ($team) {
+            $createdDate = Carbon::parse($team->created_at);
+            $team->duration = $createdDate->diffForHumans();
+            return $team;
+        });
+
+        return response()->json([
+            'success' => true,
+            'data' => $teams
+        ]);
     }
 
 

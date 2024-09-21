@@ -54,10 +54,11 @@ Route::prefix('site-information-sub-system')->group(function () {
             Route::get('/{id}', [AboutInfoController::class, 'show'])->name('show');
             Route::post('/', [AboutInfoController::class, 'store'])->name('store');
             Route::post('/{id}', [AboutInfoController::class, 'update'])->name('update');
+
             // single record
             Route::delete('/{id}', [AboutInfoController::class, 'destroy'])->name('destroy');
             // multiple records
-            Route::post('/delete', [AboutInfoController::class, 'destroyMultiple'])->name('destroyMultiple');
+            Route::post('/about/delete', [AboutInfoController::class, 'destroyMultiple'])->name('destroyMultiple');
         });
     });
 });
@@ -71,6 +72,7 @@ Route::prefix('site-information-sub-system')->group(function () {
             Route::get('/{id}', [AddressInfoController::class, 'show'])->name('show');
             Route::post('/', [AddressInfoController::class, 'store'])->name('store');
             Route::put('/{id}', [AddressInfoController::class, 'update'])->name('update');
+            // single record
             Route::delete('/{id}', [AddressInfoController::class, 'destroy'])->name('destroy');
         });
 
@@ -79,6 +81,7 @@ Route::prefix('site-information-sub-system')->group(function () {
             Route::get('/{id}', [CompanyBranchesController::class, 'show'])->name('show');
             Route::post('/', [CompanyBranchesController::class, 'store'])->name('store');
             Route::put('/{id}', [CompanyBranchesController::class, 'update'])->name('update');
+            // single record
             Route::delete('/{id}', [CompanyBranchesController::class, 'destroy'])->name('destroy');
         });
 
@@ -87,6 +90,7 @@ Route::prefix('site-information-sub-system')->group(function () {
             Route::get('/{id}', [CompanyBranchInfoController::class, 'show'])->name('show');
             Route::post('/', [CompanyBranchInfoController::class, 'store'])->name('store');
             Route::put('/{id}', [CompanyBranchInfoController::class, 'update'])->name('update');
+            // single record
             Route::delete('/{id}', [CompanyBranchInfoController::class, 'destroy'])->name('destroy');
         });
 
@@ -95,6 +99,7 @@ Route::prefix('site-information-sub-system')->group(function () {
             Route::get('/{id}', [ContactController::class, 'show'])->name('show');
             Route::post('/', [ContactController::class, 'store'])->name('store');
             Route::put('/{id}', [ContactController::class, 'update'])->name('update');
+            // single record
             Route::delete('/{id}', [ContactController::class, 'destroy'])->name('destroy');
         });
 
@@ -103,6 +108,7 @@ Route::prefix('site-information-sub-system')->group(function () {
             Route::get('/{id}', [ContactInfoController::class, 'show'])->name('show');
             Route::post('/', [ContactInfoController::class, 'store'])->name('store');
             Route::put('/{id}', [ContactInfoController::class, 'update'])->name('update');
+            // single record
             Route::delete('/{id}', [ContactInfoController::class, 'destroy'])->name('destroy');
         });
 
@@ -111,6 +117,7 @@ Route::prefix('site-information-sub-system')->group(function () {
             Route::get('/{id}', [EmailInfoController::class, 'show'])->name('show');
             Route::post('/', [EmailInfoController::class, 'store'])->name('store');
             Route::put('/{id}', [EmailInfoController::class, 'update'])->name('update');
+            // single record
             Route::delete('/{id}', [EmailInfoController::class, 'destroy'])->name('destroy');
         });
     });
@@ -125,6 +132,7 @@ Route::prefix('site-information-sub-system')->group(function () {
             Route::get('/{id}', [NewsLetterController::class, 'show'])->name('show');
             Route::post('/', [NewsLetterController::class, 'store'])->name('store');
             Route::put('/{id}', [NewsLetterController::class, 'update'])->name('update');
+            // single record
             Route::delete('/{id}', [NewsLetterController::class, 'destroy'])->name('destroy');
         });
 
@@ -137,6 +145,7 @@ Route::prefix('site-information-sub-system')->group(function () {
             Route::get('/{id}', [BuffaloSimpleLearningStepsController::class, 'show'])->name('show');
             Route::post('/', [BuffaloSimpleLearningStepsController::class, 'store'])->name('store');
             Route::put('/{id}', [BuffaloSimpleLearningStepsController::class, 'update'])->name('update');
+            // single record
             Route::delete('/{id}', [BuffaloSimpleLearningStepsController::class, 'destroy'])->name('destroy');
         });
 
@@ -152,6 +161,7 @@ Route::prefix('site-information-sub-system')->group(function () {
             Route::get('/{id}', [LandingPageController::class, 'show'])->name('show');
             Route::post('/', [LandingPageController::class, 'store'])->name('store');
             Route::put('/{id}', [LandingPageController::class, 'update'])->name('update');
+            // single record
             Route::delete('/{id}', [LandingPageController::class, 'destroy'])->name('destroy');
         });
 
@@ -161,6 +171,7 @@ Route::prefix('site-information-sub-system')->group(function () {
             Route::get('/{id}', [LatestEventsController::class, 'show'])->name('show'); 
             Route::post('/', [LatestEventsController::class, 'store'])->name('store');
             Route::put('/{id}', [LatestEventsController::class, 'update'])->name('update');
+            // single record
             Route::delete('/{id}', [LatestEventsController::class, 'destroy'])->name('destroy');
         });
 
@@ -174,6 +185,7 @@ Route::prefix('site-information-sub-system')->group(function () {
             Route::get('/{id}', [TestimonialsController::class, 'show'])->name('show');
             Route::post('/', [TestimonialsController::class, 'store'])->name('store');
             Route::put('/{id}', [TestimonialsController::class, 'update'])->name('update');
+            // single record
             Route::delete('/{id}', [TestimonialsController::class, 'destroy'])->name('destroy');
         });
 
@@ -182,6 +194,7 @@ Route::prefix('site-information-sub-system')->group(function () {
             Route::get('/{id}', [WhyLearnWithBuffaloController::class, 'show'])->name('show');
             Route::post('/', [WhyLearnWithBuffaloController::class, 'store'])->name('store');
             Route::put('/{id}', [WhyLearnWithBuffaloController::class, 'update'])->name('update');
+            // single record
             Route::delete('/{id}', [WhyLearnWithBuffaloController::class, 'destroy'])->name('destroy');
         });
     });
@@ -195,29 +208,44 @@ Route::prefix('site-information-sub-system')->group(function () {
             Route::get('/', [FooterInfoController::class, 'index'])->name('index');
             Route::get('/{id}', [FooterInfoController::class, 'show'])->name('show');
             Route::post('/', [FooterInfoController::class, 'store'])->name('store');
-            Route::put('/{id}', [FooterInfoController::class, 'update'])->name('update');
+            Route::post('/{id}', [FooterInfoController::class, 'update'])->name('update');
+            // single record
             Route::delete('/{id}', [FooterInfoController::class, 'destroy'])->name('destroy');
+            // multiple records
+            Route::post('/footer/delete', [FooterInfoController::class, 'destroyMultiple'])->name('destroyMultiple');
         });
 
         Route::prefix('icons-info')->name('icons-info.')->group(function () {
             Route::get('/', [IconsInfoController::class, 'index'])->name('index');
             Route::get('/{id}', [IconsInfoController::class, 'show'])->name('show');
             Route::post('/', [IconsInfoController::class, 'store'])->name('store');
-            Route::put('/{id}', [IconsInfoController::class, 'update'])->name('update');
+            Route::posix_times('/{id}', [IconsInfoController::class, 'update'])->name('update');
+            // single record
             Route::delete('/{id}', [IconsInfoController::class, 'destroy'])->name('destroy');
+            // multiple records
+            Route::post('/icons/delete', [IconsInfoController::class, 'destroyMultiple'])->name('destroyMultiple');
         });
 
         Route::prefix('partners-info')->name('partners-info.')->group(function () {
             Route::get('/', [PartnersInfoController::class, 'index'])->name('index');
             Route::get('/{id}', [PartnersInfoController::class, 'show'])->name('show');
             Route::post('/', [PartnersInfoController::class, 'store'])->name('store');
-            Route::put('/{id}', [PartnersInfoController::class, 'update'])->name('update');
+            Route::post('/{id}', [PartnersInfoController::class, 'update'])->name('update');
+            // single record
             Route::delete('/{id}', [PartnersInfoController::class, 'destroy'])->name('destroy');
+            // multiple records
+            Route::post('/partners/delete', [PartnersInfoController::class, 'destroyMultiple'])->name('destroyMultiple');
         });
 
         Route::prefix('team')->name('team.')->group(function () {
             Route::get('/', [TeamInfoController::class, 'index'])->name('index');
             Route::get('/{id}', [TeamInfoController::class, 'show'])->name('show');
+            Route::post('/', [TeamInfoController::class, 'store'])->name('store');
+            Route::post('/{id}', [TeamInfoController::class, 'update'])->name('update');
+            // single record
+            Route::delete('/{id}', [TeamInfoController::class, 'destroy'])->name('destroy');
+            // multiple records
+            Route::post('/team/delete', [TeamInfoController::class, 'destroyMultiple'])->name('destroyMultiple');
         });
     });
 });

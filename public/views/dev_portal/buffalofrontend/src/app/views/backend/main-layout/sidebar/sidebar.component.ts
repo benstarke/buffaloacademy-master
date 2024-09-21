@@ -25,7 +25,8 @@ export class SidebarComponent {
   isCourseManagementMenuOpen: boolean = false;
   isSystemInfoMgmtMenuOpen: boolean = false;  
   isIndexHomeMenuOpen: boolean = false;
-  isOtherPagesMenuOpen: boolean = false;
+  isGeneralPagesMenuOpen: boolean = false;
+  isContactPageMenuOpen: boolean = false;
   isSystemConfigsWorkflowMenuOpen: boolean = false;
   isSystemFilesManagementMenuOpen: boolean = false;
 
@@ -102,9 +103,14 @@ export class SidebarComponent {
     this.isIndexHomeMenuOpen = !this.isIndexHomeMenuOpen;
   }
 
-  // Method to toggle the OtherPages menu
-  toggleOtherPagesMenu() {
-    this.isOtherPagesMenuOpen = !this.isOtherPagesMenuOpen;
+  // Method to toggle the GeneralPages menu
+  toggleGeneralPagesMenu() {
+    this.isGeneralPagesMenuOpen = !this.isGeneralPagesMenuOpen;
+  }
+
+  // Method to toggle the ContactPages menu
+  toggleContactPageMenu() {
+    this.isContactPageMenuOpen = !this.isContactPageMenuOpen;
   }
 
   // Method to toggle the SystemConfigsWorkflow menu

@@ -23,10 +23,10 @@
               <span class="nav-text">Statistics</span>
             </a>
             <ul *ngIf="isStatisticsMenuOpen" [attr.aria-expanded]="false">
-                <li><a routerLink="/"><i class="fas fa-user-graduate"></i>Students</a></li>
-                <li><a routerLink="/"><i class="fas fa-user-tie"></i>Instructors</a></li>
-                <li><a routerLink="/"><i class="fas fa-graduation-cap"></i>Courses</a></li>
-                <li><a routerLink="/"><i class="fas fa-blog"></i>Blogs</a></li>
+                <li><a class="las la-info-circle" routerLink="/"><i class="fas fa-user-graduate"></i>Students</a></li>
+                <li><a class="las la-info-circle" routerLink="/"><i class="fas fa-user-tie"></i>Instructors</a></li>
+                <li><a class="las la-info-circle" routerLink="/"><i class="fas fa-graduation-cap"></i>Courses</a></li>
+                <li><a class="las la-info-circle" routerLink="/"><i class="fas fa-blog"></i>Blogs</a></li>
             </ul>
         </li>
 
@@ -40,10 +40,10 @@
               <span class="nav-text">Blog Content</span>
             </a>
             <ul *ngIf="isBlogsMenuOpen" [attr.aria-expanded]="false">
-                <li><a routerLink="content-management/dashboard-blog-status"><i class="fas fa-check-circle"></i>Blog Status</a></li>
-                <li><a routerLink="content-management/dashboard-blog-tags"><i class="fas fa-tags"></i>Blog Tags</a></li>
-                <li><a routerLink="content-management/dashboard-blog-categories"><i class="fas fa-list"></i>Blog Categories</a></li>
-                <li><a routerLink="content-management/dashboard-blogs"><i class="fas fa-blog"></i>Blog Posts</a></li>
+                <li><a class="las la-info-circle" routerLink="content-management/dashboard-blog-status"><i class="fas fa-check-circle"></i>Blog Status</a></li>
+                <li><a class="las la-info-circle" routerLink="content-management/dashboard-blog-tags"><i class="fas fa-tags"></i>Blog Tags</a></li>
+                <li><a class="las la-info-circle" routerLink="content-management/dashboard-blog-categories"><i class="fas fa-list"></i>Blog Categories</a></li>
+                <li><a class="las la-info-circle" routerLink="content-management/dashboard-blogs"><i class="fas fa-blog"></i>Blog Posts</a></li>
             </ul>
         </li>
 
@@ -58,19 +58,19 @@
             </a>
             <ul *ngIf="isFinancialMenuOpen" [attr.aria-expanded]="false">
                 <li>
-                    <a class="has-arrow" href="javascript:void(0)" (click)="toggleFinancialStatisticsMenu()" [attr.aria-expanded]="isFinancialStatisticsMenuOpen ? 'true' : 'false'">
+                    <a class="las la-info-circle has-arrow" href="javascript:void(0)" (click)="toggleFinancialStatisticsMenu()" [attr.aria-expanded]="isFinancialStatisticsMenuOpen ? 'true' : 'false'">
                         <i class="fas fa-chart-line"></i>
                         <span class="nav-text">Financial Statistics</span>
                     </a>
                     <ul *ngIf="isFinancialStatisticsMenuOpen" [attr.aria-expanded]="false">
-                        <li><a routerLink="/"><i class="fas fa-tachometer-alt"></i>Most Subscribed courses</a></li>
-                        <li><a routerLink="/"><i class="fas fa-chart-pie"></i>Revenue Generated</a></li>
-                        <li><a routerLink="/"><i class="fas fa-chart-line"></i>Most Enrolled student</a></li>
-                        <li><a routerLink="/"><i class="fas fa-chart-bar"></i>Most paid Instructor</a></li>
+                        <li><a class="las la-info-circle" routerLink="/"><i class="las la-info-circle fas fa-tachometer-alt"></i>Most Subscribed courses</a></li>
+                        <li><a class="las la-info-circle" routerLink="/"><i class="las la-info-circle fas fa-chart-pie"></i>Revenue Generated</a></li>
+                        <li><a class="las la-info-circle" routerLink="/"><i class="las la-info-circle fas fa-chart-line"></i>Most Enrolled student</a></li>
+                        <li><a class="las la-info-circle" routerLink="/"><i class="las la-info-circle fas fa-chart-bar"></i>Most paid Instructor</a></li>
                     </ul>
                 </li>
-                <li><a routerLink="/"><i class="fas fa-receipt"></i>Payment History</a></li>
-                <li><a routerLink="/"><i class="fas fa-dollar-sign"></i>Transaction History</a></li>
+                <li><a class="las la-info-circle" routerLink="/"><i class="las la-info-circle fas fa-receipt"></i>Payment History</a></li>
+                <li><a class="las la-info-circle" routerLink="/"><i class="las la-info-circle fas fa-dollar-sign"></i>Transaction History</a></li>
             </ul>
         </li>
 
@@ -83,8 +83,8 @@
               <span class="nav-text">Roles & Permissions</span>
             </a>
             <ul *ngIf="isRolesPermissionsMenuOpen" [attr.aria-expanded]="false">
-                <li><a routerLink="student-instructor-courses/role-dashboard"><i class="fas fa-user-tag"></i>Roles</a></li>
-                <li><a routerLink="student-instructor-courses/permission-dashboard"><i class="fas fa-lock"></i>Permissions</a></li>
+                <li><a class="las la-info-circle" routerLink="student-instructor-courses/role-dashboard"><i class="fas fa-user-tag"></i>Roles</a></li>
+                <li><a class="las la-info-circle" routerLink="student-instructor-courses/permission-dashboard"><i class="fas fa-lock"></i>Permissions</a></li>
             </ul>
         </li>
 
@@ -97,9 +97,9 @@
               <span class="nav-text">User Management </span>
             </a>
             <ul *ngIf="isUserManagementMenuOpen" [attr.aria-expanded]="false">
-                <li><a routerLink="user-management/dashboard-users"><i class="fas fa-users"></i>Users</a></li>
-                <li><a routerLink="user-management/dashboard-students"><i class="fas fa-user-graduate"></i>Students</a></li>
-                <li><a routerLink="user-management/dashboard-instructors"><i class="fas fa-user-tie"></i>Instructors</a></li>
+                <li><a class="las la-info-circle" routerLink="user-management/dashboard-users"><i class="fas fa-users"></i>Users</a></li>
+                <li><a class="las la-info-circle" routerLink="user-management/dashboard-students"><i class="fas fa-user-graduate"></i>Students</a></li>
+                <li><a class="las la-info-circle" routerLink="user-management/dashboard-instructors"><i class="fas fa-user-tie"></i>Instructors</a></li>
             </ul>
         </li>
 
@@ -112,20 +112,20 @@
               <span class="nav-text">Course Management </span>
             </a>
             <ul *ngIf="isCourseManagementMenuOpen" [attr.aria-expanded]="false">
-                <li><a routerLink="course-management/dashboard-course-types"><i class="fas fa-filter"></i>Course Type</a></li>
-                <li><a routerLink="course-management/dashboard-course-tags"><i class="fas fa-tags"></i>Course Tag</a></li>
-                <li><a routerLink="course-management/dashboard-course-difficulty"><i class="fas fa-exclamation-triangle"></i>Course Levels</a></li>
-                <li><a routerLink="course-management/dashboard-course-status"><i class="fas fa-ticket-alt"></i>Course Status</a></li>
-                <li><a routerLink="course-management/dashboard-course-categories"><i class="fas fa-list"></i>Course Category</a></li>
-                <li><a routerLink="course-management/dashboard-course-sub-categories"><i class="fas fa-sitemap"></i>Course Sub-category</a></li>
-                <li><a routerLink="course-management/dashboard-courses"><i class="fas fa-graduation-cap"></i>Courses</a></li>
-                <li><a routerLink="course-management/dashboard-course-curriculums"><i class="fas fa-book"></i>Course Curriculum</a></li>
-                <li><a routerLink="course-management/dashboard-curriculum-lessons"><i class="fas fa-book-open"></i>Curriculum Lessons</a></li>
-                <li><a routerLink="course-management/dashboard-lesson-materials"><i class="fas fa-file-alt"></i>Lesson Materials</a></li>
+                <li><a class="las la-info-circle" routerLink="course-management/dashboard-course-types"><i class="fas fa-filter"></i>Course Type</a></li>
+                <li><a class="las la-info-circle" routerLink="course-management/dashboard-course-tags"><i class="fas fa-tags"></i>Course Tag</a></li>
+                <li><a class="las la-info-circle" routerLink="course-management/dashboard-course-difficulty"><i class="fas fa-exclamation-triangle"></i>Course Levels</a></li>
+                <li><a class="las la-info-circle" routerLink="course-management/dashboard-course-status"><i class="fas fa-ticket-alt"></i>Course Status</a></li>
+                <li><a class="las la-info-circle" routerLink="course-management/dashboard-course-categories"><i class="fas fa-list"></i>Course Category</a></li>
+                <li><a class="las la-info-circle" routerLink="course-management/dashboard-course-sub-categories"><i class="fas fa-sitemap"></i>Course Sub-category</a></li>
+                <li><a class="las la-info-circle" routerLink="course-management/dashboard-courses"><i class="fas fa-graduation-cap"></i>Courses</a></li>
+                <li><a class="las la-info-circle" routerLink="course-management/dashboard-course-curriculums"><i class="fas fa-book"></i>Course Curriculum</a></li>
+                <li><a class="las la-info-circle" routerLink="course-management/dashboard-curriculum-lessons"><i class="fas fa-book-open"></i>Curriculum Lessons</a></li>
+                <li><a class="las la-info-circle" routerLink="course-management/dashboard-lesson-materials"><i class="fas fa-file-alt"></i>Lesson Materials</a></li>
 
-                <li><a routerLink="course-management/dashboard-course-enrollments"><i class="fas fa-user-check"></i>Course Enrollments</a></li>
-                <li><a routerLink="course-management/dashboard-course-coupons"><i class="fas fa-ticket-alt"></i>Course Coupons</a></li>
-                <li><a routerLink="course-management/dashboard-app-currency"><i class="fas fa-ticket-alt"></i>App Currency</a></li>
+                <li><a class="las la-info-circle" routerLink="course-management/dashboard-course-enrollments"><i class="fas fa-user-check"></i>Course Enrollments</a></li>
+                <li><a class="las la-info-circle" routerLink="course-management/dashboard-course-coupons"><i class="fas fa-ticket-alt"></i>Course Coupons</a></li>
+                <li><a class="las la-info-circle" routerLink="course-management/dashboard-app-currency"><i class="fas fa-ticket-alt"></i>App Currency</a></li>
             </ul>
         </li>
         
@@ -142,31 +142,54 @@
             <ul *ngIf="isSystemInfoMgmtMenuOpen" [attr.aria-expanded]="false">
                 <!-- Home page -->
                 <li>
-                    <a class="has-arrow" href="javascript:void(0)" (click)="toggleIndexHomeMenu()" [attr.aria-expanded]="isIndexHomeMenuOpen ? 'true' : 'false'">
+                    <a class="las la-info-circle has-arrow" href="javascript:void(0)" (click)="toggleIndexHomeMenu()" [attr.aria-expanded]="isIndexHomeMenuOpen ? 'true' : 'false'">
                         <i class="las la-home"></i>
                         <span class="nav-text">Home Page</span>
                     </a>
                     <ul *ngIf="isIndexHomeMenuOpen" [attr.aria-expanded]="false">
-                        <li><a routerLink="system-information-management/home-page/dashboard-learning-steps"><i class="fas fa-shoe-prints"></i>Learning Steps</a></li>
-                        <li><a routerLink="system-information-management/home-page/dashboard-newsletter"><i class="fas fa-newspaper"></i>Newsletter</a></li>
-                        <li><a routerLink="system-information-management/home-page/dashboard-testimonials"><i class="fas fa-comments"></i>Testimonials</a></li>
-                        <li><a routerLink="system-information-management/home-page/dashboard-landing-page"><i class="fas fa-door-open"></i>Landing page</a></li>
-                        <li><a routerLink="system-information-management/home-page/dashboard-latest-events"><i class="fas fa-bell"></i>Latest Events</a></li>
-                        <li><a routerLink="system-information-management/home-page/dashboard-partners-information"><i class="fas fa-handshake"></i>Partners Info</a></li>
-                        <li><a routerLink="system-information-management/home-page/dashboard-buffalo-team"><i class="fas fa-user-friends"></i>Buffalo Team</a></li>
-                        <li><a routerLink="system-information-management/home-page/dashboard-why-learn-with-us"><i class="fas fa-trophy"></i>Why Learn With Us</a></li>
+                        <li><a class="las la-info-circle" routerLink="system-information-management/home-page/dashboard-learning-steps"><i class="fas fa-shoe-prints"></i>Learning Steps</a></li>
+                        <li><a class="las la-info-circle" routerLink="system-information-management/home-page/dashboard-newsletter"><i class="fas fa-newspaper"></i>System Newsletter</a></li>
+                        <li><a class="las la-info-circle" routerLink="system-information-management/home-page/dashboard-testimonials"><i class="fas fa-comments"></i>Testimonials</a></li>
+                        <li><a class="las la-info-circle" routerLink="system-information-management/home-page/dashboard-landing-page"><i class="fas fa-door-open"></i>System Landing page</a></li>
+                        <li><a class="las la-info-circle" routerLink="system-information-management/home-page/dashboard-latest-events"><i class="fas fa-bell"></i>System Latest Events</a></li>
+                        <li><a class="las la-info-circle" routerLink="system-information-management/home-page/dashboard-partners-information"><i class="fas fa-handshake"></i>Partners Info</a></li>
+                        <li><a class="las la-info-circle" routerLink="system-information-management/home-page/dashboard-buffalo-team"><i class="fas fa-user-friends"></i>Buffalo Team</a></li>
+                        <li><a class="las la-info-circle" routerLink="system-information-management/home-page/dashboard-why-learn-with-us"><i class="fas fa-trophy"></i>Why Learn With Us</a></li>
                     </ul>
                 </li>
-                <!-- Other pages -->
+                <!-- Contact Page -->
                 <li>
-                    <a class="has-arrow" href="javascript:void(0)" (click)="toggleOtherPagesMenu()" [attr.aria-expanded]="isOtherPagesMenuOpen ? 'true' : 'false'">
-                        <i class="fas fa-info-circle"></i>
-                        <span class="nav-text">Other Pages</span>
+                    <a class="las la-info-circle has-arrow" href="javascript:void(0)" (click)="toggleContactPageMenu()" [attr.aria-expanded]="isContactPageMenuOpen ? 'true' : 'false'">
+                        <i class="las la-phone"></i>
+                        <span class="nav-text">Contact Page</span>
                     </a>
-                    <ul *ngIf="isOtherPagesMenuOpen" [attr.aria-expanded]="false">
-                        <li><a routerLink="system-information-management/other-pages/dashboard-about"><i class="fas fa-info-circle"></i>About</a></li>
-                        <li><a routerLink="system-information-management/other-pages/dashboard-contact"><i class="fas fa-map-marker-alt"></i>Contact</a></li>
-                        <li><a routerLink="system-information-management/other-pages/dashboard-footer"><i class="fas fa-sitemap"></i>Footer</a></li>
+                    <ul *ngIf="isContactPageMenuOpen" [attr.aria-expanded]="false">
+                        <li><a class="las la-info-circle" routerLink="system-information-management/contact-page/dashboard-company-address"><i class="fas fa-shoe-prints"></i>Buffalo Addresses</a></li>
+                        <li><a class="las la-info-circle" routerLink="system-information-management/contact-page/dashboard-company-branches"><i class="fas fa-newspaper"></i>Buffalo Branches</a></li>
+                        <li><a class="las la-info-circle" routerLink="system-information-management/contact-page/dashboard-company-branch-info"><i class="fas fa-comments"></i>Buffalo Branch</a></li>
+                        <li><a class="las la-info-circle" routerLink="system-information-management/contact-page/dashboard-contacts"><i class="fas fa-door-open"></i>Buffalo Contacts</a></li>
+                        <li><a class="las la-info-circle" routerLink="system-information-management/contact-page/dashboard-email"><i class="fas fa-handshake"></i>Buffalo Emails</a></li>
+                        <li><a class="las la-info-circle" routerLink="system-information-management/contact-page/dashboard-contact"><i class="fas fa-bell"></i>System Contacts </a></li>
+                    </ul>
+                </li>
+                <!-- About page -->
+                <li>
+                    <a class="las la-info-circle"  routerLink="system-information-management/about-page/dashboard-about" aria-expanded="false">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span class="nav-text">About Page</span>
+                    </a>
+                </li>
+                <!-- General pages -->
+                <li>
+                    <a class="las la-info-circle has-arrow" href="javascript:void(0)" (click)="toggleGeneralPagesMenu()" [attr.aria-expanded]="isGeneralPagesMenuOpen ? 'true' : 'false'">
+                        <i class="fas fa-info-circle"></i>
+                        <span class="nav-text">System Components</span>
+                    </a>
+                    <ul *ngIf="isGeneralPagesMenuOpen" [attr.aria-expanded]="false">
+                        <li><a class="las la-info-circle" routerLink="system-information-management/general-pages/dashboard-partners"><i class="fas fa-info-circle"></i>Buffalo Partners</a></li>
+                        <li><a class="las la-info-circle" routerLink="system-information-management/general-pages/dashboard-icons"><i class="fas fa-map-marker-alt"></i>System Icons</a></li>
+                        <li><a class="las la-info-circle" routerLink="system-information-management/general-pages/dashboard-team"><i class="fas fa-map-marker-alt"></i>Buffalo Team</a></li>
+                        <li><a class="las la-info-circle" routerLink="system-information-management/general-pages/dashboard-footer"><i class="fas fa-sitemap"></i>System Footer</a></li>
                     </ul>
                 </li>
             </ul>
@@ -192,13 +215,13 @@
               <span class="nav-text">System Configs & Workflow</span>
             </a>
             <ul *ngIf="isSystemConfigsWorkflowMenuOpen" [attr.aria-expanded]="false">
-                <li><a routerLink="/"><i class="fas fa-graduation-cap"></i>Courses</a></li>
-                <li><a routerLink="/"><i class="fas fa-book"></i>Curriculum</a></li>
-                <li><a routerLink="/"><i class="fas fa-book-open"></i>Lessons</a></li>
-                <li><a routerLink="/"><i class="fas fa-file-alt"></i>Materials</a></li>
-                <li><a routerLink="/"><i class="fas fa-blog"></i>Blogs</a></li>
-                <li><a routerLink="/"><i class="fas fa-user-graduate"></i>Students</a></li>
-                <li><a routerLink="/"><i class="fas fa-user-tie"></i>Instructors</a></li>
+                <li><a class="las la-info-circle" routerLink="/"><i class="fas fa-graduation-cap"></i>Courses</a></li>
+                <li><a class="las la-info-circle" routerLink="/"><i class="fas fa-book"></i>Curriculum</a></li>
+                <li><a class="las la-info-circle" routerLink="/"><i class="fas fa-book-open"></i>Lessons</a></li>
+                <li><a class="las la-info-circle" routerLink="/"><i class="fas fa-file-alt"></i>Materials</a></li>
+                <li><a class="las la-info-circle" routerLink="/"><i class="fas fa-blog"></i>Blogs</a></li>
+                <li><a class="las la-info-circle" routerLink="/"><i class="fas fa-user-graduate"></i>Students</a></li>
+                <li><a class="las la-info-circle" routerLink="/"><i class="fas fa-user-tie"></i>Instructors</a></li>
             </ul>
         </li>
 
@@ -214,95 +237,95 @@
             <ul *ngIf="isSystemInfoMgmtMenuOpen" [attr.aria-expanded]="false">
                 <!-- Students -->
                 <li>
-                    <a class="has-arrow" href="javascript:void(0)" (click)="toggleStudentsMenu()" [attr.aria-expanded]="isStudentsMenuOpen ? 'true' : 'false'">
+                    <a class="las la-info-circle has-arrow" href="javascript:void(0)" (click)="toggleStudentsMenu()" [attr.aria-expanded]="isStudentsMenuOpen ? 'true' : 'false'">
                         <i class="fas fa-user-graduate"></i>
                         <span class="nav-text">Students</span>
                     </a>
                     <ul *ngIf="isStudentsMenuOpen" [attr.aria-expanded]="false">
-                        <li><a routerLink="system-files-management/students/dashboard-student-profile-pics"><i class="fas fa-user-circle"></i>Profile Pics</a></li>
+                        <li><a class="las la-info-circle" routerLink="system-files-management/students/dashboard-student-profile-pics"><i class="fas fa-user-circle"></i>Profile Pics</a></li>
                     </ul>
                 </li>
                 <!-- Instructors -->
                 <li>
-                    <a class="has-arrow" href="javascript:void(0)" (click)="toggleInstructorsMenu()" [attr.aria-expanded]="isInstructorsMenuOpen ? 'true' : 'false'">
+                    <a class="las la-info-circle has-arrow" href="javascript:void(0)" (click)="toggleInstructorsMenu()" [attr.aria-expanded]="isInstructorsMenuOpen ? 'true' : 'false'">
                         <i class="fas fa-user-tie"></i>
                         <span class="nav-text">Instructors</span>
                     </a>
                     <ul *ngIf="isInstructorsMenuOpen" [attr.aria-expanded]="false">
-                        <li><a routerLink="system-files-management/instructors/dashboard-instructor-profile-pics"><i class="fas fa-user-circle"></i>Profile Pics</a></li>
+                        <li><a class="las la-info-circle" routerLink="system-files-management/instructors/dashboard-instructor-profile-pics"><i class="fas fa-user-circle"></i>Profile Pics</a></li>
                     </ul>
                 </li>
                 <!-- Courses -->
                 <li>
-                    <a class="has-arrow" href="javascript:void(0)" (click)="toggleCoursesFilesMenu()" [attr.aria-expanded]="isCoursesFilesMenuOpen ? 'true' : 'false'">
+                    <a class="las la-info-circle has-arrow" href="javascript:void(0)" (click)="toggleCoursesFilesMenu()" [attr.aria-expanded]="isCoursesFilesMenuOpen ? 'true' : 'false'">
                         <i class="fas fa-graduation-cap"></i>
                         <span class="nav-text">Courses</span>
                     </a>
                     <ul *ngIf="isCoursesFilesMenuOpen" [attr.aria-expanded]="false">
-                        <li><a routerLink="system-files-management/courses/dashboard-images"><i class="fas fa-image"></i>Images</a></li>
-                        <li><a routerLink="system-files-management/courses/dashboard-thumbnail-images"><i class="fas fa-th"></i>Thumbnail images</a></li>
-                        <li><a routerLink="system-files-management/courses/dashboard-categories"><i class="fas fa-list"></i>Categories</a></li>
-                        <li><a routerLink="system-files-management/courses/dashboard-sub-categories"><i class="fas fa-sitemap"></i>Sub-categories</a></li>
+                        <li><a class="las la-info-circle" routerLink="system-files-management/courses/dashboard-images"><i class="fas fa-image"></i>Images</a></li>
+                        <li><a class="las la-info-circle" routerLink="system-files-management/courses/dashboard-thumbnail-images"><i class="fas fa-th"></i>Thumbnail images</a></li>
+                        <li><a class="las la-info-circle" routerLink="system-files-management/courses/dashboard-categories"><i class="fas fa-list"></i>Categories</a></li>
+                        <li><a class="las la-info-circle" routerLink="system-files-management/courses/dashboard-sub-categories"><i class="fas fa-sitemap"></i>Sub-categories</a></li>
                         <li>
-                            <a class="has-arrow" href="javascript:void(0)" (click)="toggleContentMaterialsMenu()" [attr.aria-expanded]="isContentMaterialsMenuOpen ? 'true' : 'false'">
+                            <a class="las la-info-circle has-arrow" href="javascript:void(0)" (click)="toggleContentMaterialsMenu()" [attr.aria-expanded]="isContentMaterialsMenuOpen ? 'true' : 'false'">
                                 <i class="fas fa-folder"></i>
                                 <span class="nav-text">Materials</span>
                             </a>
                             <ul *ngIf="isContentMaterialsMenuOpen" [attr.aria-expanded]="false">
-                                <li><a routerLink="system-files-management/materials/dashboard-datasets"><i class="fas fa-database"></i>Datasets</a></li>
-                                <li><a routerLink="system-files-management/materials/dashboard-documents"><i class="fas fa-file"></i>Documents</a></li>
-                                <li><a routerLink="system-files-management/materials/dashboard-videos"><i class="fas fa-video"></i>Videos</a></li>
-                                <li><a routerLink="system-files-management/materials/dashboard-zipped-files"><i class="fas fa-file-archive"></i>Zipped Files</a></li>
+                                <li><a class="las la-info-circle" routerLink="system-files-management/materials/dashboard-datasets"><i class="fas fa-database"></i>Datasets</a></li>
+                                <li><a class="las la-info-circle" routerLink="system-files-management/materials/dashboard-documents"><i class="fas fa-file"></i>Documents</a></li>
+                                <li><a class="las la-info-circle" routerLink="system-files-management/materials/dashboard-videos"><i class="fas fa-video"></i>Videos</a></li>
+                                <li><a class="las la-info-circle" routerLink="system-files-management/materials/dashboard-zipped-files"><i class="fas fa-file-archive"></i>Zipped Files</a></li>
                             </ul>
                         </li>
                     </ul>
                 </li>
                 <!-- Blog Posts -->
                 <li>
-                    <a class="has-arrow" href="javascript:void(0)" (click)="toggleBlogPostsMenu()" [attr.aria-expanded]="isBlogPostsMenuOpen ? 'true' : 'false'">
+                    <a class="las la-info-circle has-arrow" href="javascript:void(0)" (click)="toggleBlogPostsMenu()" [attr.aria-expanded]="isBlogPostsMenuOpen ? 'true' : 'false'">
                         <i class="fas fa-blog"></i>
                         <span class="nav-text">Blog Posts</span>
                     </a>
                     <ul *ngIf="isBlogPostsMenuOpen" [attr.aria-expanded]="false">
-                        <li><a routerLink="system-files-management/blog-posts/dashboard-blog-posts"><i class="fas fa-image"></i>Blog Image</a></li>
+                        <li><a class="las la-info-circle" routerLink="system-files-management/blog-posts/dashboard-blog-posts"><i class="fas fa-image"></i>Blog Image</a></li>
                     </ul>
                 </li>
                 <!-- Users -->
                 <li>
-                    <a class="has-arrow" href="javascript:void(0)" (click)="toggleUsersFilesMenu()" [attr.aria-expanded]="isUsersFilesMenuOpen ? 'true' : 'false'">
+                    <a class="las la-info-circle has-arrow" href="javascript:void(0)" (click)="toggleUsersFilesMenu()" [attr.aria-expanded]="isUsersFilesMenuOpen ? 'true' : 'false'">
                         <i class="fas fa-users"></i>
                         <span class="nav-text">Users</span>
                     </a>
                     <ul *ngIf="isUsersFilesMenuOpen" [attr.aria-expanded]="false">
-                        <li><a routerLink="system-files-management/users/dashboard-user-profile-pics"><i class="fas fa-user-circle"></i>Profile pics</a></li>
+                        <li><a class="las la-info-circle" routerLink="system-files-management/users/dashboard-user-profile-pics"><i class="fas fa-user-circle"></i>Profile pics</a></li>
                     </ul>
                 </li>
                 <!-- System -->
                 <li>
-                    <a class="has-arrow" href="javascript:void(0)" (click)="toggleSystemMenu()" [attr.aria-expanded]="isSystemMenuOpen ? 'true' : 'false'">
+                    <a class="las la-info-circle has-arrow" href="javascript:void(0)" (click)="toggleSystemMenu()" [attr.aria-expanded]="isSystemMenuOpen ? 'true' : 'false'">
                         <i class="fas fa-wrench"></i>
                         <span class="nav-text">System</span>
                     </a>
                     <ul *ngIf="isSystemMenuOpen" [attr.aria-expanded]="false">
-                        <li><a routerLink="system-files-management/system/dashboard-system-pics"><i class="fas fa-desktop"></i>System logo</a></li>
+                        <li><a class="las la-info-circle" routerLink="system-files-management/system/dashboard-system-pics"><i class="fas fa-desktop"></i>System logo</a></li>
                     </ul>
                 </li>
                 <!-- Events -->
                 <li>
-                    <a class="ai-icon"  routerLink="system-files-management/events/dashboard-events" aria-expanded="false">
+                    <a class="ai-icon"  class="las la-info-circle" routerLink="system-files-management/events/dashboard-events" aria-expanded="false">
                         <i class="fas fa-bell"></i>
-                        <span class="nav-text">Events</span>
+                        <span class="nav-text">Buffalo Events</span>
                     </a>
                 </li>
                 <!-- Home -->
                 <li>
-                    <a class="has-arrow" href="javascript:void(0)" (click)="toggleHomeMenu()" [attr.aria-expanded]="isHomeMenuOpen ? 'true' : 'false'">
+                    <a class="las la-info-circle has-arrow" href="javascript:void(0)" (click)="toggleHomeMenu()" [attr.aria-expanded]="isHomeMenuOpen ? 'true' : 'false'">
                         <i class="las la-home"></i>
                         <span class="nav-text">Home</span>
                     </a>
                     <ul *ngIf="isHomeMenuOpen" [attr.aria-expanded]="false">
-                        <li><a routerLink="system-files-management/home/dashboard-landing-page"><i class="fas fa-door-open"></i>landingpage</a></li>
-                        <li><a routerLink="system-files-management/home/dashboard-learning-steps"><i class="fas fa-shoe-prints"></i>learningsteps</a></li>
+                        <li><a class="las la-info-circle" routerLink="system-files-management/home/dashboard-landing-page"><i class="fas fa-door-open"></i>landingpage</a></li>
+                        <li><a class="las la-info-circle" routerLink="system-files-management/home/dashboard-learning-steps"><i class="fas fa-shoe-prints"></i>learningsteps</a></li>
                     </ul>
                 </li>
             </ul>
@@ -310,13 +333,13 @@
 
         <!-- System Activity & Logs -->
         <li>
-            <a class="has-arrow" href="javascript:void(0)" (click)="toggleSystemActivityLogsMenu()" [attr.aria-expanded]="isSystemActivityLogsMenuOpen ? 'true' : 'false'">
+            <a class="las la-info-circle has-arrow" href="javascript:void(0)" (click)="toggleSystemActivityLogsMenu()" [attr.aria-expanded]="isSystemActivityLogsMenuOpen ? 'true' : 'false'">
               <i class="fas fa-user-cog"></i>
               <span class="nav-text">System Activity & Logs</span>
             </a>
             <ul *ngIf="isSystemActivityLogsMenuOpen" [attr.aria-expanded]="false">
-                <li><a routerLink="system-activity-and-logs/dashboard-system-audit-trail"><i class="fas fa-history"></i>Audit Trail</a></li>
-                <li><a routerLink="system-activity-and-logs/dashboard-system-activity-logs"><i class="fas fa-tachometer-alt"></i>System Logs</a></li>
+                <li><a class="las la-info-circle" routerLink="system-activity-and-logs/dashboard-system-audit-trail"><i class="fas fa-history"></i>Audit Trail</a></li>
+                <li><a class="las la-info-circle" routerLink="system-activity-and-logs/dashboard-system-activity-logs"><i class="fas fa-tachometer-alt"></i>System Logs</a></li>
             </ul>
         </li>
 
