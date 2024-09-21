@@ -314,7 +314,7 @@ export class LessonmaterialsMgmtComponent implements OnInit {
 
       const token = localStorage.getItem('token');
       if (!token) {
-        this.showToast('No token found. Please log in again.', 'error');
+        this.showToast('Please log in again.', 'error');
         this.isSubmittingSave = false; // Stop spinner
         this.isSubmittingSaveAndAddAnother = false; // Stop spinner
         return;

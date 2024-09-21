@@ -119,6 +119,9 @@ Route::prefix('courses-sub-system')->group(function () {
             // check if course category and sub-category combination exists
             Route::get('/check-category-subcategory/combination', [CoursesController::class, 'checkCategorySubCategoryCombination'])->name('checkCategorySubCategoryCombination');
 
+            // Fetch all sub-categories under a specific course category
+            Route::get('/subcategories-by-category/{course_category_id}', [CoursesController::class, 'getSubCategoriesByCategory'])->name('getSubCategoriesByCategory');
+
             Route::post('/', [CoursesController::class, 'store'])->name('store');
             Route::put('/{id}', [CoursesController::class, 'update'])->name('update');
             // single record

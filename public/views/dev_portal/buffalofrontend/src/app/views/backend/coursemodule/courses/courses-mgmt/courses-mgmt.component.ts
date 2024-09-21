@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Course } from '../course.model'; 
 import { CourseService } from '../course.services';
@@ -158,6 +158,7 @@ export class CoursesMgmtComponent implements OnInit {
     private DifficultyService: DifficultyService,
     private StatusService: StatusService,
     private CurrencyService: CurrencyService,
+    private fb: FormBuilder,
     private http: HttpClient, ) {
     this.addCourseForm = new FormGroup({
       title_en: new FormControl('', Validators.required),
@@ -237,21 +238,12 @@ export class CoursesMgmtComponent implements OnInit {
   ngOnInit(): void {
     this.fetchCourses();
     this.fetchCategories();
-    this.fetchSubCategories();
     this.fetchTags();
     this.fetchTypes();
     this.fetchDifficulties();
     this.fetchStatus();
     this.fetchCurrencies();
 
-    // Listen for category selection changes
-    this.addCourseForm.get('course_category_id')?.valueChanges.subscribe((categoryId) => {
-      if (categoryId) {
-        this.updateSubCategories(categoryId);
-      } else {
-        this.SubCategory = []; // Clear subcategories if no category is selected
-      }
-    });
 
     // tab step form
     // Initialize form and set validation watchers
@@ -264,43 +256,6 @@ export class CoursesMgmtComponent implements OnInit {
       this.updateTabStatus();
     });
   }
-
-  updateSubCategories(categoryId: string): void {
-    // Retrieve the token from localStorage
-    const token = localStorage.getItem('token');
-    let headers = new HttpHeaders();
-  
-    // Add Authorization header if token is available
-    if (token) {
-      headers = headers.set('Authorization', `Bearer ${token}`);
-    }
-  
-    // Call the service to get the related subcategories
-    this.CourseService.getSubCategoriesByCategory(categoryId, headers).subscribe(
-      (subCategories) => {
-        if (subCategories && subCategories.length > 0) {
-          this.SubCategory = subCategories; // Update the subcategory options
-  
-          // Reset and enable the subcategory field
-          const subCategoryControl = this.addCourseForm.get('course_sub_category_id');
-          subCategoryControl?.reset();
-          subCategoryControl?.enable();
-          subCategoryControl?.markAsUntouched();
-        } else {
-          this.SubCategory = [];
-          this.addCourseForm.get('course_sub_category_id')?.disable(); // Disable if no subcategories are available
-        }
-      },
-      (error) => {
-        this.showToast('Error fetching subcategories', 'error');
-        this.SubCategory = [];
-        this.addCourseForm.get('course_sub_category_id')?.disable(); // Disable if error occurs
-      }
-    );
-  }
-  
-  
-  
   
 
   fetchCourses(): void {
@@ -359,25 +314,46 @@ export class CoursesMgmtComponent implements OnInit {
     );
   }
 
-  fetchSubCategories() {
-    this.SubCategoryService.getSubCategories().subscribe(
+  // fetchSubCategories() {
+  //   this.SubCategoryService.getSubCategories().subscribe(
+  //     (response: any) => {
+  //       // console.log('Full API Response:', response); // Log the full response for debugging
+  
+  //       // Check if the response is successful
+  //       if (response.success) {
+  //         this.SubCategory = response.data; // Assign the 'data' array to the SubCategory property
+  //         console.log('SubCategories fetched successfully:', this.SubCategory); // Log the fetched SubCategorys
+  //       } else {
+  //         console.warn('SubCategories fetch was not successful:', response.message); // Handle unsuccessful responses
+  //       }
+  //     },
+  //     (error: any) => {
+  //       console.error('Error fetching SubCategories:', error); // Handle API error
+  //       // Optionally, show a message to the user
+  //     }
+  //   );
+  // }
+  fetchSubCategories(categoryId: number) {
+    this.CourseService.fetchSubCategoriesByCategory(categoryId).subscribe(
       (response: any) => {
-        // console.log('Full API Response:', response); // Log the full response for debugging
+        // Log the full response for debugging purposes
+        console.log('Full API Response:', response);
   
         // Check if the response is successful
         if (response.success) {
           this.SubCategory = response.data; // Assign the 'data' array to the SubCategory property
-          console.log('SubCategories fetched successfully:', this.SubCategory); // Log the fetched SubCategorys
+          console.log('SubCategories fetched successfully:', this.SubCategory); // Log the fetched subcategories
         } else {
           console.warn('SubCategories fetch was not successful:', response.message); // Handle unsuccessful responses
         }
       },
       (error: any) => {
-        console.error('Error fetching SubCategories:', error); // Handle API error
+        console.error('Error fetching SubCategories:', error); // Handle API errors
         // Optionally, show a message to the user
       }
     );
   }
+  
 
 
   fetchTags() {
@@ -715,6 +691,208 @@ export class CoursesMgmtComponent implements OnInit {
   // Define the method that will handle the change event
 
 
+  // onAddCourseSubmit(addAnother: boolean): void {
+  //   if (this.addCourseForm.valid) {
+  //     const newCourseTitle = this.addCourseForm.get('title_en')?.value.trim();
+  
+  //     // Frontend validation for unique Course title
+  //     const courseExists = this.Courses.some(course => course.title_en.toLowerCase() === newCourseTitle.toLowerCase());
+  //     if (courseExists) {
+  //       this.showToast('Course title already exists', 'error');
+  //       this.isSubmittingSave = false;
+  //       this.isSubmittingSaveAndAddAnother = false;
+  //       return;
+  //     }
+  
+  //     const token = localStorage.getItem('token');
+  //     if (!token) {
+  //       this.showToast('No token found. Please log in again.', 'error');
+  //       this.isSubmittingSave = false;
+  //       this.isSubmittingSaveAndAddAnother = false;
+  //       return;
+  //     }
+  
+  //     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  
+  //     // Collect form data
+  //     const selectedCategory = this.addCourseForm.get('course_category_id')?.value;
+  //     const selectedSubCategory = this.addCourseForm.get('course_sub_category_id')?.value;
+  //     const selectedType = this.addCourseForm.get('course_type_id')?.value;
+  //     const selectedDifficulty = this.addCourseForm.get('course_difficulty_id')?.value;
+  //     const selectedDuration = this.addCourseForm.get('duration')?.value;
+  //     const selectedImage = this.addCourseForm.get('image')?.value;
+  //     const thumbnailImage = this.addCourseForm.get('thumbnail_image')?.value;
+  //     const thumbnailVideo = this.addCourseForm.get('thumbnail_video')?.value;
+  
+  //     // Hidden field default values
+  //     const courseStatusId = 'Pending'; // Default value
+  //     const courseTagId = 'Recent';     // Default value
+  
+  //     // Currency ID handling based on course type
+  //     let currencyId = 'USDT'; // Default value for Free courses
+  //     if (selectedType === 'Paid') {
+  //       currencyId = this.addCourseForm.get('currency_id')?.value; // Use the value filled by the user
+  //     }
+  
+  //     // Check if image is selected
+  //     if (!selectedImage) {
+  //       this.showToast('Please select an image to upload', 'error');
+  //       this.isSubmittingSave = false;
+  //       this.isSubmittingSaveAndAddAnother = false;
+  //       return;
+  //     }
+  
+  //     // Check if the course category and sub-category combination exists
+  //     this.CourseService.checkCategorySubCategoryCombination(selectedCategory, selectedSubCategory, headers).subscribe(
+  //       (combinationExists: boolean) => {
+  //         if (!combinationExists) {
+  //           // Insert new category-sub-category combination in the backend
+  //           this.CourseService.addCategorySubCategoryMapping(selectedCategory, selectedSubCategory, token, headers).subscribe(
+  //             () => {
+  //               // Submitting the course form
+  //               const formData = new FormData();
+  //               formData.append('title_en', this.addCourseForm.get('title_en')?.value);
+  //               formData.append('course_category_id', this.addCourseForm.get('course_category_id')?.value);
+  //               formData.append('course_sub_category_id', this.addCourseForm.get('course_sub_category_id')?.value);
+  //               formData.append('course_type_id', this.addCourseForm.get('course_type_id')?.value);
+  //               formData.append('course_difficulty_id', this.addCourseForm.get('course_difficulty_id')?.value);
+  //               formData.append('duration', this.addCourseForm.get('duration')?.value);
+  //               formData.append('image', this.addCourseForm.get('image')?.value);
+  //               formData.append('thumbnail_image', this.addCourseForm.get('thumbnail_image')?.value);
+  //               formData.append('thumbnail_video', this.addCourseForm.get('thumbnail_video')?.value);
+  //               formData.append('course_status_id', courseStatusId); // Default hidden value
+  //               formData.append('course_tag_id', courseTagId);       // Default hidden value
+  //               formData.append('currency_id', currencyId);          // Default or user-provided value based on course type
+  //               formData.append('created_by', localStorage.getItem('token') || '');
+  
+  //               this.uploadProgress = 0;
+  
+  //               this.CourseService.addCourse(formData, headers).subscribe(
+  //                 (event: HttpEvent<any>) => {
+  //                   switch (event.type) {
+  //                     case HttpEventType.UploadProgress:
+  //                       if (event.total) {
+  //                         this.uploadProgress = Math.round(100 * (event.loaded / event.total));
+  //                       }
+  //                       break;
+  //                     case HttpEventType.Response:
+  //                       this.uploadProgress = -1;
+  //                       if (event.body?.success) {
+  //                         this.fetchCourses();
+  //                         if (addAnother) {
+  //                           this.addCourseForm.reset();
+  //                           this.resetFileInput();
+  //                           this.showToast('Course added successfully. You can add another.', 'success');
+  //                         } else {
+  //                           this.addCourseForm.reset();
+  //                           this.addPopupVisible = false;
+  //                           this.resetFileInput();
+  //                           this.showToast('Course added successfully', 'success');
+  //                         }
+  //                       } else {
+  //                         this.showToast(event.body?.message || 'Error adding Course', 'error');
+  //                       }
+  //                       this.isSubmittingSave = false;
+  //                       this.isSubmittingSaveAndAddAnother = false;
+  //                       break;
+  //                   }
+  //                 },
+  //                 (error: any) => {
+  //                   this.uploadProgress = -1;
+  //                   this.isSubmittingSave = false;
+  //                   this.isSubmittingSaveAndAddAnother = false;
+  //                   const errorMessage = error?.error?.error || 'Error adding Course';
+  //                   this.showToast(errorMessage, 'error');
+  //                 }
+  //               );
+  //             },
+  //             (error: any) => {
+  //               this.showToast('Error inserting category-sub-category combination', 'error');
+  //               this.isSubmittingSave = false;
+  //               this.isSubmittingSaveAndAddAnother = false;
+  //             }
+  //           );
+  //         } else {
+  //           // Submit the course form if combination exists
+  //           const formData = new FormData();
+  //           formData.append('title_en', this.addCourseForm.get('title_en')?.value);
+  //           formData.append('course_category_id', this.addCourseForm.get('course_category_id')?.value);
+  //           formData.append('course_sub_category_id', this.addCourseForm.get('course_sub_category_id')?.value);
+  //           formData.append('course_type_id', this.addCourseForm.get('course_type_id')?.value);
+  //           formData.append('course_difficulty_id', this.addCourseForm.get('course_difficulty_id')?.value);
+  //           formData.append('duration', this.addCourseForm.get('duration')?.value);
+  //           formData.append('image', this.addCourseForm.get('image')?.value);
+  //           formData.append('thumbnail_image', this.addCourseForm.get('thumbnail_image')?.value);
+  //           formData.append('thumbnail_video', this.addCourseForm.get('thumbnail_video')?.value);
+  //           formData.append('course_status_id', courseStatusId); // Default hidden value
+  //           formData.append('course_tag_id', courseTagId);       // Default hidden value
+  //           formData.append('currency_id', currencyId);          // Default or user-provided value based on course type
+  //           formData.append('created_by', localStorage.getItem('token') || '');
+  
+  //           this.uploadProgress = 0;
+  
+  //           this.CourseService.addCourse(formData, headers).subscribe(
+  //             (event: HttpEvent<any>) => {
+  //               switch (event.type) {
+  //                 case HttpEventType.UploadProgress:
+  //                   if (event.total) {
+  //                     this.uploadProgress = Math.round(100 * (event.loaded / event.total));
+  //                   }
+  //                   break;
+  //                 case HttpEventType.Response:
+  //                   this.uploadProgress = -1;
+  //                   if (event.body?.success) {
+  //                     this.fetchCourses();
+  //                     if (addAnother) {
+  //                       this.addCourseForm.reset();
+  //                       this.resetFileInput();
+  //                       this.showToast('Course added successfully. You can add another.', 'success');
+  //                     } else {
+  //                       this.addCourseForm.reset();
+  //                       this.addPopupVisible = false;
+  //                       this.resetFileInput();
+  //                       this.showToast('Course added successfully', 'success');
+  //                     }
+  //                   } else {
+  //                     this.showToast(event.body?.message || 'Error adding Course', 'error');
+  //                   }
+  //                   this.isSubmittingSave = false;
+  //                   this.isSubmittingSaveAndAddAnother = false;
+  //                   break;
+  //               }
+  //             },
+  //             (error: any) => {
+  //               this.uploadProgress = -1;
+  //               this.isSubmittingSave = false;
+  //               this.isSubmittingSaveAndAddAnother = false;
+  //               const errorMessage = error?.error?.error || 'Error adding Course';
+  //               this.showToast(errorMessage, 'error');
+  //             }
+  //           );
+  //         }
+  //       },
+  //       (error: any) => {
+  //         this.showToast('Error checking category-sub-category combination', 'error');
+  //         this.isSubmittingSave = false;
+  //         this.isSubmittingSaveAndAddAnother = false;
+  //       }
+  //     );
+  //   } else {
+  //     // Show toast for invalid fields
+  //     Object.keys(this.addCourseForm.controls).forEach(key => {
+  //       const control = this.addCourseForm.get(key);
+  //       if (control && control.invalid && (control.value === null || control.value === '')) {
+  //         const fieldName = this.fieldNames[key] || key;
+  //         this.showToast(`${fieldName} cannot be empty`, 'error');
+  //       }
+  //     });
+  //     this.isSubmittingSave = false;
+  //     this.isSubmittingSaveAndAddAnother = false;
+  //   }
+  // }
+
+  // onCourseTypeChange
+  
   onAddCourseSubmit(addAnother: boolean): void {
     if (this.addCourseForm.valid) {
       const newCourseTitle = this.addCourseForm.get('title_en')?.value.trim();
@@ -766,139 +944,60 @@ export class CoursesMgmtComponent implements OnInit {
         return;
       }
   
-      // Check if the course category and sub-category combination exists
-      this.CourseService.checkCategorySubCategoryCombination(selectedCategory, selectedSubCategory, headers).subscribe(
-        (combinationExists: boolean) => {
-          if (!combinationExists) {
-            // Insert new category-sub-category combination in the backend
-            this.CourseService.addCategorySubCategoryMapping(selectedCategory, selectedSubCategory, token, headers).subscribe(
-              () => {
-                // Submitting the course form
-                const formData = new FormData();
-                formData.append('title_en', this.addCourseForm.get('title_en')?.value);
-                formData.append('course_category_id', this.addCourseForm.get('course_category_id')?.value);
-                formData.append('course_sub_category_id', this.addCourseForm.get('course_sub_category_id')?.value);
-                formData.append('course_type_id', this.addCourseForm.get('course_type_id')?.value);
-                formData.append('course_difficulty_id', this.addCourseForm.get('course_difficulty_id')?.value);
-                formData.append('duration', this.addCourseForm.get('duration')?.value);
-                formData.append('image', this.addCourseForm.get('image')?.value);
-                formData.append('thumbnail_image', this.addCourseForm.get('thumbnail_image')?.value);
-                formData.append('thumbnail_video', this.addCourseForm.get('thumbnail_video')?.value);
-                formData.append('course_status_id', courseStatusId); // Default hidden value
-                formData.append('course_tag_id', courseTagId);       // Default hidden value
-                formData.append('currency_id', currencyId);          // Default or user-provided value based on course type
-                formData.append('created_by', localStorage.getItem('token') || '');
+      // Submitting the course form
+      const formData = new FormData();
+      formData.append('title_en', this.addCourseForm.get('title_en')?.value);
+      formData.append('course_category_id', this.addCourseForm.get('course_category_id')?.value);
+      formData.append('course_sub_category_id', this.addCourseForm.get('course_sub_category_id')?.value);
+      formData.append('course_type_id', this.addCourseForm.get('course_type_id')?.value);
+      formData.append('course_difficulty_id', this.addCourseForm.get('course_difficulty_id')?.value);
+      formData.append('duration', this.addCourseForm.get('duration')?.value);
+      formData.append('image', this.addCourseForm.get('image')?.value);
+      formData.append('thumbnail_image', this.addCourseForm.get('thumbnail_image')?.value);
+      formData.append('thumbnail_video', this.addCourseForm.get('thumbnail_video')?.value);
+      formData.append('course_status_id', courseStatusId); // Default hidden value
+      formData.append('course_tag_id', courseTagId);       // Default hidden value
+      formData.append('currency_id', currencyId);          // Default or user-provided value based on course type
+      formData.append('created_by', localStorage.getItem('token') || '');
   
-                this.uploadProgress = 0;
+      this.uploadProgress = 0;
   
-                this.CourseService.addCourse(formData, headers).subscribe(
-                  (event: HttpEvent<any>) => {
-                    switch (event.type) {
-                      case HttpEventType.UploadProgress:
-                        if (event.total) {
-                          this.uploadProgress = Math.round(100 * (event.loaded / event.total));
-                        }
-                        break;
-                      case HttpEventType.Response:
-                        this.uploadProgress = -1;
-                        if (event.body?.success) {
-                          this.fetchCourses();
-                          if (addAnother) {
-                            this.addCourseForm.reset();
-                            this.resetFileInput();
-                            this.showToast('Course added successfully. You can add another.', 'success');
-                          } else {
-                            this.addCourseForm.reset();
-                            this.addPopupVisible = false;
-                            this.resetFileInput();
-                            this.showToast('Course added successfully', 'success');
-                          }
-                        } else {
-                          this.showToast(event.body?.message || 'Error adding Course', 'error');
-                        }
-                        this.isSubmittingSave = false;
-                        this.isSubmittingSaveAndAddAnother = false;
-                        break;
-                    }
-                  },
-                  (error: any) => {
-                    this.uploadProgress = -1;
-                    this.isSubmittingSave = false;
-                    this.isSubmittingSaveAndAddAnother = false;
-                    const errorMessage = error?.error?.error || 'Error adding Course';
-                    this.showToast(errorMessage, 'error');
-                  }
-                );
-              },
-              (error: any) => {
-                this.showToast('Error inserting category-sub-category combination', 'error');
-                this.isSubmittingSave = false;
-                this.isSubmittingSaveAndAddAnother = false;
+      this.CourseService.addCourse(formData, headers).subscribe(
+        (event: HttpEvent<any>) => {
+          switch (event.type) {
+            case HttpEventType.UploadProgress:
+              if (event.total) {
+                this.uploadProgress = Math.round(100 * (event.loaded / event.total));
               }
-            );
-          } else {
-            // Submit the course form if combination exists
-            const formData = new FormData();
-            formData.append('title_en', this.addCourseForm.get('title_en')?.value);
-            formData.append('course_category_id', this.addCourseForm.get('course_category_id')?.value);
-            formData.append('course_sub_category_id', this.addCourseForm.get('course_sub_category_id')?.value);
-            formData.append('course_type_id', this.addCourseForm.get('course_type_id')?.value);
-            formData.append('course_difficulty_id', this.addCourseForm.get('course_difficulty_id')?.value);
-            formData.append('duration', this.addCourseForm.get('duration')?.value);
-            formData.append('image', this.addCourseForm.get('image')?.value);
-            formData.append('thumbnail_image', this.addCourseForm.get('thumbnail_image')?.value);
-            formData.append('thumbnail_video', this.addCourseForm.get('thumbnail_video')?.value);
-            formData.append('course_status_id', courseStatusId); // Default hidden value
-            formData.append('course_tag_id', courseTagId);       // Default hidden value
-            formData.append('currency_id', currencyId);          // Default or user-provided value based on course type
-            formData.append('created_by', localStorage.getItem('token') || '');
-  
-            this.uploadProgress = 0;
-  
-            this.CourseService.addCourse(formData, headers).subscribe(
-              (event: HttpEvent<any>) => {
-                switch (event.type) {
-                  case HttpEventType.UploadProgress:
-                    if (event.total) {
-                      this.uploadProgress = Math.round(100 * (event.loaded / event.total));
-                    }
-                    break;
-                  case HttpEventType.Response:
-                    this.uploadProgress = -1;
-                    if (event.body?.success) {
-                      this.fetchCourses();
-                      if (addAnother) {
-                        this.addCourseForm.reset();
-                        this.resetFileInput();
-                        this.showToast('Course added successfully. You can add another.', 'success');
-                      } else {
-                        this.addCourseForm.reset();
-                        this.addPopupVisible = false;
-                        this.resetFileInput();
-                        this.showToast('Course added successfully', 'success');
-                      }
-                    } else {
-                      this.showToast(event.body?.message || 'Error adding Course', 'error');
-                    }
-                    this.isSubmittingSave = false;
-                    this.isSubmittingSaveAndAddAnother = false;
-                    break;
+              break;
+            case HttpEventType.Response:
+              this.uploadProgress = -1;
+              if (event.body?.success) {
+                this.fetchCourses();
+                if (addAnother) {
+                  this.addCourseForm.reset();
+                  this.resetFileInput();
+                  this.showToast('Course added successfully. You can add another.', 'success');
+                } else {
+                  this.addCourseForm.reset();
+                  this.addPopupVisible = false;
+                  this.resetFileInput();
+                  this.showToast('Course added successfully', 'success');
                 }
-              },
-              (error: any) => {
-                this.uploadProgress = -1;
-                this.isSubmittingSave = false;
-                this.isSubmittingSaveAndAddAnother = false;
-                const errorMessage = error?.error?.error || 'Error adding Course';
-                this.showToast(errorMessage, 'error');
+              } else {
+                this.showToast(event.body?.message || 'Error adding Course', 'error');
               }
-            );
+              this.isSubmittingSave = false;
+              this.isSubmittingSaveAndAddAnother = false;
+              break;
           }
         },
         (error: any) => {
-          this.showToast('Error checking category-sub-category combination', 'error');
+          this.uploadProgress = -1;
           this.isSubmittingSave = false;
           this.isSubmittingSaveAndAddAnother = false;
+          const errorMessage = error?.error?.error || 'Error adding Course';
+          this.showToast(errorMessage, 'error');
         }
       );
     } else {
@@ -914,9 +1013,7 @@ export class CoursesMgmtComponent implements OnInit {
       this.isSubmittingSaveAndAddAnother = false;
     }
   }
-  
-  
-  
+
 
   onPopupHidden() {
     this.fetchCourses();

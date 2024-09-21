@@ -29,6 +29,13 @@ export class CourseService {
     const url = `${this.apiUrl}check-category-subcategory/combination?course_category_id=${courseCategoryId}&course_sub_category_id=${courseSubCategoryId}`;
     return this.http.get<boolean>(url, { headers });
   }  
+
+  // Method to fetch sub-categories based on category selection
+  fetchSubCategoriesByCategory(categoryId: number): Observable<any> {
+    const url = `${this.baseUrl}subcategories-by-category/${categoryId}`;
+    return this.http.get(url);
+  }
+
   
 
   // Method to add a new category-sub-category combination if it doesn't exist

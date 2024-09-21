@@ -90,6 +90,25 @@ class CoursesController extends Controller
         return response()->json(['exists' => $combinationExists], 200);
     }
 
+
+    /**
+     * Method to get all sub-categories under a selected course category
+     */
+    public function getSubCategoriesByCategory($courseCategoryId)
+    {
+        // Fetch sub-category IDs that are mapped to the selected category
+        $subCategories = DB::table('par_category_sub_category_mapping')
+            ->where('course_category_id', $courseCategoryId)
+            ->select('course_sub_category_id')
+            ->get();
+
+        // Return the result as a JSON response
+        return response()->json($subCategories, 200);
+    }
+
+
+    
+
     /**
      * Store a newly created resource in storage.
      */

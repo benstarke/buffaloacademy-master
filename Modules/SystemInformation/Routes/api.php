@@ -53,8 +53,11 @@ Route::prefix('site-information-sub-system')->group(function () {
             Route::get('/', [AboutInfoController::class, 'index'])->name('index');
             Route::get('/{id}', [AboutInfoController::class, 'show'])->name('show');
             Route::post('/', [AboutInfoController::class, 'store'])->name('store');
-            Route::put('/{id}', [AboutInfoController::class, 'update'])->name('update');
+            Route::post('/{id}', [AboutInfoController::class, 'update'])->name('update');
+            // single record
             Route::delete('/{id}', [AboutInfoController::class, 'destroy'])->name('destroy');
+            // multiple records
+            Route::post('/delete', [AboutInfoController::class, 'destroyMultiple'])->name('destroyMultiple');
         });
     });
 });
