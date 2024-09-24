@@ -1,1 +1,226 @@
-<p>icons-mgmt works!</p>
+<div class="main-wrapper">
+
+	<div class="row page-titles mx-0">
+		<div class="col-sm-6 p-md-0">
+			<div class="welcome-text">
+				<h4>System Icons Component Operations</h4> 
+			</div>
+		</div>
+		<div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a routerLink="/admin-buffalo/master-dashboard">Home</a></li>
+				<li class="breadcrumb-item active"><a routerLink="/admin-buffalo/course-management/dashboard-course-Icons">Levels</a></li>
+				<li class="breadcrumb-item active"><a routerLink="/admin-buffalo/course-management/dashboard-course-Icons">All Levels</a></li>
+			</ol>
+		</div>
+    </div> 
+
+	<!-- Add Icons Popup -->
+	<ng-container *ngIf="addIconsForm.value && addPopupVisible">
+		<dx-popup [(visible)]="addPopupVisible" [width]="'auto'" [height]="'auto'" [showTitle]="true"
+			[title]="'Add New Course Level'" (onHidden)="onPopupHidden()">
+			<form (ngSubmit)="onAddIconsSubmit(false)" [formGroup]="addIconsForm">
+
+				<div class="row">
+					<div class="col-lg-12">
+						<label for="name">Name:<span class="text-danger">*</span></label>
+						<dx-text-box [showClearButton]="true" formControlName="name" placeholder="Icons Name"></dx-text-box>
+						<!-- Display error message for the name field -->
+						<div *ngIf="addIconsForm.get('name')?.invalid && (addIconsForm.get('name')?.touched || addIconsForm.get('name')?.dirty)"
+							class="text-danger">
+							<ng-container *ngIf="addIconsForm.get('name')?.errors?.['required']">Icons Name is required</ng-container>
+							<ng-container *ngIf="addIconsForm.get('name')?.errors?.['pattern']">Invalid Icons name</ng-container>
+						</div>
+					</div>
+
+					<div class="col-lg-12">
+						<label for="icon">Icon Symbol:<span class="text-danger">*</span></label>
+						<dx-text-box [showClearButton]="true" formControlName="icon" placeholder="icon"></dx-text-box>
+						<!-- Display error message for the icon field -->
+						<div *ngIf="addIconsForm.get('icon')?.invalid && (addIconsForm.get('icon')?.touched || addIconsForm.get('icon')?.dirty)"
+							class="text-danger">
+							<ng-container *ngIf="addIconsForm.get('icon')?.errors?.['required']">Icon is required</ng-container>
+						</div>
+					</div>
+	
+					<div class="col-lg-12">
+						<label for="description">Description:<span class="text-danger">*</span></label>
+						<dx-text-box [showClearButton]="true" formControlName="description" placeholder="Description"></dx-text-box>
+						<!-- Display error message for the description field -->
+						<div *ngIf="addIconsForm.get('description')?.invalid && (addIconsForm.get('description')?.touched || addIconsForm.get('description')?.dirty)"
+							class="text-danger">
+							<ng-container *ngIf="addIconsForm.get('description')?.errors?.['required']">Description is required</ng-container>
+						</div>
+					</div>
+				</div>
+	
+				<div class="row">
+					<div class="button-container-popup">
+						<dx-button text="Save and Add Another" type="success" [elementAttr]="{ id: 'first-btn', class: 'pull-right' }"
+							(onClick)="onAddIconsSubmit(true)">
+							<!-- spinner -->
+							<ng-container *ngIf="!isSubmittingSaveAndAddAnother">Save and Add Another</ng-container>
+							<ng-container *ngIf="isSubmittingSaveAndAddAnother">
+								<div class="spinnerc"></div>
+							</ng-container>
+							<!-- spinner -->
+						</dx-button>
+						<dx-button text="Save" type="success" [elementAttr]="{ class: 'pull-right' }"
+							(onClick)="onAddIconsSubmit(false)">
+							<!-- spinner -->
+							<ng-container *ngIf="!isSubmittingSave">Save</ng-container>
+							<ng-container *ngIf="isSubmittingSave">
+								<div class="spinnerc"></div>
+							</ng-container>
+							<!-- spinner -->
+						</dx-button>
+					</div>
+				</div>
+			</form>
+		</dx-popup>
+	</ng-container>
+
+	<!-- Update Icons Popup -->
+	<ng-container *ngIf="updateIconsForm.value && updatePopupVisible">
+		<dx-popup [(visible)]="updatePopupVisible" [width]="550" [height]="'auto'" [showTitle]="true"
+			[title]="'Update Course Level'" (onHidden)="onPopupHidden()">
+			<form (ngSubmit)="onUpdateIconsSubmit()" [formGroup]="updateIconsForm">
+				<div class="row">
+					<!-- Icons Name -->
+					<div class="col-lg-12">
+						<label for="name">Icons Name:</label>
+						<dx-text-box formControlName="name" placeholder="Icons Name"></dx-text-box>
+					  </div>
+					  <!-- Description -->
+					  <div class="col-lg-12">
+						<label for="description">Description:</label>
+						<dx-text-area formControlName="description" placeholder="Description"></dx-text-area>
+					  </div>
+					  <!-- Update and Cancel Buttons -->
+					  <div class="button-container-popup">
+						<dx-button text="Cancel" type="danger"  [elementAttr]="{ id: 'first-btn', class: 'pull-right' }"
+						  (onClick)="updatePopupVisible = false"></dx-button>
+						<dx-button text="Update" type="success" [elementAttr]="{ class: 'pull-right' }"
+						  (onClick)="onUpdateIconsSubmit()">
+						  <!-- spinner -->
+						  <ng-container *ngIf="!isSubmitting">Update</ng-container>
+						  <ng-container *ngIf="isSubmitting">
+							  <div class="spinnerc"></div>
+						  </ng-container>
+						  <!-- spinner -->
+						</dx-button>
+					  </div>
+				</div>
+			</form>
+			
+		</dx-popup>
+	</ng-container>
+
+	<!-- Delete Icons Popup -->
+	<ng-container *ngIf="deleteIconsForm.value && deletePopupVisible">
+		<dx-popup [(visible)]="deletePopupVisible" height="auto" width="auto" [showTitle]="true" title="Delete Confirmation"
+			(onHidden)="deletePopupVisible = false">
+			<form (ngSubmit)="onDeleteIconsSubmit()" [formGroup]="deleteIconsForm">
+				<div>
+					<p *ngIf="deleteIconsForm.value && deletePopupVisible" class="confirmation-text">
+						Are you sure you want to delete "<strong>{{deleteIconsForm.value.name}}</strong>"?
+					</p>
+					<div class="button-container-popup">
+					  <dx-button text="Cancel" (onClick)="deletePopupVisible = false" [elementAttr]="{ id: 'first-btn', class: 'pull-right' }"></dx-button>
+					  <dx-button text="Delete" type="danger" (onClick)="onDeleteIconsSubmit()" [elementAttr]="{ class: 'pull-right' }">
+						 <!-- spinner -->
+						<ng-container *ngIf="!isSubmitting">Delete</ng-container>
+						<ng-container *ngIf="isSubmitting">
+							<div class="spinnerc"></div>
+						</ng-container>
+						<!-- spinner -->
+					  </dx-button>
+				  </div>
+				</div>
+			</form>
+		</dx-popup>
+	</ng-container>
+
+	<!-- Spinner -->
+	<div *ngIf="isLoading" class="spinner-container">
+		<div class="spinner"></div>
+	</div>
+
+	<!-- Data Grid to display Icons -->
+	<div *ngIf="!isLoading">
+		<!-- Menu for Add/Delete Actions -->
+		<div class="button-container">
+			<dx-menu 
+				[style]="{ 'background-color': 'lightblue' }"
+				(onItemClick)="onMenuItemClick($event)" 
+				[items]="permitGeneralIconsMenuItems">
+			</dx-menu>
+		</div>
+
+		<!-- Data Grid to display Icons -->
+	<dx-data-grid 
+	#multipleIconsGrid
+	class="table row-border hover" 
+	[dataSource]="Icons" 
+	[remoteOperations]='true' 
+	[showBorders]="true"
+	[allowColumnResizing]="true" 
+	[columnHidingEnabled]="false" 
+	(onSelectionChanged)="selectionChanged($event)" 
+	keyExpr="id">
+		<dxo-search-panel [visible]="true"></dxo-search-panel>
+		<dxo-paging [enabled]="true"></dxo-paging>
+		<dxo-pager [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)" [showPageSizeSelector]="true"
+			[allowedPageSizes]="[5,10]"></dxo-pager>
+
+		<dxo-selection mode="multiple"></dxo-selection>
+		<dxo-group-panel [visible]="true"></dxo-group-panel>
+
+		<!-- menu actions -->
+		<dxi-column [width]="150" caption="Action" name="command-editing"
+		[allowFiltering]="false" 
+		[allowSorting]="false" 
+		cellTemplate="cellTemplate">
+		<div *dxTemplate="let data of 'cellTemplate'">
+		  <dx-menu 
+			(onItemClick)="permitIconsActionColClick($event,data)"
+			[items]="permitIconsMenuItems">
+		  </dx-menu>
+		</div>
+	    </dxi-column>
+		<!-- menu actions -->
+
+		<dxi-column dataField="id" caption="ID" [visible]="false"></dxi-column>
+		<dxi-column dataField="name" caption="Icons Name"></dxi-column>
+		<dxi-column dataField="icon" caption="Icon Symbol"></dxi-column>
+		<dxi-column dataField="created_by" caption="Created By"></dxi-column>
+		<dxi-column dataField="duration" caption="Time Posted"></dxi-column>
+		
+		<dxo-paging [pageSize]="10"></dxo-paging>
+	</dx-data-grid>
+	</div>
+
+	<!-- Delete Multiple Icons Popup -->
+    <ng-container *ngIf="selectedIconsForDeletion.length > 0 && deleteMultiplePopupVisible">
+		<dx-popup [(visible)]="deleteMultiplePopupVisible" height="auto" width="auto" [showTitle]="true" title="Delete Confirmation"
+			(onHidden)="deleteMultiplePopupVisible = false">
+			<div>
+				<p class="confirmation-text">
+					Are you sure you want to delete <strong>{{selectedIconsCount}}</strong> Icons(s)?
+				</p>
+				<div class="button-container-popup">
+					<dx-button text="Cancel" (onClick)="deleteMultiplePopupVisible = false" [elementAttr]="{ id: 'first-btn', class: 'pull-right' }"></dx-button>
+					<dx-button text="Delete" type="danger" (onClick)="confirmDeleteMultipleIcons()" [elementAttr]="{ class: 'pull-right' }">
+						<!-- spinner -->
+						<ng-container *ngIf="!isSubmitting">Delete</ng-container>
+						<ng-container *ngIf="isSubmitting">
+							<div class="spinnerc"></div>
+						</ng-container>
+						<!-- spinner -->
+					</dx-button>
+				</div>
+			</div>
+		</dx-popup>
+	</ng-container>
+
+</div>

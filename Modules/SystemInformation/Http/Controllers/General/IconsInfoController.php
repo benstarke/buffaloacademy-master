@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\SystemInformation\Http\Controllers\About;
+namespace Modules\SystemInformation\Http\Controllers\General;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -15,7 +15,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Log;
 use Exception;
 
-class AboutInfoController extends Controller
+class IconsInfoController extends Controller
 {
 
     // first get the current id of the logged in user (admin/superadmin/writer) or instructor id
@@ -30,58 +30,46 @@ class AboutInfoController extends Controller
         return $payload['sub']; // Assuming 'sub' contains the user ID
     }
 
+
     public function index()
     {
-        $aboutInfos = DB::table('par_about_info')->latest()->get();
-       
+        $iconsInfos = DB::table('par_icons')->latest()->get();
         // Add duration field 
-        $aboutInfos = $aboutInfos->map(function ($aboutInfo) {
-            $createdDate = Carbon::parse($aboutInfo->created_at);
-            $aboutInfo->duration = $createdDate->diffForHumans();
-            return $aboutInfo;
+        $iconsInfos = $iconsInfos->map(function ($iconsInfo) {
+            $createdDate = Carbon::parse($iconsInfo->created_at);
+            $iconsInfo->duration = $createdDate->diffForHumans();
+            return $iconsInfo;
         });
 
         return response()->json([
             'success' => true,
-            'data' => $aboutInfos
+            'data' => $iconsInfos
         ]);
     }
 
     public function show($id)
     {
-        $aboutInfo = DB::table('par_about_info')->find($id);
+        $iconInfo = DB::table('par_icons')->find($id);
 
-        if (!$aboutInfo) {
-            return response()->json(['message' => 'About info not found'], 404);
+        if (!$iconInfo) {
+            return response()->json(['message' => 'Icon not found'], 404);
         }
 
-        return response()->json($aboutInfo);
+        return response()->json($iconInfo);
     }
 
     public function store(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
-            'about_image_path' => 'nullable|max:500',
-            'title' => 'required|unique:par_about_info|max:255',
-            'description' => 'required|max:500',
-            'who_we_are' => 'required|max:1000',
-            'our_mission' => 'required|max:1000',
-            // 'created_by' => 'required|max:50',
+            'name' => 'required|unique:par_icons|max:255',
+            'description' => 'nullable|max:255',
+            'code' => 'nullable|max:150',
+            'is_enabled' => 'nullable|max:150',
+            'icon' => 'nullable|max:150',
         ]);
 
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 400);
-        }
-
-        // Image uploads
-        $imagePath = null;
-        
-        if ($request->hasFile('about_image_path')) {
-            $about_image_path = $request->file('about_image_path');
-            $folderPath = public_path('views/dev_portal/buffalofrontend/src/assets/uploads/about');
-            $imageName = uniqid() . '.' . $about_image_path->getClientOriginalExtension();
-            $about_image_path->move($folderPath, $imageName);
-            $imagePath = 'assets/uploads/about/' . $imageName;
         }
 
         try {
@@ -98,22 +86,22 @@ class AboutInfoController extends Controller
                 return response()->json(['error' => 'User email not found'], 404);
             }
 
-            // Insert the new record
-            $aboutInfoId = DB::table('par_about_info')->insertGetId([
-                'about_image_path' => $imagePath,
-                'title' => $request->input('title'),
+            // Insert the new icon record
+            $iconInfoId = DB::table('par_icons')->insertGetId([
+                'name' => $request->input('name'),
                 'description' => $request->input('description'),
-                'who_we_are' => $request->input('who_we_are'),
-                'our_mission' => $request->input('our_mission'),
+                'code' => $request->input('code'),
+                'is_enabled' => $request->input('is_enabled'),
+                'icon' => $request->input('icon'),
                 'created_by' => $userEmail,
                 'created_at' => now(),
             ]);
 
-            // Audit trail logic
+            // Audit trail logic for creation
             $auditTrailData = [
-                'table_name' => 'par_about_info',
+                'table_name' => 'par_icons',
                 'table_action' => 'insert',
-                'current_tabledata' => json_encode($aboutInfoId),
+                'current_tabledata' => json_encode($iconInfoId),
                 'user_id' => $userEmail,
             ];
 
@@ -127,9 +115,10 @@ class AboutInfoController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'About info created successfully',
-                'data' => $aboutInfoId
+                'message' => 'Icon created successfully',
+                'data' => $iconInfoId
             ], 201);
+
         } catch (Exception $e) {
             return response()->json(['error' => 'Server Error', 'message' => $e->getMessage()], 500);
         }
@@ -138,18 +127,20 @@ class AboutInfoController extends Controller
 
     public function update(Request $request, $id): JsonResponse
     {
-        $aboutInfo = DB::table('par_about_info')->find($id);
+        // Fetch the existing icon info
+        $iconInfo = DB::table('par_icons')->find($id);
 
-        if (!$aboutInfo) {
-            return response()->json(['message' => 'About info not found'], 404);
+        if (!$iconInfo) {
+            return response()->json(['message' => 'Icon not found'], 404);
         }
 
+        // Validate the request input
         $validator = Validator::make($request->all(), [
-            'about_image_path' => 'nullable|max:500',
-            'title' => 'required|unique:par_about_info,title,' . $id . '|max:255',
-            'description' => 'nullable|max:500',
-            'who_we_are' => 'nullable|max:1000',
-            'our_mission' => 'nullable|max:1000',
+            'name' => 'required|unique:par_icons,name,' . $id . '|max:255',
+            'description' => 'nullable|max:255',
+            'code' => 'nullable|max:150',
+            'is_enabled' => 'nullable|max:150',
+            'icon' => 'nullable|max:150',
         ]);
 
         if ($validator->fails()) {
@@ -160,7 +151,7 @@ class AboutInfoController extends Controller
             // Fetch the current user ID from the JWT token
             $userId = $this->getCurrentUserId($request);
 
-            // Fetch user email
+            // Fetch user email from either instructors or users
             $userEmail = DB::table('par_instructors')->where('id', $userId)->value('email');
             if (!$userEmail) {
                 $userEmail = DB::table('par_users')->where('id', $userId)->value('email');
@@ -171,28 +162,28 @@ class AboutInfoController extends Controller
             }
 
             // Store previous data for audit trail
-            $previousData = (array)$aboutInfo;
+            $previousData = (array) $iconInfo;
 
-            // Update the record
-            DB::table('par_about_info')->where('id', $id)->update([
-                'about_image_path' => $request->input('about_image_path'),
-                'title' => $request->input('title'),
+            // Update the icon information
+            DB::table('par_icons')->where('id', $id)->update([
+                'name' => $request->input('name'),
                 'description' => $request->input('description'),
-                'who_we_are' => $request->input('who_we_are'),
-                'our_mission' => $request->input('our_mission'),
+                'code' => $request->input('code'),
+                'is_enabled' => $request->input('is_enabled'),
+                'icon' => $request->input('icon'),
                 'updated_by' => $userEmail,
                 'updated_at' => now(),
             ]);
 
-            // Fetch updated data for audit trail
-            $updatedAboutInfo = DB::table('par_about_info')->find($id);
+            // Fetch the updated icon info for audit trail
+            $updatedIconInfo = DB::table('par_icons')->find($id);
 
             // Audit trail logic
             $auditTrailData = [
-                'table_name' => 'par_about_info',
+                'table_name' => 'par_icons',
                 'table_action' => 'update',
                 'prev_tabledata' => json_encode($previousData),
-                'current_tabledata' => json_encode($updatedAboutInfo),
+                'current_tabledata' => json_encode($updatedIconInfo),
                 'user_id' => $userEmail,
             ];
 
@@ -206,20 +197,22 @@ class AboutInfoController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'About info updated successfully',
-                'data' => $updatedAboutInfo
+                'message' => 'Icon updated successfully',
+                'data' => $updatedIconInfo,
             ], 200);
         } catch (Exception $e) {
             return response()->json(['error' => 'Server Error', 'message' => $e->getMessage()], 500);
         }
     }
 
+
     public function destroy($id): JsonResponse
     {
-        $aboutInfo = DB::table('par_about_info')->find($id);
+        // Fetch icon info by ID
+        $iconInfo = DB::table('par_icons')->find($id);
 
-        if (!$aboutInfo) {
-            return response()->json(['success' => false, 'message' => 'About info not found'], 404);
+        if (!$iconInfo) {
+            return response()->json(['success' => false, 'message' => 'Icon not found'], 404);
         }
 
         try {
@@ -237,30 +230,27 @@ class AboutInfoController extends Controller
             }
 
             // Store previous data for audit trail
-            $previousData = (array)$aboutInfo;
+            $previousData = (array)$iconInfo;
 
             // Audit trail logic for deletion
             DbHelper::auditTrail(
-                'par_about_info',
+                'par_icons',
                 'delete',
                 json_encode($previousData),
                 null,
                 $userEmail
             );
 
-            // Delete the about info
-            DB::table('par_about_info')->where('id', $id)->delete();
+            // Delete the icon
+            DB::table('par_icons')->where('id', $id)->delete();
 
-            return response()->json(['success' => true, 'message' => 'About info deleted successfully'], 200);
+            return response()->json(['success' => true, 'message' => 'Icon deleted successfully'], 200);
         } catch (Exception $e) {
             return response()->json(['error' => 'Server Error', 'message' => $e->getMessage()], 500);
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     * delete multiple records at a time
-     */
+
     public function destroyMultiple(Request $request): JsonResponse
     {
         $ids = $request->input('ids'); // Expecting an array of IDs
@@ -273,12 +263,13 @@ class AboutInfoController extends Controller
             ], 400);
         }
 
-        $aboutInfos = DB::table('par_about_info')->whereIn('id', $ids)->get();
+        // Fetch the icons based on the provided IDs
+        $iconInfos = DB::table('par_icons')->whereIn('id', $ids)->get();
 
-        if ($aboutInfos->isEmpty()) {
+        if ($iconInfos->isEmpty()) {
             return response()->json([
                 'success' => false,
-                'message' => 'About info not found'
+                'message' => 'Icons not found'
             ], 404);
         }
 
@@ -299,12 +290,12 @@ class AboutInfoController extends Controller
                 return response()->json(['error' => 'User email not found'], 404);
             }
 
-            // Audit trail logic for deletion
-            foreach ($aboutInfos as $aboutInfo) {
-                $previousData = (array)$aboutInfo;
+            // Audit trail logic for each icon deletion
+            foreach ($iconInfos as $iconInfo) {
+                $previousData = (array)$iconInfo;
 
                 $auditTrailData = [
-                    'table_name' => 'par_about_info',
+                    'table_name' => 'par_icons',
                     'table_action' => 'delete',
                     'prev_tabledata' => json_encode($previousData),
                     'current_tabledata' => null,
@@ -320,18 +311,17 @@ class AboutInfoController extends Controller
                 );
             }
 
-            // Delete the records and get the count of deleted records
-            $deletedCount = DB::table('par_about_info')->whereIn('id', $ids)->delete();
+            // Delete the icons and get the count of deleted records
+            $deletedCount = DB::table('par_icons')->whereIn('id', $ids)->delete();
 
             return response()->json([
                 'success' => true,
-                'message' => $deletedCount . ' About info records deleted successfully'
+                'message' => $deletedCount . ' Icon records deleted successfully'
             ], 200);
         } catch (Exception $e) {
             \Log::error($e->getMessage());
             return response()->json(['error' => 'Server Error', 'message' => $e->getMessage()], 500);
         }
     }
-
 
 }

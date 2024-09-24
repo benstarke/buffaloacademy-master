@@ -24,10 +24,10 @@ use Modules\SystemInformation\Http\Controllers\Home\TestimonialsController;
 use Modules\SystemInformation\Http\Controllers\Home\WhyLearnWithBuffaloController;
 
 // GENERAL
-use Modules\SystemInformation\Http\Controllers\FooterInfoController; // system footer
-use Modules\SystemInformation\Http\Controllers\IconsInfoController; // system icons
-use Modules\SystemInformation\Http\Controllers\PartnersInfoController; // system partners
-use Modules\SystemInformation\Http\Controllers\TeamInfoController; // instructors joined
+use Modules\SystemInformation\Http\Controllers\General\FooterInfoController; // system footer
+use Modules\SystemInformation\Http\Controllers\General\IconsInfoController; // system icons
+use Modules\SystemInformation\Http\Controllers\General\PartnersInfoController; // system partners
+use Modules\SystemInformation\Http\Controllers\General\TeamInfoController; // instructors joined
 
 /*
 |--------------------------------------------------------------------------
@@ -219,7 +219,7 @@ Route::prefix('site-information-sub-system')->group(function () {
             Route::get('/', [IconsInfoController::class, 'index'])->name('index');
             Route::get('/{id}', [IconsInfoController::class, 'show'])->name('show');
             Route::post('/', [IconsInfoController::class, 'store'])->name('store');
-            Route::posix_times('/{id}', [IconsInfoController::class, 'update'])->name('update');
+            Route::put('/{id}', [IconsInfoController::class, 'update'])->name('update');
             // single record
             Route::delete('/{id}', [IconsInfoController::class, 'destroy'])->name('destroy');
             // multiple records
@@ -241,7 +241,7 @@ Route::prefix('site-information-sub-system')->group(function () {
             Route::get('/', [TeamInfoController::class, 'index'])->name('index');
             Route::get('/{id}', [TeamInfoController::class, 'show'])->name('show');
             Route::post('/', [TeamInfoController::class, 'store'])->name('store');
-            Route::post('/{id}', [TeamInfoController::class, 'update'])->name('update');
+            Route::put('/{id}', [TeamInfoController::class, 'update'])->name('update');
             // single record
             Route::delete('/{id}', [TeamInfoController::class, 'destroy'])->name('destroy');
             // multiple records

@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\SystemInformation\Http\Controllers\About;
+namespace Modules\SystemInformation\Http\Controllers\General;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -15,9 +15,8 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Log;
 use Exception;
 
-class AboutInfoController extends Controller
+class FooterInfoController extends Controller
 {
-
     // first get the current id of the logged in user (admin/superadmin/writer) or instructor id
     private function getCurrentUserId(Request $request)
     {
@@ -30,43 +29,41 @@ class AboutInfoController extends Controller
         return $payload['sub']; // Assuming 'sub' contains the user ID
     }
 
+
     public function index()
     {
-        $aboutInfos = DB::table('par_about_info')->latest()->get();
-       
+        $footerInfos = DB::table('par_footer_info')->latest()->get();
         // Add duration field 
-        $aboutInfos = $aboutInfos->map(function ($aboutInfo) {
-            $createdDate = Carbon::parse($aboutInfo->created_at);
-            $aboutInfo->duration = $createdDate->diffForHumans();
-            return $aboutInfo;
+        $footerInfos = $footerInfos->map(function ($footerInfo) {
+            $createdDate = Carbon::parse($footerInfo->created_at);
+            $footerInfo->duration = $createdDate->diffForHumans();
+            return $footerInfo;
         });
 
         return response()->json([
             'success' => true,
-            'data' => $aboutInfos
+            'data' => $footerInfos
         ]);
     }
 
     public function show($id)
     {
-        $aboutInfo = DB::table('par_about_info')->find($id);
+        $footerInfo = DB::table('par_footer_info')->find($id);
 
-        if (!$aboutInfo) {
-            return response()->json(['message' => 'About info not found'], 404);
+        if (!$footerInfo) {
+            return response()->json(['message' => 'Footer info not found'], 404);
         }
 
-        return response()->json($aboutInfo);
+        return response()->json($footerInfo);
     }
 
     public function store(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
-            'about_image_path' => 'nullable|max:500',
-            'title' => 'required|unique:par_about_info|max:255',
+            'title' => 'required|unique:par_footer_info|max:250',
             'description' => 'required|max:500',
-            'who_we_are' => 'required|max:1000',
-            'our_mission' => 'required|max:1000',
-            // 'created_by' => 'required|max:50',
+            'year' => 'required|max:20',
+            'logo' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -76,12 +73,12 @@ class AboutInfoController extends Controller
         // Image uploads
         $imagePath = null;
         
-        if ($request->hasFile('about_image_path')) {
-            $about_image_path = $request->file('about_image_path');
-            $folderPath = public_path('views/dev_portal/buffalofrontend/src/assets/uploads/about');
-            $imageName = uniqid() . '.' . $about_image_path->getClientOriginalExtension();
-            $about_image_path->move($folderPath, $imageName);
-            $imagePath = 'assets/uploads/about/' . $imageName;
+        if ($request->hasFile('logo')) {
+            $logo = $request->file('logo');
+            $folderPath = public_path('views/dev_portal/buffalofrontend/src/assets/uploads/footer');
+            $imageName = uniqid() . '.' . $logo->getClientOriginalExtension();
+            $logo->move($folderPath, $imageName);
+            $imagePath = 'assets/uploads/footer/' . $imageName;
         }
 
         try {
@@ -99,21 +96,20 @@ class AboutInfoController extends Controller
             }
 
             // Insert the new record
-            $aboutInfoId = DB::table('par_about_info')->insertGetId([
-                'about_image_path' => $imagePath,
+            $footerInfoId = DB::table('par_footer_info')->insertGetId([
                 'title' => $request->input('title'),
                 'description' => $request->input('description'),
-                'who_we_are' => $request->input('who_we_are'),
-                'our_mission' => $request->input('our_mission'),
+                'year' => $request->input('year'),
+                'logo' => $imagePath,
                 'created_by' => $userEmail,
                 'created_at' => now(),
             ]);
 
-            // Audit trail logic
+            // Audit trail logic for creation
             $auditTrailData = [
-                'table_name' => 'par_about_info',
+                'table_name' => 'par_footer_info',
                 'table_action' => 'insert',
-                'current_tabledata' => json_encode($aboutInfoId),
+                'current_tabledata' => json_encode($footerInfoId),
                 'user_id' => $userEmail,
             ];
 
@@ -127,8 +123,8 @@ class AboutInfoController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'About info created successfully',
-                'data' => $aboutInfoId
+                'message' => 'Footer info created successfully',
+                'data' => $footerInfoId,
             ], 201);
         } catch (Exception $e) {
             return response()->json(['error' => 'Server Error', 'message' => $e->getMessage()], 500);
@@ -138,22 +134,32 @@ class AboutInfoController extends Controller
 
     public function update(Request $request, $id): JsonResponse
     {
-        $aboutInfo = DB::table('par_about_info')->find($id);
+        $footerInfo = DB::table('par_footer_info')->find($id);
 
-        if (!$aboutInfo) {
-            return response()->json(['message' => 'About info not found'], 404);
+        if (!$footerInfo) {
+            return response()->json(['message' => 'Footer info not found'], 404);
         }
 
         $validator = Validator::make($request->all(), [
-            'about_image_path' => 'nullable|max:500',
-            'title' => 'required|unique:par_about_info,title,' . $id . '|max:255',
+            'title' => 'required|unique:par_footer_info,title,' . $id . '|max:250',
             'description' => 'nullable|max:500',
-            'who_we_are' => 'nullable|max:1000',
-            'our_mission' => 'nullable|max:1000',
+            'year' => 'nullable|max:20',
+            'logo' => 'nullable|max:20',
         ]);
 
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 400);
+        }
+
+        // Image uploads
+        $imagePath = null;
+        
+        if ($request->hasFile('logo')) {
+            $logo = $request->file('logo');
+            $folderPath = public_path('views/dev_portal/buffalofrontend/src/assets/uploads/footer');
+            $imageName = uniqid() . '.' . $logo->getClientOriginalExtension();
+            $logo->move($folderPath, $imageName);
+            $imagePath = 'assets/uploads/footer/' . $imageName;
         }
 
         try {
@@ -171,28 +177,27 @@ class AboutInfoController extends Controller
             }
 
             // Store previous data for audit trail
-            $previousData = (array)$aboutInfo;
+            $previousData = (array)$footerInfo;
 
             // Update the record
-            DB::table('par_about_info')->where('id', $id)->update([
-                'about_image_path' => $request->input('about_image_path'),
+            DB::table('par_footer_info')->where('id', $id)->update([
                 'title' => $request->input('title'),
                 'description' => $request->input('description'),
-                'who_we_are' => $request->input('who_we_are'),
-                'our_mission' => $request->input('our_mission'),
+                'year' => $request->input('year'),
+                'logo'  => $imagePath,
                 'updated_by' => $userEmail,
                 'updated_at' => now(),
             ]);
 
             // Fetch updated data for audit trail
-            $updatedAboutInfo = DB::table('par_about_info')->find($id);
+            $updatedFooterInfo = DB::table('par_footer_info')->find($id);
 
             // Audit trail logic
             $auditTrailData = [
-                'table_name' => 'par_about_info',
+                'table_name' => 'par_footer_info',
                 'table_action' => 'update',
                 'prev_tabledata' => json_encode($previousData),
-                'current_tabledata' => json_encode($updatedAboutInfo),
+                'current_tabledata' => json_encode($updatedFooterInfo),
                 'user_id' => $userEmail,
             ];
 
@@ -206,20 +211,21 @@ class AboutInfoController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'About info updated successfully',
-                'data' => $updatedAboutInfo
+                'message' => 'Footer info updated successfully',
+                'data' => $updatedFooterInfo
             ], 200);
         } catch (Exception $e) {
             return response()->json(['error' => 'Server Error', 'message' => $e->getMessage()], 500);
         }
     }
 
+
     public function destroy($id): JsonResponse
     {
-        $aboutInfo = DB::table('par_about_info')->find($id);
+        $footerInfo = DB::table('par_footer_info')->find($id);
 
-        if (!$aboutInfo) {
-            return response()->json(['success' => false, 'message' => 'About info not found'], 404);
+        if (!$footerInfo) {
+            return response()->json(['success' => false, 'message' => 'Footer info not found'], 404);
         }
 
         try {
@@ -237,30 +243,26 @@ class AboutInfoController extends Controller
             }
 
             // Store previous data for audit trail
-            $previousData = (array)$aboutInfo;
+            $previousData = (array)$footerInfo;
 
             // Audit trail logic for deletion
             DbHelper::auditTrail(
-                'par_about_info',
+                'par_footer_info',
                 'delete',
                 json_encode($previousData),
                 null,
                 $userEmail
             );
 
-            // Delete the about info
-            DB::table('par_about_info')->where('id', $id)->delete();
+            // Delete the footer info
+            DB::table('par_footer_info')->where('id', $id)->delete();
 
-            return response()->json(['success' => true, 'message' => 'About info deleted successfully'], 200);
+            return response()->json(['success' => true, 'message' => 'Footer info deleted successfully'], 200);
         } catch (Exception $e) {
             return response()->json(['error' => 'Server Error', 'message' => $e->getMessage()], 500);
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     * delete multiple records at a time
-     */
     public function destroyMultiple(Request $request): JsonResponse
     {
         $ids = $request->input('ids'); // Expecting an array of IDs
@@ -273,12 +275,12 @@ class AboutInfoController extends Controller
             ], 400);
         }
 
-        $aboutInfos = DB::table('par_about_info')->whereIn('id', $ids)->get();
+        $footerInfos = DB::table('par_footer_info')->whereIn('id', $ids)->get();
 
-        if ($aboutInfos->isEmpty()) {
+        if ($footerInfos->isEmpty()) {
             return response()->json([
                 'success' => false,
-                'message' => 'About info not found'
+                'message' => 'Footer info not found'
             ], 404);
         }
 
@@ -286,10 +288,8 @@ class AboutInfoController extends Controller
             // Fetch the current user ID from the JWT token
             $userId = $this->getCurrentUserId(request());
 
-            // Check if the user is an instructor
+            // Get user email (check for instructor first, then fallback to regular user)
             $userEmail = DB::table('par_instructors')->where('id', $userId)->value('email');
-
-            // If not found as an instructor, check if they are a regular user
             if (!$userEmail) {
                 $userEmail = DB::table('par_users')->where('id', $userId)->value('email');
             }
@@ -300,11 +300,11 @@ class AboutInfoController extends Controller
             }
 
             // Audit trail logic for deletion
-            foreach ($aboutInfos as $aboutInfo) {
-                $previousData = (array)$aboutInfo;
+            foreach ($footerInfos as $footerInfo) {
+                $previousData = (array)$footerInfo;
 
                 $auditTrailData = [
-                    'table_name' => 'par_about_info',
+                    'table_name' => 'par_footer_info',
                     'table_action' => 'delete',
                     'prev_tabledata' => json_encode($previousData),
                     'current_tabledata' => null,
@@ -321,17 +321,16 @@ class AboutInfoController extends Controller
             }
 
             // Delete the records and get the count of deleted records
-            $deletedCount = DB::table('par_about_info')->whereIn('id', $ids)->delete();
+            $deletedCount = DB::table('par_footer_info')->whereIn('id', $ids)->delete();
 
             return response()->json([
                 'success' => true,
-                'message' => $deletedCount . ' About info records deleted successfully'
+                'message' => $deletedCount . ' Footer info records deleted successfully'
             ], 200);
         } catch (Exception $e) {
             \Log::error($e->getMessage());
             return response()->json(['error' => 'Server Error', 'message' => $e->getMessage()], 500);
         }
     }
-
 
 }

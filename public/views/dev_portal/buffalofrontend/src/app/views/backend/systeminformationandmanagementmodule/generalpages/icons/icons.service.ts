@@ -19,25 +19,21 @@ export class IconService {
     return this.http.get<Icons[]>(this.baseUrl);
   }
 
-  addIcon(material: FormData, headers?: HttpHeaders): Observable<HttpEvent<any>> {
+  addIcon(Icons: Icons, headers?: HttpHeaders): Observable<Icons> {
     if (!headers) {
-      headers = new HttpHeaders();
+        headers = new HttpHeaders();
     }
-    return this.http.post<HttpEvent<any>>(this.baseUrl, material, {
-      headers: headers,
-      reportProgress: true,
-      observe: 'events'
-    });
+    return this.http.post<Icons>(this.baseUrl, Icons, { headers });
   }
 
-  updateIcon(id: number, formData: FormData, headers: HttpHeaders): Observable<HttpEvent<any>> {
-    const url = `${this.baseUrl}/${id}`;
-    return this.http.post<any>(url, formData, {
-        headers: headers,
-        reportProgress: true,
-        observe: 'events'
-    });
+  updateIcons(Icons: Icons, headers?: HttpHeaders): Observable<Icons> {
+    if (!headers) {
+        headers = new HttpHeaders();
+    }
+    const url = `${this.baseUrl}/${Icons.id}`;
+    return this.http.put<Icons>(url, Icons, { headers });
   }
+
 
   deleteIcon(id: number, headers?: HttpHeaders): Observable<void> {
     if (!headers) {
@@ -47,6 +43,7 @@ export class IconService {
     return this.http.delete<void>(url, { headers });
   }
 
+  
   deleteMultipleIcons(ids: number[], headers?: HttpHeaders): Observable<void> {
     if (!headers) {
         headers = new HttpHeaders();

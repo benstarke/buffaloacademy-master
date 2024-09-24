@@ -1,19 +1,36 @@
 <?php
 
-namespace Modules\SystemInformation\Http\Controllers;
+namespace Modules\SystemInformation\Http\Controllers\General;
 
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Helpers\DbHelper;
-
 use Carbon\Carbon;
 
+use Illuminate\Support\Facades\Hash;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Log;
+use Exception;
 class TeamInfoController extends Controller
 {
+
+    // first get the current id of the logged in user (admin/superadmin/writer) or instructor id
+    private function getCurrentUserId(Request $request)
+    {
+        $token = $request->bearerToken();
+        if (!$token) {
+            throw new \Exception('Token not provided', 401);
+        }
+
+        $payload = JWTAuth::setToken($token)->getPayload();
+        return $payload['sub']; // Assuming 'sub' contains the user ID
+    }
+
     /**
      * Display a listing of the resource.
      * @return Renderable

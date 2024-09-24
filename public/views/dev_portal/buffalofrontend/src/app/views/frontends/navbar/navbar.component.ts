@@ -137,11 +137,15 @@ export class NavbarComponent implements OnInit {
 
   //  system inform
   fetchSystemInfo(): void {
-    this.http.get<SystemInfo[]>('http://127.0.0.1:8000/api/site-information-sub-system/general-system-layout/footer-info')
+    this.http.get<{ success: boolean, data: SystemInfo[] }>('http://127.0.0.1:8000/api/site-information-sub-system/general-system-layout/footer-info')
       .subscribe(
-        (data) => {
-          console.log('Fetched footer info:', data); // Log the fetched data to the console
-          this.SystemInfo = data[0]; // Assuming only one record is returned
+        (response) => {
+          console.log('Fetched footer info:', response.data); // Log the fetched data to the console
+          if (response.success && response.data.length > 0) {
+            this.SystemInfo = response.data[0]; // Assuming the first record in the data array is the required footer info
+          } else {
+            console.warn('No footer info found');
+          }
           this.loading = false;
         },
         (error) => {
@@ -150,6 +154,7 @@ export class NavbarComponent implements OnInit {
         }
       );
   }
+  
 
   loadProfile() {
     if (!this.checkNetworkStatus()) return;

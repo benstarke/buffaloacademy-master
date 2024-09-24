@@ -29,6 +29,7 @@ export class FooterService {
       observe: 'events'
     });
   }
+  
 
   updateFooter(id: number, formData: FormData, headers: HttpHeaders): Observable<HttpEvent<any>> {
     const url = `${this.baseUrl}/${id}`;

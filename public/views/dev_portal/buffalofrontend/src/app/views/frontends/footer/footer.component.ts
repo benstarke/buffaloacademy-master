@@ -37,11 +37,15 @@ export class FooterComponent implements OnInit {
 
 
   fetchFooterInfo(): void {
-    this.http.get<FooterInfo[]>('http://127.0.0.1:8000/api/site-information-sub-system/general-system-layout/footer-info')
+    this.http.get<{ success: boolean, data: FooterInfo[] }>('http://127.0.0.1:8000/api/site-information-sub-system/general-system-layout/footer-info')
       .subscribe(
-        (data) => {
-          console.log('Fetched footer info:', data); // Log the fetched data to the console
-          this.footerInfo = data[0]; // Assuming only one record is returned
+        (response) => {
+          console.log('Fetched footer info:', response.data); // Log the fetched data to the console
+          if (response.success && response.data.length > 0) {
+            this.footerInfo = response.data[0]; // Assuming the first record in the data array is the required footer info
+          } else {
+            console.warn('No footer info found');
+          }
           this.loading = false;
         },
         (error) => {
@@ -50,4 +54,6 @@ export class FooterComponent implements OnInit {
         }
       );
   }
+  
+  
 }
